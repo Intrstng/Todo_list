@@ -22,9 +22,26 @@ function App() {
 
     let [tasks, setTasks] = useState<Array<TaskType>>(tasksInit);
 
+    const addTask = (value: string): void => {
+        let newTask: TaskType = {
+            id: v1(),
+            title: value,
+            isDone: false
+        }
+        setTasks([newTask, ...tasks]);
+    }
+
     const removeTask = (id: string): void => {
         let filteredTasks: Array<TaskType> = tasks.filter(task => task.id !== id);
         setTasks(filteredTasks);
+    }
+
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = tasks.find(task => task.id === taskId)
+        if (task) {
+            task.isDone = isDone;
+        }
+        setTasks( [...tasks ]);
     }
 
     return (
@@ -32,10 +49,10 @@ function App() {
             <Todolist title={todoListTitle}
                       tasks={tasks}
                       removeTask={removeTask}
-                      setTasks={setTasks}/>
+                      addTask={addTask}
+                      changeStatus={changeStatus}/>
         </div>
     );
 }
-
 
 export default App;

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, FC} from 'react';
 
 type InputPropsType = {
-    title: string
+    value: string
     className?: string
     onChangeCallback: (e: ChangeEvent<HTMLInputElement>) => void
     onKeyDownCallback: (e: KeyboardEvent<HTMLInputElement>) => void
@@ -12,7 +12,7 @@ export const Input: FC<InputPropsType> = (props) => {
     const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => props.onKeyDownCallback(e);
 
     return (
-        <input value={props.title}
+        <input value={props.value}
                onChange={onChangeInputHandler}
                onKeyDown={onKeyDownHandler}
                className={props.className}/>

@@ -16,6 +16,8 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     let [inputTitle, setInputTitle] = useState<string>('');
     let [error, setError] = useState<string | null>(null);
 
+    const maxTitleLengthError = inputTitle.length >= 20; // лучше пробрасывать через пропс, т.к. это не самый лучший способ
+
     const addTask = () => {
         if (inputTitle.trim() !== '') {
             props.addTask(inputTitle.trim());
@@ -38,11 +40,13 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     return (
         <div className='todolist'>
             <h2>{props.title}</h2>
-            <Input title={inputTitle}
+            <Input value={inputTitle}
                    onChangeCallback={onChangeInputHandler}
                    onKeyDownCallback={onKeyDownHandler}
                    className={error ? 'error' : ''}/>
-            <Button buttonName={'+'} callBack={addTask}/>
+            <Button buttonName={'+'}
+                    callBack={addTask}
+                    isDisabled={!inputTitle || maxTitleLengthError}/>
             {error && <div className={'error-message'}>{error}</div>}
             <TasksList tasks={props.tasks}
                        removeTask={props.removeTask}

@@ -4,6 +4,7 @@ type ButtonPropsType = {
     buttonName: string
     callBack: () => void
     className?: string
+    isDisabled?: boolean
 }
 
 export const Button: FC<ButtonPropsType> = (props) => {
@@ -11,7 +12,8 @@ export const Button: FC<ButtonPropsType> = (props) => {
 
     return (
         <button onClick={onClickHandler}
-                className={props.className}>
+                className={props.className}
+                disabled={props.isDisabled}>
             {props.buttonName}
         </button>
     );

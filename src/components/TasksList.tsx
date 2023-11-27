@@ -1,6 +1,7 @@
 import React, {FC, useState} from 'react';
 import {Button} from './Button';
 import {FilterValuesType, TaskType} from '../App';
+import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 type TasksListType = {
     tasks: Array<TaskType>
@@ -9,15 +10,12 @@ type TasksListType = {
 }
 
 export const TasksList: FC<TasksListType> = (props) => {
-    let [filter, setFilter] = useState<FilterValuesType>('all')
-
+    let [filter, setFilter] = useState<FilterValuesType>('all');
+    const [listRef] = useAutoAnimate<HTMLUListElement>();
     const onclickSetAllFilter = () => setFilter('all');
     const onclickSetActiveFilter = () => setFilter('active');
     const onclickSetCompletedFilter = () => setFilter('completed');
-    const onChangeStatusHandler = (taskId: string, isDone: boolean) => {
-        props.changeStatus(taskId, isDone);
-    }
-
+    const onChangeStatusHandler = (taskId: string, isDone: boolean) => props.changeStatus(taskId, isDone);
     const onclickRemoveTask = (value: string) => props.removeTask(value);
 
     let tasksForTodoList = filter === 'active' ? props.tasks.filter(task => !task.isDone)
@@ -26,7 +24,7 @@ export const TasksList: FC<TasksListType> = (props) => {
 
     const listItems: JSX.Element = tasksForTodoList.length === 0
         ? <span className={'error-message'}>No tasks in list. Add task...</span>
-        : <ul>
+        : <ul ref={listRef}>
             {
                 tasksForTodoList.map(task => {
                     return <li key={task.id}

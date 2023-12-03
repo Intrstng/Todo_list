@@ -2,8 +2,9 @@ import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState} from 'react
 import {TaskType} from '../../App';
 import {TasksList} from '../TaskList/TasksList';
 import {Input} from '../Input';
-import {Button} from '../Button/Button';
+import {Button} from '../Button';
 import S from './TodoList.module.css';
+import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 type TodolistPropsType = {
     title: string
@@ -17,6 +18,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     const MAX_INPUT_TITLE_LENGTH = 20;
     let [inputTitle, setInputTitle] = useState<string>('');
     let [error, setError] = useState<string | null>(null);
+    const [textRef] = useAutoAnimate<HTMLParagraphElement>();
 
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH; // лучше пробрасывать через пропс, т.к. это не самый лучший способ
 
@@ -64,7 +66,8 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
             <Button buttonName={'+'}
                     callBack={addTask}
                     isDisabled={!inputTitle.trim() || maxTitleLengthError}/>
-            {error && <div className={S.errorMessage}>{error}</div>}
+            {error && <p className={S.errorMessage}
+                         ref={textRef}>{error}</p>}
             <TasksList tasks={props.tasks}
                        removeTask={props.removeTask}
                        changeStatus={props.changeStatus}/>

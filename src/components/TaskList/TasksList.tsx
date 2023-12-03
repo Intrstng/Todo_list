@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Button} from '../Button/Button';
+import {Button} from '../Button';
 import {FilterValuesType, TaskType} from '../../App';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
@@ -36,35 +36,40 @@ export const TasksList: FC<TasksListType> = (props) => {
     let tasksForTodoList = filterTasksForTodoList();
 
     const listItems: JSX.Element = tasksForTodoList.length === 0
-        ? <span className={'error-message'}>No tasks in list. Add task...</span>
+        ? <span className={S.errorMessage}>No tasks in list. Add task...</span>
         : <ul ref={listRef}>
             {
                 tasksForTodoList.map(task => {
+                    const finalTaskItemClassList = `${S.taskItem}
+                                                    ${task.isDone ? S.isDone : ''}
+                    `
                     return <li key={task.id}
-                               className={task.isDone ? S.isDone : ''}>
-                        <input type={'checkbox'}
+                               className={finalTaskItemClassList}>
+                        <input id={task.id}
+                               type={'checkbox'}
                                checked={task.isDone}
                                onClick={(e) => onChangeStatusHandler(task.id, e.currentTarget.checked)}/>
-                        <span>{task.title}</span>
+                        <label htmlFor={task.id}>{task.title}</label>
                         <Button buttonName={'x'}
                                 callBack={() => onclickRemoveTask(task.id)}/>
                     </li>
                 })
             }
         </ul>
+
     return (
-        <div className={S.tasklist}>
+        <div className={S.taskList}>
             {listItems}
             <div>
                 <Button buttonName={'All'}
                         callBack={onclickSetAllFilter}
-                        className={filter === 'all' ? 'active-filter' : ''}/>
+                        className={filter === 'all' ? S.activeFilter : ''}/>
                 <Button buttonName={'Active'}
                         callBack={onclickSetActiveFilter}
-                        className={filter === 'active' ? 'active-filter' : ''}/>
+                        className={filter === 'active' ? S.activeFilter : ''}/>
                 <Button buttonName={'Completed'}
                         callBack={onclickSetCompletedFilter}
-                        className={filter === 'completed' ? 'active-filter' : ''}/>
+                        className={filter === 'completed' ? S.activeFilter : ''}/>
             </div>
         </div>
     );

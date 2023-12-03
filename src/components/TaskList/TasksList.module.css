@@ -1,4 +1,4 @@
-.tasklist {
+.taskList {
     margin-top: 15px;
     border: 1px solid #000;
     border-radius: 15px;
@@ -6,7 +6,76 @@
     background-color: #a4b97d;
 }
 
+.taskItem {
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.taskItem:last-child {
+    margin-bottom: 0;
+}
+
 .isDone {
     opacity: 0.5;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.activeFilter {
+    background-color: aquamarine;
+}
+
+.button {
+
+}
+
+input[type='checkbox'] {
+    display: none;
+}
+
+input[type='checkbox']+label{
+    font-weight: bold;
+    color: #33ff00;
+    cursor: pointer;
+}
+
+input[type='checkbox']:checked+label{
+    color: #0022ff;
     text-decoration: line-through;
 }
+
+/*input[type='checkbox'] {
+    position: relative;
+    cursor: pointer;
+}*/
+/*
+input[type=checkbox]:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    border: 2px solid #555555;
+    border-radius: 3px;
+    background-color: white;
+}
+input[type=checkbox]:checked:after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 6px;
+}*/

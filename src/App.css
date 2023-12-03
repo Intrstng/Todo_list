@@ -9,10 +9,5 @@
 
 ul {
   list-style-type: none;
-}
-
-
-
-.active-filter {
-  background-color: aquamarine;
+  padding-left: 0;
 }

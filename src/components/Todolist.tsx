@@ -13,27 +13,38 @@ type TodolistPropsType = {
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
+    const MAX_INPUT_TITLE_LENGTH = 20;
     let [inputTitle, setInputTitle] = useState<string>('');
     let [error, setError] = useState<string | null>(null);
 
-    const maxTitleLengthError = inputTitle.length >= 20; // лучше пробрасывать через пропс, т.к. это не самый лучший способ
+    const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH; // лучше пробрасывать через пропс, т.к. это не самый лучший способ
 
     const addTask = () => {
-        if (inputTitle.trim() !== '') {
+        if (inputTitle.trim() !== '' && !maxTitleLengthError) {
             props.addTask(inputTitle.trim());
+            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             setInputTitle('');
-        } else {
-            setInputTitle('');
-            setError('Field is required');
+            setError(null);
         }
     }
 
-    const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => setInputTitle(event.currentTarget.value);
+    const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputTitle(event.currentTarget.value);
+        if ((event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH || event.currentTarget.value) && !(event.currentTarget.value.length >= MAX_INPUT_TITLE_LENGTH + 1)) {
+            setError(null);
+        } else if (event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH + 1) {
+            setError('Your task title is too long. Please, enter correct title.');
+        }
+    }
 
     const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && inputTitle.trim() === '') {
+            setError('Field is required...');
+            setInputTitle('');
+        } else if (e.key === 'Enter' && !maxTitleLengthError
+            && inputTitle) {
             addTask();
+            setError(null);
         }
     }
 

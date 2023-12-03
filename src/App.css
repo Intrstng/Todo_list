@@ -7,35 +7,12 @@
   margin-right: 50px;
 }
 
-.todolist {
-  border: 1px solid #000;
-  border-radius: 15px;
-  padding: 15px;
-  background-color: beige;
-}
-
-.tasklist {
-  margin-top: 15px;
-  border: 1px solid #000;
-  border-radius: 15px;
-  padding: 15px;
-  background-color: #a4b97d;
+ul {
+  list-style-type: none;
 }
 
 
-
-.error {
-  border: red 1px solid;
-}
-
-.error-message {
-  color: red;
-}
 
 .active-filter {
   background-color: aquamarine;
-}
-
-.is-done {
-  opacity: 0.5;
 }

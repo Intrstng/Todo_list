@@ -1,8 +1,9 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import {TaskType} from '../App';
-import {TasksList} from './TasksList';
-import {Input} from './Input';
-import {Button} from './Button';
+import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState} from 'react';
+import {TaskType} from '../../App';
+import {TasksList} from '../TaskList/TasksList';
+import {Input} from '../Input';
+import {Button} from '../Button/Button';
+import S from './TodoList.module.css';
 
 type TodolistPropsType = {
     title: string
@@ -42,23 +43,28 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
             setError('Field is required...');
             setInputTitle('');
         } else if (e.key === 'Enter' && !maxTitleLengthError
-            && inputTitle) {
+                                     && inputTitle) {
             addTask();
             setError(null);
         }
     }
 
+    const onBlurHandler = (e: FocusEvent<HTMLInputElement, Element>) => {
+        setInputTitle(e.currentTarget.value.trim());
+    }
+
     return (
-        <div className='todolist'>
+        <div className={S.todolist}>
             <h2>{props.title}</h2>
             <Input value={inputTitle}
                    onChangeCallback={onChangeInputHandler}
                    onKeyDownCallback={onKeyDownHandler}
-                   className={error ? 'error' : ''}/>
+                   onBlurCallback={onBlurHandler}
+                   className={error ? S.error : ''}/>
             <Button buttonName={'+'}
                     callBack={addTask}
-                    isDisabled={!inputTitle || maxTitleLengthError}/>
-            {error && <div className={'error-message'}>{error}</div>}
+                    isDisabled={!inputTitle.trim() || maxTitleLengthError}/>
+            {error && <div className={S.errorMessage}>{error}</div>}
             <TasksList tasks={props.tasks}
                        removeTask={props.removeTask}
                        changeStatus={props.changeStatus}/>

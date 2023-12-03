@@ -69,11 +69,19 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     return (
         <div className={S.todolist}>
             <h2>{props.title}</h2>
-
-            <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
-                    onClickCallBack={onClickTasksListCollapseToggle}/>
             <div>
-                {/*All tasks:<div className="info">{tasks.length}</div>*/}
+                <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
+                         onClickCallBack={onClickTasksListCollapseToggle}/>
+                {/*// Inline-block to div*/}
+                <div>
+                    <span>All tasks:</span>
+                    <span className={S.counter}>{props.tasks.length}</span>
+                </div>
+            </div>
+
+
+            {/*All tasks:<div className="info">{tasks.length}</div>*/}
+            <div>
                 <Input value={inputTitle}
                        onChangeCallback={onChangeInputHandler}
                        onKeyDownCallback={onKeyDownHandler}

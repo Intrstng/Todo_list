@@ -2,13 +2,13 @@ import React, {FC} from 'react';
 
 type ButtonPropsType = {
     buttonName: string
-    callBack: () => void
+    onClickCallBack: () => void
     className?: string
     isDisabled?: boolean
 }
 
 export const Button: FC<ButtonPropsType> = (props) => {
-    const onClickHandler = () => props.callBack();
+    const onClickHandler = () => props.onClickCallBack();
 
     return (
         <button onClick={onClickHandler}

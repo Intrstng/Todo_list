@@ -51,7 +51,7 @@ export const TasksList: FC<TasksListType> = (props) => {
                                onClick={(e) => onChangeStatusHandler(task.id, e.currentTarget.checked)}/>
                         <label htmlFor={task.id}>{task.title}</label>
                         <Button buttonName={'x'}
-                                callBack={() => onclickRemoveTask(task.id)}/>
+                                onClickCallBack={() => onclickRemoveTask(task.id)}/>
                     </li>
                 })
             }
@@ -62,13 +62,13 @@ export const TasksList: FC<TasksListType> = (props) => {
             {listItems}
             <div>
                 <Button buttonName={'All'}
-                        callBack={onclickSetAllFilter}
+                        onClickCallBack={onclickSetAllFilter}
                         className={filter === 'all' ? S.activeFilter : ''}/>
                 <Button buttonName={'Active'}
-                        callBack={onclickSetActiveFilter}
+                        onClickCallBack={onclickSetActiveFilter}
                         className={filter === 'active' ? S.activeFilter : ''}/>
                 <Button buttonName={'Completed'}
-                        callBack={onclickSetCompletedFilter}
+                        onClickCallBack={onclickSetCompletedFilter}
                         className={filter === 'completed' ? S.activeFilter : ''}/>
             </div>
         </div>

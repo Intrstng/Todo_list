@@ -12,13 +12,13 @@ export type TaskType = {
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 function App() {
-    let tasksInit: Array<TaskType> = [
+    const MAX_INPUT_TITLE_LENGTH = 20;
+    const TODO_LIST_TITLE = 'What to do';
+    const tasksInit: Array<TaskType> = [
         { id: v1(), title: "HTML&CSS", isDone: true },
         { id: v1(), title: "JS", isDone: true },
         { id: v1(), title: "ReactJS", isDone: false }
     ]
-
-    let todoListTitle = 'What to do';
 
     let [tasks, setTasks] = useState<Array<TaskType>>(tasksInit);
 
@@ -46,8 +46,9 @@ function App() {
 
     return (
         <div className='App'>
-            <Todolist title={todoListTitle}
+            <Todolist title={TODO_LIST_TITLE}
                       tasks={tasks}
+                      maxInputTitleLength={MAX_INPUT_TITLE_LENGTH}
                       removeTask={removeTask}
                       addTask={addTask}
                       changeStatus={changeStatus}/>

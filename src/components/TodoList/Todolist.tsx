@@ -9,33 +9,35 @@ import {useAutoAnimate} from '@formkit/auto-animate/react';
 type TodolistPropsType = {
     title: string
     tasks: Array<TaskType>
+    maxInputTitleLength: number
     removeTask: (id: string) => void
     addTask: (value: string) => void
     changeStatus: (taskId: string, isDone: boolean) => void
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
-    const MAX_INPUT_TITLE_LENGTH = 20;
-    let [inputTitle, setInputTitle] = useState<string>('');
-    let [error, setError] = useState<string | null>(null);
+
+    const [inputTitle, setInputTitle] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
+    const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
 
-    const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH; // лучше пробрасывать через пропс, т.к. это не самый лучший способ
+    const maxTitleLengthError = inputTitle.length > props.maxInputTitleLength;
 
     const addTask = () => {
         if (inputTitle.trim() !== '' && !maxTitleLengthError) {
             props.addTask(inputTitle.trim());
-            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             setInputTitle('');
             setError(null);
+            setTaskListCollapsed(true);
         }
     }
 
     const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setInputTitle(event.currentTarget.value);
-        if ((event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH || event.currentTarget.value) && !(event.currentTarget.value.length >= MAX_INPUT_TITLE_LENGTH + 1)) {
+        if ((event.currentTarget.value.length === props.maxInputTitleLength || event.currentTarget.value) && !(event.currentTarget.value.length >= props.maxInputTitleLength + 1)) {
             setError(null);
-        } else if (event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH + 1) {
+        } else if (event.currentTarget.value.length === props.maxInputTitleLength + 1) {
             setError('Your task title is too long. Please, enter correct title.');
         }
     }
@@ -55,22 +57,35 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         setInputTitle(e.currentTarget.value.trim());
     }
 
+    const onClickTasksListCollapseToggle = () => {
+        setTaskListCollapsed(!isTaskListCollapsed);
+        console.log(isTaskListCollapsed)
+    }
+
+    const taskList = <TasksList tasks={props.tasks}
+                                removeTask={props.removeTask}
+                                changeStatus={props.changeStatus}/>
+
     return (
         <div className={S.todolist}>
             <h2>{props.title}</h2>
-            <Input value={inputTitle}
-                   onChangeCallback={onChangeInputHandler}
-                   onKeyDownCallback={onKeyDownHandler}
-                   onBlurCallback={onBlurHandler}
-                   className={error ? S.error : ''}/>
-            <Button buttonName={'+'}
-                    callBack={addTask}
-                    isDisabled={!inputTitle.trim() || maxTitleLengthError}/>
-            {error && <p className={S.errorMessage}
-                         ref={textRef}>{error}</p>}
-            <TasksList tasks={props.tasks}
-                       removeTask={props.removeTask}
-                       changeStatus={props.changeStatus}/>
+
+            <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
+                    onClickCallBack={onClickTasksListCollapseToggle}/>
+            <div>
+                {/*All tasks:<div className="info">{tasks.length}</div>*/}
+                <Input value={inputTitle}
+                       onChangeCallback={onChangeInputHandler}
+                       onKeyDownCallback={onKeyDownHandler}
+                       onBlurCallback={onBlurHandler}
+                       className={error ? S.error : ''}/>
+                <Button buttonName={'+'}
+                        onClickCallBack={addTask}
+                        isDisabled={!inputTitle.trim() || maxTitleLengthError}/>
+                {error && <p className={S.errorMessage}
+                             ref={textRef}>{error}</p>}
+            </div>
+            {isTaskListCollapsed ? taskList : null}
         </div>
     );
 };

@@ -18,6 +18,10 @@
     margin: 0;
 }
 
+.counterWrapper {
+    display: inline-block;
+}
+
 .counter {
     display: inline-flex;
     align-items: center;

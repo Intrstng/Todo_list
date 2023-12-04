@@ -8,7 +8,7 @@ import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 type TodolistPropsType = {
     title: string
-    tasks: Array<TaskType>
+    tasks: TaskType[]
     maxInputTitleLength: number
     removeTask: (id: string) => void
     addTask: (value: string) => void
@@ -16,11 +16,11 @@ type TodolistPropsType = {
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
-
     const [inputTitle, setInputTitle] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
+    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
 
     const maxTitleLengthError = inputTitle.length > props.maxInputTitleLength;
 
@@ -59,12 +59,17 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
 
     const onClickTasksListCollapseToggle = () => {
         setTaskListCollapsed(!isTaskListCollapsed);
-        console.log(isTaskListCollapsed)
+    }
+
+    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
+        setCurrentTasksQuantityToShow(currentTasks.length);
     }
 
     const taskList = <TasksList tasks={props.tasks}
                                 removeTask={props.removeTask}
-                                changeStatus={props.changeStatus}/>
+                                changeStatus={props.changeStatus}
+                                setCurrentTasksQuantity={setCurrentTasksQuantity}
+    />
 
     return (
         <div className={S.todolist}>
@@ -72,15 +77,12 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
             <div>
                 <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
                          onClickCallBack={onClickTasksListCollapseToggle}/>
-                {/*// Inline-block to div*/}
-                <div>
+                <div className={S.counterWrapper}>
                     <span>All tasks:</span>
+                    <span className={S.counter}>{currentTasksQuantityToShow}</span>
                     <span className={S.counter}>{props.tasks.length}</span>
                 </div>
             </div>
-
-
-            {/*All tasks:<div className="info">{tasks.length}</div>*/}
             <div>
                 <Input value={inputTitle}
                        onChangeCallback={onChangeInputHandler}

@@ -14,13 +14,13 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 function App() {
     const MAX_INPUT_TITLE_LENGTH = 20;
     const TODO_LIST_TITLE = 'What to do';
-    const tasksInit: Array<TaskType> = [
+    const tasksInit: TaskType[] = [
         { id: v1(), title: "HTML&CSS", isDone: true },
         { id: v1(), title: "JS", isDone: true },
         { id: v1(), title: "ReactJS", isDone: false }
     ]
 
-    let [tasks, setTasks] = useState<Array<TaskType>>(tasksInit);
+    let [tasks, setTasks] = useState<TaskType[]>(tasksInit);
 
     const addTask = (value: string): void => {
         let newTask: TaskType = {
@@ -32,7 +32,7 @@ function App() {
     }
 
     const removeTask = (id: string): void => {
-        let filteredTasks: Array<TaskType> = tasks.filter(task => task.id !== id);
+        let filteredTasks: TaskType[] = tasks.filter(task => task.id !== id);
         setTasks(filteredTasks);
     }
 

@@ -5,9 +5,10 @@ import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 
 type TasksListType = {
-    tasks: Array<TaskType>
+    tasks: TaskType[]
     removeTask: (id: string) => void
     changeStatus: (taskId: string, isDone: boolean) => void
+    setCurrentTasksQuantity: (currentTasks: TaskType[]) => void
 }
 
 export const TasksList: FC<TasksListType> = (props) => {
@@ -19,21 +20,21 @@ export const TasksList: FC<TasksListType> = (props) => {
     const onChangeStatusHandler = (taskId: string, isDone: boolean) => props.changeStatus(taskId, isDone);
     const onclickRemoveTask = (value: string) => props.removeTask(value);
 
-    // const filterTasksForTodoList = () => {
-    //     return filter === 'active' ? props.tasks.filter(task => !task.isDone)
-    //                                                : filter === 'completed' ? props.tasks.filter(task => task.isDone)
-    //                                                : props.tasks;
-    // }
-
     const filterTasksForTodoList = () => {
-        switch(filter) {
-            case 'active': return props.tasks.filter(task => !task.isDone);
-            case 'completed': return props.tasks.filter(task => task.isDone);
-            default: return props.tasks;
-        }
+        // switch(filter) {
+        //     case 'active': return props.tasks.filter(task => !task.isDone);
+        //     case 'completed': return props.tasks.filter(task => task.isDone);
+        //     default: return props.tasks;
+        // }
+        //////////////////////////////////////////////////////////////
+        const filteredTasksForTodoList = filter === 'active' ? props.tasks.filter(task => !task.isDone)
+                                                       : filter === 'completed' ? props.tasks.filter(task => task.isDone)
+                                                       : props.tasks;
+        props.setCurrentTasksQuantity(filteredTasksForTodoList);
+        return filteredTasksForTodoList;
     }
 
-    let tasksForTodoList = filterTasksForTodoList();
+    const tasksForTodoList: TaskType[] = filterTasksForTodoList();
 
     const listItems: JSX.Element = tasksForTodoList.length === 0
         ? <span className={S.errorMessage}>No tasks in list. Add task...</span>

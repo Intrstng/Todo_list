@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState} from 'react';
-import {TaskType} from '../../App';
+import {FilterValuesType, TaskType} from '../../App';
 import {TasksList} from '../TaskList/TasksList';
 import {Input} from '../Input';
 import {Button} from '../Button';
@@ -7,12 +7,16 @@ import S from './TodoList.module.css';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 
 type TodolistPropsType = {
+    todolistID: string
     title: string
     tasks: TaskType[]
     maxInputTitleLength: number
-    removeTask: (id: string) => void
-    addTask: (value: string) => void
-    changeStatus: (taskId: string, isDone: boolean) => void
+    removeTask: (todolistID: string, taskId: string) => void
+    addTask: (todolistID: string, value: string) => void
+    changeFilter: (todolistID: string, value: FilterValuesType) => void
+    changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
+    removeTodolist: (todolistID: string) => void
+    filter: FilterValuesType
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
@@ -26,7 +30,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
 
     const addTask = () => {
         if (inputTitle.trim() !== '' && !maxTitleLengthError) {
-            props.addTask(inputTitle.trim());
+            props.addTask(props.todolistID, inputTitle.trim());
             setInputTitle('');
             setError(null);
             setTaskListCollapsed(true);
@@ -57,6 +61,10 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         setInputTitle(e.currentTarget.value.trim());
     }
 
+    const onClickDeleteTodolist = () => {
+        props.removeTodolist(props.todolistID);
+    }
+
     const onClickTasksListCollapseToggle = () => {
         setTaskListCollapsed(!isTaskListCollapsed);
     }
@@ -65,18 +73,24 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         setCurrentTasksQuantityToShow(currentTasks.length);
     }
 
-    const taskList = <TasksList tasks={props.tasks}
+    const taskList = <TasksList todolistID={props.todolistID}
+                                tasks={props.tasks}
                                 removeTask={props.removeTask}
+                                changeFilter={props.changeFilter}
                                 changeStatus={props.changeStatus}
                                 setCurrentTasksQuantity={setCurrentTasksQuantity}
+                                filter={props.filter}
     />
 
     return (
         <div className={S.todolist}>
-            <h2>{props.title}</h2>
+            <div className={S.todolist__titleContent}><h2 className={S.todolist__title}>{props.title}</h2>
+                <Button buttonName={'x'}
+                        onClickCallBack={onClickDeleteTodolist}/>
+            </div>
             <div>
                 <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
-                         onClickCallBack={onClickTasksListCollapseToggle}/>
+                        onClickCallBack={onClickTasksListCollapseToggle}/>
                 <div className={S.counterWrapper}>
                     <span>All tasks:</span>
                     <span className={S.counter}>{currentTasksQuantityToShow}</span>

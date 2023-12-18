@@ -1,6 +1,7 @@
 .App {
   padding: 30px;
   display: flex;
+  /*display: inline-block;*/
 }
 
 .App > div {

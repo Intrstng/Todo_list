@@ -9,6 +9,17 @@
     background-color: beige;
 }
 
+.todolist__titleContent {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.todolist__title {
+    color: #3f4471;
+}
+
 .error {
     border: red 1px solid;
 }

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './components/TodoList/Todolist';
 import {v1} from 'uuid';
+import {AddItemForm} from './components/AddItemForm/AddItemForm';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -22,7 +23,6 @@ export type TasksType = {
 }
 
 function App() {
-    const MAX_INPUT_TITLE_LENGTH = 20;
     const todolistID_1 = v1();
     const todolistID_2 = v1();
 
@@ -68,24 +68,41 @@ function App() {
         setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, filter: value} : tl));
     }
 
+    function addTodolist(newTitle: string) {
+        const newTodolistID = v1();
+        const newTodolist: TodolistType = {id: newTodolistID, title: newTitle, filter: 'all'};
+        setTodolists([newTodolist, ...todolists]);
+        setTasks({...tasks, [newTodolistID]: []});
+    }
+
     function removeTodolist(todolistID: string) {
         setTodolists(todolists.filter(tl => tl.id !== todolistID));
         delete tasks[todolistID];
     }
 
+    function updateTask(todolistID: string, taskID: string, newTitle: string) {
+        setTasks({...tasks, [todolistID]: tasks[todolistID].map(t => t.id === taskID ? {...t, title: newTitle} : t)})
+    }
+
+    function updateTodolist(todolistID: string, newTitle: string) {
+        setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, title: newTitle} : tl));
+    }
+
     return (
         <div className='App'>
+            <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map(tl => <Todolist key={tl.id}
                                              todolistID={tl.id}
                                              title={tl.title}
                                              tasks={tasks[tl.id]}
-                                             maxInputTitleLength={MAX_INPUT_TITLE_LENGTH}
                                              removeTask={removeTask}
                                              addTask={addTask}
                                              changeFilter={changeFilter}
                                              changeStatus={changeStatus}
                                              removeTodolist={removeTodolist}
+                                             updateTask={updateTask}
+                                             updateTodolist={updateTodolist}
                                              filter={tl.filter}/>
                 )
             }

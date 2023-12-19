@@ -1,8 +1,9 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {Button} from '../Button';
-import {FilterValuesType, TaskType} from '../../App';
+import {FilterValuesType, TasksType, TaskType} from '../../App';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
+import {EditableSpan} from '../EditableSpan/EditableSpan';
 
 type TasksListType = {
     todolistID: string
@@ -11,6 +12,7 @@ type TasksListType = {
     changeFilter: (todolistID: string, value: FilterValuesType) => void
     changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
     setCurrentTasksQuantity: (currentTasks: TaskType[]) => void
+    updateTask: (todolistID: string, taskID: string, newTitle: string) => void
     filter: FilterValuesType
 }
 
@@ -39,6 +41,10 @@ export const TasksList: FC<TasksListType> = (props) => {
 
     const tasksForTodoList: TaskType[] = filterTasksForTodoList();
 
+    const updateTaskHandler = (taskID: string, newTitle: string) => {
+        props.updateTask(props.todolistID, taskID, newTitle);
+    }
+
     const listItems: JSX.Element = tasksForTodoList.length === 0
         ? <span className={S.errorMessage}>No tasks in list. Add task...</span>
         : <ul ref={listRef}>
@@ -53,7 +59,12 @@ export const TasksList: FC<TasksListType> = (props) => {
                                type={'checkbox'}
                                checked={task.isDone}
                                onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeStatusHandler(task.id, e.currentTarget.checked)}/>
-                        <label htmlFor={task.id}>{task.title}</label>
+                        <label htmlFor={task.id}>
+                            <EditableSpan oldTitle={task.title}
+                                          callBack={(value: string) => {
+                                              updateTaskHandler(task.id, value)
+                                          }}/>
+                        </label>
                         <Button buttonName={'x'}
                                 onClickCallBack={() => onclickRemoveTask(task.id)}/>
                     </li>

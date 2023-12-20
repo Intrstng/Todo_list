@@ -1,12 +1,13 @@
-import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState, useReducer} from 'react';
 import {FilterValuesType, TasksType, TaskType} from '../../App';
-import {TasksList} from '../TaskList/TasksList';
+import {TasksList} from '../TasksList/TasksList';
 import {Input} from '../Input';
 import {Button} from '../Button';
 import S from './TodoList.module.css';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
+import {changeIsTaskListCollapsedAC, isTaskListCollapsedReducer} from '../reducers/isTaskListCollapsedReducer';
 
 type TodolistPropsType = {
     todolistID: string
@@ -23,7 +24,7 @@ type TodolistPropsType = {
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
-    const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
+    const [isTaskListCollapsed, dispatchListCollapsed] = useReducer(isTaskListCollapsedReducer, true);
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
 
     const onClickDeleteTodolist = () => {
@@ -31,16 +32,16 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     }
 
     const onClickTasksListCollapseToggle = () => {
-        setTaskListCollapsed(!isTaskListCollapsed);
+        dispatchListCollapsed(changeIsTaskListCollapsedAC(!isTaskListCollapsed))
     }
 
-    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
-        setCurrentTasksQuantityToShow(currentTasks.length);
-    }
+                    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
+                        setCurrentTasksQuantityToShow(currentTasks.length);
+                    }
 
     const addTaskAndUnCollapseTasksList = (title: string) => {
         props.addTask(props.todolistID, title);
-        setTaskListCollapsed(true);
+        dispatchListCollapsed(changeIsTaskListCollapsedAC(true))
     }
 
     const updateTodolistHandler = (newTitle: string) => {

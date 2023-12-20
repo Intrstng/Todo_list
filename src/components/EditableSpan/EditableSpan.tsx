@@ -1,4 +1,6 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC, useReducer} from 'react';
+import {activateEditAC, editSpanReducer} from '../reducers/editSpanReducer';
+import {changeNewTitleAC, newTitleEditableSpanReducer} from '../reducers/newTitleEditableSpanReducer';
 
 export type EditableSpanType = {
     oldTitle: string
@@ -6,19 +8,26 @@ export type EditableSpanType = {
 }
 
 export const EditableSpan: FC<EditableSpanType> = (props) => {
-    const [edit, setEdit] = useState<boolean>(false);
-    const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
+    const [edit, dispatchEdit] = useReducer(editSpanReducer, false);
+    const [newTitle, dispatchNewTitle] = useReducer(newTitleEditableSpanReducer, props.oldTitle);
 
     const activateEdit = () => {
-        setEdit(!edit);
-        props.callBack(newTitle);
+        if (newTitle) {                  // !!!!!!!!!!!!!!! //
+            dispatchEdit(activateEditAC(!edit));
+            props.callBack(newTitle);
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatchNewTitle(changeNewTitleAC(e.currentTarget.value))
     }
 
     return (
         edit ? <input type={'text'}
                              value={newTitle}
-                             onChange={(e: ChangeEvent<HTMLInputElement>) => setNewTitle(e.currentTarget.value)}
+                             onChange={onChangeHandler}
                              onBlur={activateEdit}
+                             placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!!! //
                              autoFocus/>
              : <span onDoubleClick={activateEdit}>{props.oldTitle}</span>
     );

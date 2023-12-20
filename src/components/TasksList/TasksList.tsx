@@ -17,9 +17,9 @@ type TasksListType = {
 }
 
 export const TasksList: FC<TasksListType> = (props) => {
-    const onclickSetAllFilter = () => props.changeFilter(props.todolistID,'all');
-    const onclickSetActiveFilter = () => props.changeFilter(props.todolistID,'active');
-    const onclickSetCompletedFilter = () => props.changeFilter(props.todolistID,'completed');
+    const onclickSetAllFilter = () => props.changeFilter(props.todolistID, 'all');
+    const onclickSetActiveFilter = () => props.changeFilter(props.todolistID, 'active');
+    const onclickSetCompletedFilter = () => props.changeFilter(props.todolistID, 'completed');
 
     const [listRef] = useAutoAnimate<HTMLUListElement>();
     const onChangeStatusHandler = (taskId: string, isDone: boolean) => props.changeStatus(props.todolistID, taskId, isDone);
@@ -33,8 +33,8 @@ export const TasksList: FC<TasksListType> = (props) => {
         // }
         //////////////////////////////////////////////////////////////
         const filteredTasksForTodoList = props.filter === 'active' ? props.tasks.filter(task => !task.isDone)
-                                                       : props.filter === 'completed' ? props.tasks.filter(task => task.isDone)
-                                                       : props.tasks;
+            : props.filter === 'completed' ? props.tasks.filter(task => task.isDone)
+                : props.tasks;
         props.setCurrentTasksQuantity(filteredTasksForTodoList);
         return filteredTasksForTodoList;
     }
@@ -75,17 +75,20 @@ export const TasksList: FC<TasksListType> = (props) => {
     return (
         <div className={S.taskList}>
             {listItems}
-            <div>
-                <Button buttonName={'All'}
-                        onClickCallBack={onclickSetAllFilter}
-                        className={props.filter === 'all' ? S.activeFilter : ''}/>
-                <Button buttonName={'Active'}
-                        onClickCallBack={onclickSetActiveFilter}
-                        className={props.filter === 'active' ? S.activeFilter : ''}/>
-                <Button buttonName={'Completed'}
-                        onClickCallBack={onclickSetCompletedFilter}
-                        className={props.filter === 'completed' ? S.activeFilter : ''}/>
-            </div>
+            {
+                props.tasks.length !== 0 &&
+                <div>
+                    <Button buttonName={'All'}
+                            onClickCallBack={onclickSetAllFilter}
+                            className={props.filter === 'all' ? S.activeFilter : ''}/>
+                    <Button buttonName={'Active'}
+                            onClickCallBack={onclickSetActiveFilter}
+                            className={props.filter === 'active' ? S.activeFilter : ''}/>
+                    <Button buttonName={'Completed'}
+                            onClickCallBack={onclickSetCompletedFilter}
+                            className={props.filter === 'completed' ? S.activeFilter : ''}/>
+                </div>
+            }
         </div>
     );
 };

@@ -3,6 +3,8 @@ import './App.css';
 import {Todolist} from './components/TodoList/Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
+import { Button } from '@mui/material';
+
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -90,6 +92,7 @@ function App() {
 
     return (
         <div className='App'>
+            <Button variant="contained">Contained</Button>
             <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map(tl => <Todolist key={tl.id}

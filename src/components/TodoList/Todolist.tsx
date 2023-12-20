@@ -8,6 +8,10 @@ import {useAutoAnimate} from '@formkit/auto-animate/react';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import {changeIsTaskListCollapsedAC, isTaskListCollapsedReducer} from '../reducers/isTaskListCollapsedReducer';
+import {
+    changeCurrentTasksQuantityToShowAC,
+    currentTasksQuantityToShowReducer
+} from '../reducers/currentTasksQuantityToShowReducer';
 
 type TodolistPropsType = {
     todolistID: string
@@ -24,24 +28,24 @@ type TodolistPropsType = {
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
-    const [isTaskListCollapsed, dispatchListCollapsed] = useReducer(isTaskListCollapsedReducer, true);
-    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
+    const [isTaskListCollapsed, dispatchIsListCollapsed] = useReducer(isTaskListCollapsedReducer, true);
+    const [currentTasksQuantityToShow, dispatchCurrentTasksQuantityToShow] = useReducer(currentTasksQuantityToShowReducer, props.tasks.length);
 
     const onClickDeleteTodolist = () => {
         props.removeTodolist(props.todolistID);
     }
 
     const onClickTasksListCollapseToggle = () => {
-        dispatchListCollapsed(changeIsTaskListCollapsedAC(!isTaskListCollapsed))
+        dispatchIsListCollapsed(changeIsTaskListCollapsedAC(!isTaskListCollapsed));
     }
 
-                    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
-                        setCurrentTasksQuantityToShow(currentTasks.length);
-                    }
+    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
+        dispatchCurrentTasksQuantityToShow(changeCurrentTasksQuantityToShowAC(currentTasks.length));
+    }
 
     const addTaskAndUnCollapseTasksList = (title: string) => {
         props.addTask(props.todolistID, title);
-        dispatchListCollapsed(changeIsTaskListCollapsedAC(true))
+        dispatchIsListCollapsed(changeIsTaskListCollapsedAC(true));
     }
 
     const updateTodolistHandler = (newTitle: string) => {

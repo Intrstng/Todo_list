@@ -162,8 +162,10 @@ test ('reducer taskList should ADD-NEW-TASKS-LIST', () => {
     }
     // action
     const newState = tasksReducer(tasksState, addNewTasksListAC(newTodolistID));
+    const keys = Object.keys(newState);
 
     // expectation
     expect(tasksState[newTodolistID]).toBe(undefined);
     expect(newState[newTodolistID].length).toBe(0);
+    expect(keys[2]).toBe(newTodolistID);
 })

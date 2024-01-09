@@ -1,17 +1,10 @@
-import React, {ChangeEvent, FC, KeyboardEvent, FocusEvent, useState, useReducer} from 'react';
-import {FilterValuesType, TasksType, TaskType} from '../../App';
+import React, {FC, useState} from 'react';
+import {FilterValuesType, TaskType} from '../../AppWithRedux';
 import {TasksList} from '../TasksList/TasksList';
-import {Input} from '../Input';
 import {Button} from '../Button';
 import S from './TodoList.module.css';
-import {useAutoAnimate} from '@formkit/auto-animate/react';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
-import {changeIsTaskListCollapsedAC, isTaskListCollapsedReducer} from '../reducers/isTaskListCollapsedReducer';
-import {
-    changeCurrentTasksQuantityToShowAC,
-    currentTasksQuantityToShowReducer
-} from '../reducers/currentTasksQuantityToShowReducer';
 
 type TodolistPropsType = {
     todolistID: string
@@ -28,24 +21,24 @@ type TodolistPropsType = {
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
-    const [isTaskListCollapsed, dispatchIsListCollapsed] = useReducer(isTaskListCollapsedReducer, true);
-    const [currentTasksQuantityToShow, dispatchCurrentTasksQuantityToShow] = useReducer(currentTasksQuantityToShowReducer, props.tasks.length);
+    const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
+    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
 
     const onClickDeleteTodolist = () => {
         props.removeTodolist(props.todolistID);
     }
 
     const onClickTasksListCollapseToggle = () => {
-        dispatchIsListCollapsed(changeIsTaskListCollapsedAC(!isTaskListCollapsed));
+        setTaskListCollapsed(!isTaskListCollapsed);
     }
 
     const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
-        dispatchCurrentTasksQuantityToShow(changeCurrentTasksQuantityToShowAC(currentTasks.length));
+        setCurrentTasksQuantityToShow(currentTasks.length);
     }
 
     const addTaskAndUnCollapseTasksList = (title: string) => {
         props.addTask(props.todolistID, title);
-        dispatchIsListCollapsed(changeIsTaskListCollapsedAC(true));
+        setTaskListCollapsed(true);
     }
 
     const updateTodolistHandler = (newTitle: string) => {

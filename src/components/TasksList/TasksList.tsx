@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {Button} from '../Button';
-import {FilterValuesType, TasksType, TaskType} from '../../App';
+import {FilterValuesType, TasksType, TaskType} from '../../AppWithRedux';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import {EditableSpan} from '../EditableSpan/EditableSpan';

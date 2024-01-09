@@ -1,7 +1,7 @@
 // ------------------- 'ADD-TASK' ------------------- //
 import {v1} from 'uuid';
-import {TasksType, TaskType} from '../../App';
-import {addNewTasksListAC, addTaskAC, changeStatusAC, removeTaskAC, tasksReducer, updateTaskAC} from './tasksReducer';
+import {TasksType} from '../../AppWithRedux';
+import {addTaskAC, changeStatusAC, removeTaskAC, tasksReducer, updateTaskAC} from './tasksReducer';
 
 test ('reducer taskList should ADD-TASK', () => {
     // data
@@ -23,27 +23,21 @@ test ('reducer taskList should ADD-TASK', () => {
     const newTitle_1 = 'New-task-1';
     const newTitle_2 = 'New-task-2';
 
-    const newTask_1: TaskType = {
-        id: v1(),
-        title: newTitle_1,
-        isDone: false
-    }
-    const newTask_2: TaskType = {
-        id: v1(),
-        title: newTitle_2,
-        isDone: false
-    }
     // action
-    const newState_1 = tasksReducer(tasksState, addTaskAC(todolistID_1, newTask_1));
-    const newState_2 = tasksReducer(tasksState, addTaskAC(todolistID_2, newTask_2));
+    const newState_1 = tasksReducer(tasksState, addTaskAC(todolistID_1, newTitle_1));
+    const newState_2 = tasksReducer(tasksState, addTaskAC(todolistID_2, newTitle_2));
 
     // expectation
     expect(tasksState[todolistID_1].length).toBe(3);
     expect(tasksState[todolistID_2].length).toBe(3);
     expect(newState_1[todolistID_1].length).toBe(4);
     expect(newState_2[todolistID_2].length).toBe(4);
-    expect(newState_1[todolistID_1][0]).toEqual(newTask_1);
-    expect(newState_2[todolistID_2][0]).toEqual(newTask_2);
+    expect(newState_1[todolistID_1][0].id).toBeDefined();
+    expect(newState_2[todolistID_2][0].id).toBeDefined();
+    expect(newState_1[todolistID_1][0].title).toBe(newTitle_1);
+    expect(newState_2[todolistID_2][0].title).toBe(newTitle_2);
+    expect(newState_1[todolistID_1][0].isDone).toBe(false);
+    expect(newState_2[todolistID_2][0].isDone).toBe(false);
 })
 
 // ------------------- 'REMOVE-TASK' ------------------- //
@@ -73,10 +67,28 @@ test ('reducer taskList should REMOVE-TASK', () => {
     // expectation
     expect(tasksState[todolistID_1].length).toBe(3);
     expect(tasksState[todolistID_2].length).toBe(3);
-    expect(newState_1[todolistID_1].length).toBe(2);
-    expect(newState_1[todolistID_2].length).toBe(3);
-    expect(newState_2[todolistID_1].length).toBe(3);
-    expect(newState_2[todolistID_2].length).toBe(2);
+    expect(newState_1).toEqual({
+        [todolistID_1]: [
+            { id: '1', title: "HTML&CSS", isDone: true },
+            { id: '2', title: "JS", isDone: true }
+        ],
+            [todolistID_2]: [
+            { id: '4', title: "Age", isDone: true },
+            { id: '5', title: "Weight", isDone: true },
+            { id: '6', title: "Height", isDone: false }
+        ]
+    })
+    expect(newState_2).toEqual({
+        [todolistID_1]: [
+            { id: '1', title: "HTML&CSS", isDone: true },
+            { id: '2', title: "JS", isDone: true },
+            { id: '3', title: "ReactJS", isDone: false }
+        ],
+        [todolistID_2]: [
+            { id: '5', title: "Weight", isDone: true },
+            { id: '6', title: "Height", isDone: false }
+        ]
+    })
 })
 
 // ------------------- 'CHANGE-STATUS' ------------------- //
@@ -139,33 +151,4 @@ test ('reducer taskList should UPDATE-TASK', () => {
     expect(newState_1[todolistID_1].find(t => t.id === taskID_1)?.title).toBe(newTitle_1);
     expect(tasksState[todolistID_2].find(t => t.id === taskID_2)?.title).toBe('Age');
     expect(newState_2[todolistID_2].find(t => t.id === taskID_2)?.title).toBe(newTitle_2);
-})
-
-// ------------------- 'ADD-NEW-TASKS-LIST' ------------------- //
-test ('reducer taskList should ADD-NEW-TASKS-LIST', () => {
-    // data
-    const todolistID_1 = '1001';
-    const todolistID_2 = '1002';
-    const newTodolistID = '1003';
-
-    const tasksState: TasksType = {
-        [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
-        ],
-        [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
-        ]
-    }
-    // action
-    const newState = tasksReducer(tasksState, addNewTasksListAC(newTodolistID));
-    const keys = Object.keys(newState);
-
-    // expectation
-    expect(tasksState[newTodolistID]).toBe(undefined);
-    expect(newState[newTodolistID].length).toBe(0);
-    expect(keys[2]).toBe(newTodolistID);
 })

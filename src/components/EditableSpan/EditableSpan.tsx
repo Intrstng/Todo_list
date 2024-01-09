@@ -1,6 +1,4 @@
-import React, {ChangeEvent, FC, useReducer} from 'react';
-import {activateEditAC, editSpanReducer} from '../reducers/editSpanReducer';
-import {changeNewTitleAC, newTitleEditableSpanReducer} from '../reducers/newTitleEditableSpanReducer';
+import React, {ChangeEvent, FC, useState} from 'react';
 
 export type EditableSpanType = {
     oldTitle: string
@@ -8,18 +6,18 @@ export type EditableSpanType = {
 }
 
 export const EditableSpan: FC<EditableSpanType> = (props) => {
-    const [edit, dispatchEdit] = useReducer(editSpanReducer, false);
-    const [newTitle, dispatchNewTitle] = useReducer(newTitleEditableSpanReducer, props.oldTitle);
+    const [edit, setEdit] = useState<boolean>(false);
+    const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
 
     const activateEdit = () => {
         if (newTitle) {                  // !!!!!!!!!!!!!!! //
-            dispatchEdit(activateEditAC(!edit));
+            setEdit(!edit);
             props.callBack(newTitle);
         }
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatchNewTitle(changeNewTitleAC(e.currentTarget.value))
+        setNewTitle(e.currentTarget.value);
     }
 
     return (

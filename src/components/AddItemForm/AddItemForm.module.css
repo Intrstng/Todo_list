@@ -1,0 +1,19 @@
+.itemForm {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.inputField {
+}
+
+.error {
+    border: red 1px solid;
+}
+
+.errorMessage {
+    color: red;
+    margin: 0;
+}

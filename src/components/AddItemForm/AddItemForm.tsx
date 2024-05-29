@@ -1,18 +1,24 @@
-import React, {ChangeEvent, FC, FocusEvent, KeyboardEvent, useReducer, useState} from 'react';
-import {Input} from '../Input';
-import S from '../TodoList/TodoList.module.css';
-import {Button} from '../Button';
-import {useAutoAnimate} from '@formkit/auto-animate/react';
+import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useState } from 'react';
+import { Input } from '../Input';
+import S from './AddItemForm.module.css';
+import { Button } from '../Button';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import SendIcon from '@mui/icons-material/Send';
+import IconButton from '@mui/material/IconButton';
+import AddBox from '@mui/icons-material/AddBox';
 
 export type AddItemFormPropsType = {
     addItem: (value: string) => void
+    className?: string
+    label?: string
+    titleBtn: string
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
     const [inputTitle, setInputTitle] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
-    const MAX_INPUT_TITLE_LENGTH = 20;
+    const MAX_INPUT_TITLE_LENGTH = 15;
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH;
 
             const addTask = () => {
@@ -28,7 +34,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
                 if ((event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH || event.currentTarget.value) && !(event.currentTarget.value.length >= MAX_INPUT_TITLE_LENGTH + 1)) {
                     setError(null);
                 } else if (event.currentTarget.value.length === MAX_INPUT_TITLE_LENGTH + 1) {
-                    setError('Your title is too long. Please, enter correct title.');
+                    setError('Your title is too long...');
                 }
             }
 
@@ -47,18 +53,42 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
                 setInputTitle(e.currentTarget.value.trim());
             }
 
-    return (
-        <div>
+            // const inputFullClassName = `${S.inputField} ${error ? S.error : ''}`;
+
+            const buttonAdditionalStyles = {
+                maxWidth: '150px',
+                maxHeight: '40px',
+                minWidth: '100px',
+                minHeight: '40px',
+                fontSize: '12px',
+            }
+  return (
+        <div className={props.className + ' ' + S.itemForm}>
             <Input value={inputTitle}
+                   error={!!error}
+                   label={error ? error : props.label}
                    onChangeCallback={onChangeInputHandler}
                    onKeyDownCallback={onKeyDownHandler}
                    onBlurCallback={onBlurHandler}
-                   className={error ? S.error : ''}/>
-            <Button buttonName={'+'}
+                   // className={inputFullClassName}
+          />
+
+          {/*or AddBox*/}
+          {/*<IconButton color={'primary'} onClick={addTask}*/}
+          {/*            disabled={!inputTitle.trim() || maxTitleLengthError}>*/}
+          {/*  <AddBox fontSize={'large'} />*/}
+          {/*</IconButton>*/}
+            <Button buttonName={props.titleBtn}
+                    startIcon={<SendIcon />}
+                    variant={!inputTitle.trim() || maxTitleLengthError ? 'outlined' : 'contained'}
                     onClickCallBack={addTask}
-                    isDisabled={!inputTitle.trim() || maxTitleLengthError}/>
-            {error && <p className={S.errorMessage}
-                         ref={textRef}>{error}</p>}
+                    isDisabled={!inputTitle.trim() || maxTitleLengthError}
+                    style={buttonAdditionalStyles}
+            />
+
+
+            {/*{error && <p className={S.errorMessage}*/}
+            {/*             ref={textRef}>{error}</p>}*/}
         </div>
     );
 };

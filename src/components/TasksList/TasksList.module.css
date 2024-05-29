@@ -1,5 +1,6 @@
 .taskList {
-    margin-top: 15px;
+    margin: 15px auto 0;
+    width: 310px;
     border: 1px solid #000;
     border-radius: 15px;
     padding: 15px;
@@ -18,19 +19,32 @@
 }
 
 .isDone {
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 .errorMessage {
-    color: red;
+    display: block;
+    margin: 15px auto 20px;
+    text-align: center;
+    font-family: 'Arial';
+    font-size: 16px;
+    font-weight: bold;
+    color: #ca4b3f;
+    letter-spacing: 1px;
 }
 
 .activeFilter {
     background-color: aquamarine;
 }
 
-.button {
+.controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+}
 
+button {
 }
 
 input[type='checkbox'] {
@@ -38,13 +52,19 @@ input[type='checkbox'] {
 }
 
 input[type='checkbox']+label{
+    padding: 5px 8px;
+    max-width: 180px;
     font-weight: bold;
-    color: #33ff00;
+    color: #036171;
+    border: none;
+    background-color: #FFFFFF80;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 input[type='checkbox']:checked+label{
-    color: #0022ff;
+    color: #44444499;
+    background-color: #FFFFFF4C;
     text-decoration: line-through;
 }
 

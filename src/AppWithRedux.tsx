@@ -37,16 +37,20 @@ function App() {
 
     return (
         <div className='App'>
-            <Button variant="contained">Contained</Button>
-            <AddItemForm addItem={addTodolist}/>
-            {
-                todoLists.map(tl => <Todolist key={tl.id}
-                                              todolistID={tl.id}
-                                              title={tl.title}
-                                              tasks={tasks[tl.id]}
-                                              filter={tl.filter}/>
-                )
-            }
+            <AddItemForm addItem={addTodolist}
+                         className={'inputForm'}
+                         titleBtn={'Add todolist'}
+                         label={'Create TODO'}/>
+            <div className={'todoLists'}>
+                {
+                    todoLists.map(tl => <Todolist key={tl.id}
+                                                  todolistID={tl.id}
+                                                  title={tl.title}
+                                                  tasks={tasks[tl.id]}
+                                                  filter={tl.filter}/>
+                    )
+                }
+            </div>
         </div>
     );
 }

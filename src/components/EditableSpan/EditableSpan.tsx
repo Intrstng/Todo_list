@@ -1,32 +1,46 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
+import TextField from '@mui/material/TextField';
+import { StyleObject } from '../Button';
 
 export type EditableSpanType = {
-    oldTitle: string
-    callBack: (value: string) => void
+  oldTitle: string
+  style?: StyleObject
+  callBack: (value: string) => void
+  size?: 'small' | 'medium'
+  className?: string
 }
 
 export const EditableSpan: FC<EditableSpanType> = (props) => {
-    const [edit, setEdit] = useState<boolean>(false);
-    const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
 
-    const activateEdit = () => {
-        if (newTitle) {                  // !!!!!!!!!!!!!!! //
-            setEdit(!edit);
-            props.callBack(newTitle);
-        }
+  const activateEdit = () => {
+    if (newTitle) {                  // !!!!!!!!!!!!!!! //
+      setEdit(!edit);
+      props.callBack(newTitle);
     }
+  }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value);
-    }
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.currentTarget.value);
+  }
 
-    return (
-        edit ? <input type={'text'}
-                             value={newTitle}
-                             onChange={onChangeHandler}
-                             onBlur={activateEdit}
-                             placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!!! //
-                             autoFocus/>
-             : <span onDoubleClick={activateEdit}>{props.oldTitle}</span>
-    );
+  return (
+    edit ? <TextField
+             id='standard-search'
+             type='search'
+             variant='standard'
+             error={!newTitle.length}
+             className={props.className}
+             style={props.style}
+             value={newTitle}
+             onChange={onChangeHandler}
+             onBlur={activateEdit}
+             placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!!! //
+             size={props.size || 'small'}
+             autoFocus
+             color={'info'}
+           />
+         : <span onDoubleClick={activateEdit}>{props.oldTitle}</span>
+  );
 };

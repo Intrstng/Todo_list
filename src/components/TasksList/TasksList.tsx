@@ -7,6 +7,9 @@ import {EditableSpan} from '../EditableSpan/EditableSpan';
 import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/tasksReducer';
 import { useDispatch } from 'react-redux';
 import { changeFilterAC } from '../state/todoListsReducer';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Checkbox from '@mui/material/Checkbox';
+import { IconButton } from '@material-ui/core';
 
 type TasksListType = {
     todolistID: string
@@ -53,26 +56,41 @@ export const TasksList: FC<TasksListType> = (props) => {
     }
 
     const listItems: JSX.Element = tasksForTodoList.length === 0
-                                  ? <span className={S.errorMessage}>No tasks in list. Add task...</span>
+                                  ? <span className={S.errorMessage}>No tasks in list. Add new task...</span>
                                   : <ul ref={listRef}>
                                       {
                                           tasksForTodoList.map(task => {
                                               const finalTaskItemClassList = `${S.taskItem}
-                                                                                ${task.isDone ? S.isDone : ''}
-                                                `
+                                                                                ${task.isDone ? S.isDone : ''}`
                                               return <li key={task.id}
                                                          className={finalTaskItemClassList}>
+
                                                   <input id={task.id}
                                                          type={'checkbox'}
                                                          checked={task.isDone}
                                                          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeStatusHandler(task.id, e.currentTarget.checked)}/>
+
+                                                  {/*Or use next:*/}
+                                                  {/*<Checkbox id={task.id}*/}
+                                                  {/*          checked={task.isDone}*/}
+                                                  {/*          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeStatusHandler(task.id, e.currentTarget.checked)}/>*/}
+
                                                   <label htmlFor={task.id}>
                                                       <EditableSpan oldTitle={task.title}
                                                                     callBack={(value: string) => {
                                                                         updateTaskHandler(task.id, value)
                                                                     }}/>
                                                   </label>
-                                                  <Button buttonName={'x'}
+
+                                                  {/*<IconButton aria-label='delete' onClick={() => onclickRemoveTask(task.id)}>*/}
+                                                  {/*    <DeleteIcon/>*/}
+                                                  {/*</IconButton>*/}
+
+                                                  <Button buttonName={'Delete'}
+                                                          variant={task.isDone ? 'contained' : 'outlined'}
+                                                          color={'error'}
+                                                          isDisabled={!task.isDone}
+                                                          endIcon={<DeleteIcon />}
                                                           onClickCallBack={() => onclickRemoveTask(task.id)}/>
                                               </li>
                                           })
@@ -92,16 +110,19 @@ export const TasksList: FC<TasksListType> = (props) => {
           {listItems}
           {
             props.tasks.length !== 0 &&
-            <div>
+            <div className={S.controls}>
                 <Button buttonName={'All'}
                         onClickCallBack={onclickSetAllFilter}
-                        className={props.filter === 'all' ? S.activeFilter : ''}/>
+                        variant={props.filter === 'all' ? 'contained' : 'outlined'}
+                        size={'medium'}/>
                 <Button buttonName={'Active'}
                         onClickCallBack={onclickSetActiveFilter}
-                        className={props.filter === 'active' ? S.activeFilter : ''}/>
+                        variant={props.filter === 'active' ? 'contained' : 'outlined'}
+                        size={'medium'}/>
                 <Button buttonName={'Completed'}
                         onClickCallBack={onclickSetCompletedFilter}
-                        className={props.filter === 'completed' ? S.activeFilter : ''}/>
+                        variant={props.filter === 'completed' ? 'contained' : 'outlined'}
+                        size={'medium'}/>
             </div>
           }
       </div>

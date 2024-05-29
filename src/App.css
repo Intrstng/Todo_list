@@ -1,7 +1,20 @@
 .App {
   padding: 30px;
-  display: flex;
+  /*display: flex;*/
   /*display: inline-block;*/
+}
+
+.todoLists {
+  display: flex;
+  gap: 25px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.App .inputForm {
+  margin-bottom: 50px;
+  gap: 15px;
+  justify-content: flex-start;
 }
 
 .App > div {

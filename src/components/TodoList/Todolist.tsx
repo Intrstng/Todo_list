@@ -22,7 +22,6 @@ type TodolistPropsType = {
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
-    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
 
     const onClickDeleteTodolist = () => {
         props.removeTodolist(props.todolistID);
@@ -30,10 +29,6 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
 
     const onClickTasksListCollapseToggle = () => {
         setTaskListCollapsed(!isTaskListCollapsed);
-    }
-
-    const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {
-        setCurrentTasksQuantityToShow(currentTasks.length);
     }
 
     const addTaskAndUnCollapseTasksList = (title: string) => {
@@ -50,7 +45,6 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                                 removeTask={props.removeTask}
                                 changeFilter={props.changeFilter}
                                 changeStatus={props.changeStatus}
-                                setCurrentTasksQuantity={setCurrentTasksQuantity}
                                 updateTask={props.updateTask}
                                 filter={props.filter}
     />
@@ -64,17 +58,15 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                 <Button buttonName={'x'}
                         onClickCallBack={onClickDeleteTodolist}/>
             </div>
+            <AddItemForm addItem={addTaskAndUnCollapseTasksList} />
             <div>
                 <Button buttonName={isTaskListCollapsed ? 'Hide tasks list' : 'Show tasks list'}
                         onClickCallBack={onClickTasksListCollapseToggle}/>
                 <div className={S.counterWrapper}>
                     <span>All tasks:</span>
-                    {isTaskListCollapsed && <span className={S.counter}>{currentTasksQuantityToShow}</span>}
                     <span className={S.counter}>{props.tasks.length}</span>
                 </div>
             </div>
-            <AddItemForm addItem={addTaskAndUnCollapseTasksList}
-                />
             {isTaskListCollapsed ? tasksList : null}
         </div>
     );

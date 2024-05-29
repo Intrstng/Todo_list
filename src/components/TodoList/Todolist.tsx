@@ -5,26 +5,23 @@ import {Button} from '../Button';
 import S from './TodoList.module.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
+import { addTaskAC } from '../state/tasksReducer';
+import { useDispatch } from 'react-redux';
+import { removeTodolistAC, updateTodolistAC } from '../state/todoListsReducer';
 
 type TodolistPropsType = {
     todolistID: string
     title: string
     tasks: TaskType[]
-    removeTask: (todolistID: string, taskId: string) => void
-    addTask: (todolistID: string, value: string) => void
-    changeFilter: (todolistID: string, value: FilterValuesType) => void
-    changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
-    removeTodolist: (todolistID: string) => void
-    updateTask: (todolistID: string, taskID: string, newTitle: string) => void
-    updateTodolist: (todolistID: string, newTitle: string) => void
     filter: FilterValuesType
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
+    const dispatch = useDispatch();
 
-    const onClickDeleteTodolist = () => {
-        props.removeTodolist(props.todolistID);
+    const onClickRemoveTodolist = () => {
+        dispatch(removeTodolistAC(props.todolistID))
     }
 
     const onClickTasksListCollapseToggle = () => {
@@ -32,21 +29,17 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
     }
 
     const addTaskAndUnCollapseTasksList = (title: string) => {
-        props.addTask(props.todolistID, title);
+        dispatch(addTaskAC(props.todolistID, title));
         setTaskListCollapsed(true);
     }
 
     const updateTodolistHandler = (newTitle: string) => {
-        props.updateTodolist(props.todolistID, newTitle);
+        dispatch(updateTodolistAC(props.todolistID, newTitle));
     }
 
     const tasksList = <TasksList todolistID={props.todolistID}
-                                tasks={props.tasks}
-                                removeTask={props.removeTask}
-                                changeFilter={props.changeFilter}
-                                changeStatus={props.changeStatus}
-                                updateTask={props.updateTask}
-                                filter={props.filter}
+                                 tasks={props.tasks}
+                                 filter={props.filter}
     />
 
     return (
@@ -56,7 +49,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                               callBack={updateTodolistHandler}/>
             </h2>
                 <Button buttonName={'x'}
-                        onClickCallBack={onClickDeleteTodolist}/>
+                        onClickCallBack={onClickRemoveTodolist}/>
             </div>
             <AddItemForm addItem={addTaskAndUnCollapseTasksList} />
             <div>

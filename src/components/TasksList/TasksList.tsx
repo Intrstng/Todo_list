@@ -4,40 +4,38 @@ import {FilterValuesType, TasksType, TaskType} from '../../AppWithRedux';
 import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
+import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/tasksReducer';
+import { useDispatch } from 'react-redux';
+import { changeFilterAC } from '../state/todoListsReducer';
 
 type TasksListType = {
     todolistID: string
     tasks: TaskType[]
-    removeTask: (todolistID: string, taskId: string) => void
-    changeFilter: (todolistID: string, value: FilterValuesType) => void
-    changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
-    updateTask: (todolistID: string, taskID: string, newTitle: string) => void
     filter: FilterValuesType
 }
 
 export const TasksList: FC<TasksListType> = (props) => {
-    const onclickSetAllFilter = () => props.changeFilter(props.todolistID, 'all');
-    const onclickSetActiveFilter = () => props.changeFilter(props.todolistID, 'active');
-    const onclickSetCompletedFilter = () => props.changeFilter(props.todolistID, 'completed');
-
+    const dispatch = useDispatch();
     const [listRef] = useAutoAnimate<HTMLUListElement>();
-    const onChangeStatusHandler = (taskId: string, isDone: boolean) => props.changeStatus(props.todolistID, taskId, isDone);
-    const onclickRemoveTask = (taskId: string) => props.removeTask(props.todolistID, taskId);
-
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
 
+    const changeFilter = (todolistID: string, value: FilterValuesType) => {
+        dispatch(changeFilterAC(todolistID, value));
+    }
+    const onclickSetAllFilter = () => changeFilter(props.todolistID, 'all');
+    const onclickSetActiveFilter = () => changeFilter(props.todolistID, 'active');
+    const onclickSetCompletedFilter = () => changeFilter(props.todolistID, 'completed');
+
+    const onChangeStatusHandler = (taskId: string, isDone: boolean) => dispatch(changeStatusAC(props.todolistID, taskId, isDone));
+
+    const onclickRemoveTask = (taskId: string) => dispatch(removeTaskAC(props.todolistID, taskId));
+
     const filterTasksForTodoList = () => {
-        // switch(filter) {
-        //     case 'active': return props.tasks.filter(task => !task.isDone);
-        //     case 'completed': return props.tasks.filter(task => task.isDone);
-        //     default: return props.tasks;
-        // }
-        //////////////////////////////////////////////////////////////
-        const filteredTasksForTodoList = props.filter === 'active' ?
-          props.tasks.filter(task => !task.isDone) :
-          props.filter === 'completed' ? props.tasks.filter(task => task.isDone) :
-            props.tasks;
-        return filteredTasksForTodoList;
+        return props.filter === 'active' ?
+            props.tasks.filter(task => !task.isDone) :
+                props.filter === 'completed'
+                                  ? props.tasks.filter(task => task.isDone)
+                                  : props.tasks;
     }
 
     const tasksForTodoList: TaskType[] = filterTasksForTodoList();
@@ -47,7 +45,7 @@ export const TasksList: FC<TasksListType> = (props) => {
     }, [tasksForTodoList])
 
     const updateTaskHandler = (taskID: string, newTitle: string) => {
-        props.updateTask(props.todolistID, taskID, newTitle);
+        dispatch(updateTaskAC(props.todolistID, taskID, newTitle));
     }
 
     const setCurrentTasksQuantity = (currentTasks: TaskType[]) => {

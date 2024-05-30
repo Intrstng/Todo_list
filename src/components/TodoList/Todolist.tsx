@@ -8,6 +8,7 @@ import {EditableSpan} from '../EditableSpan/EditableSpan';
 import { addTaskAC } from '../state/tasksReducer';
 import { useDispatch } from 'react-redux';
 import { removeTodolistAC, updateTodolistAC } from '../state/todoListsReducer';
+import Paper from '@mui/material/Paper';
 // import { IconButton } from '@material-ui/core';
 // import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -39,10 +40,14 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         dispatch(updateTodolistAC(props.todolistID, newTitle));
     }
 
-    const tasksList = <TasksList todolistID={props.todolistID}
-                                 tasks={props.tasks}
-                                 filter={props.filter}
-    />
+    const tasksList = <Paper elevation={4} sx={{
+        backgroundColor: 'rgba(240,239,239,0.74)'
+    }}>
+                         <TasksList todolistID={props.todolistID}
+                                    tasks={props.tasks}
+                                    filter={props.filter}
+                         />
+                      </Paper>
 
     const buttonAdditionalStyles = {
         maxWidth: '22px',
@@ -70,7 +75,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                 {/*    <DeleteIcon/>*/}
                 {/*</IconButton>*/}
             </div>
-            <AddItemForm className={S.taskForm}
+            <AddItemForm className={'taskForm'}
                          addItem={addTaskAndUnCollapseTasksList}
                          titleBtn={'Add task'}
                          label={'Create task'}

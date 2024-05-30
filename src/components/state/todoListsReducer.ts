@@ -20,7 +20,7 @@ export const todoListsReducer = (state: TodolistType[] = initialTodoListState, a
         case 'ADD-TODOLIST': {
             const {newTodolistID, newTitle} = payload;
             const newTodoList: TodolistType = {id: newTodolistID, title: newTitle, filter: 'all'};
-            return [newTodoList, ...state];
+            return [...state, newTodoList];
         }
         case 'REMOVE-TODOLIST': {
             const {todolistID} = payload;

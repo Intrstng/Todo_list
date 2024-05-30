@@ -18,12 +18,12 @@ export const Input: FC<InputPropsType> = (props) => {
   const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => props.onChangeCallback(e);
   const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => props.onKeyDownCallback(e);
   const onBlurHandler = (e: FocusEvent<HTMLInputElement, Element>) => props.onBlurCallback && props.onBlurCallback(e);
-console.log(props.className)
   return (
     <TextField
       id='outlined-search'
       label={props.label}
       type='search'
+      value={props.value}
       onChange={onChangeInputHandler}
       onKeyDown={onKeyDownHandler}
       onBlur={onBlurHandler}

@@ -1,25 +1,49 @@
 .App {
-  padding: 30px;
+  /*padding: 30px;*/
+
   /*display: flex;*/
   /*display: inline-block;*/
 }
 
 .todoLists {
-  display: flex;
-  gap: 25px;
-  justify-content: flex-start;
-  align-items: flex-start;
+  /*display: flex;*/
+  /*flex-wrap: wrap;*/
+  /*gap: 25px;*/
+  /*justify-content: flex-start;*/
+  /*align-items: flex-start;*/
 }
 
 .App .inputForm {
-  margin-bottom: 50px;
-  gap: 15px;
+  margin-bottom: 45px;
+  gap: 10px;
   justify-content: flex-start;
 }
 
-.App > div {
-  margin-right: 50px;
+.App .taskForm {
+  margin-bottom: 15px;
 }
+
+.App .inputForm input {
+  background-color: rgba(255, 255, 255, 0.47);
+  border-radius: 5px;
+}
+
+/*.App .inputForm input:focus {*/
+/*  background-color: unset;*/
+/*}*/
+
+.App .taskForm input {
+  max-width: 175px;
+}
+
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
+
+/*.container {*/
+/*  margin: 0 auto;*/
+/*  width: 80%;*/
+/*}*/
 
 ul {
   list-style-type: none;

@@ -1,10 +1,10 @@
 .taskList {
-    margin: 15px auto 0;
-    width: 310px;
-    border: 1px solid #000;
-    border-radius: 15px;
-    padding: 15px;
-    background-color: #a4b97d;
+    margin: 0 auto;
+    width: 290px;
+    /*border: 1px solid #000;*/
+    /*border-radius: 15px;*/
+    padding: 0  15px 15px;
+    /*background-color: #a4b97d;*/
 }
 
 .taskItem {
@@ -52,24 +52,33 @@ input[type='checkbox'] {
 }
 
 input[type='checkbox']+label{
-    padding: 5px 8px;
+    padding: 5px 10px;
     max-width: 180px;
     font-weight: bold;
     color: #036171;
     border: none;
-    background-color: #FFFFFF80;
+    background-color: rgba(164, 185, 125, 0.58);
     border-radius: 5px;
     cursor: pointer;
 }
 
 input[type='checkbox']:checked+label{
     color: #44444499;
-    background-color: #FFFFFF4C;
+    background-color: rgba(141, 166, 90, 0.25);
     text-decoration: line-through;
 }
 
 .counterWrapper {
-    display: inline-block;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+.counterWrapper span {
+    color: #3f4471;
+    font-weight: bold;
 }
 
 .counter {
@@ -78,8 +87,9 @@ input[type='checkbox']:checked+label{
     justify-content: center;
     width: 20px;
     height: 20px;
-    border: 1px solid black;
+    border: 1px solid #3f4471;
     border-radius: 50%;
+    color: #3f4471;
 }
 
 /*input[type='checkbox'] {

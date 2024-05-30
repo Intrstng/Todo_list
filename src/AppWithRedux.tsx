@@ -2,10 +2,13 @@ import React from 'react';
 import './App.css';
 import {Todolist} from './components/TodoList/Todolist';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
-import {Button} from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import {addTodolistAC} from './components/state/todoListsReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from './components/state/store';
+import ButtonAppBar from './components/ButtonAppBar/ButtonAppBar';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -37,20 +40,27 @@ function App() {
 
     return (
         <div className='App'>
-            <AddItemForm addItem={addTodolist}
-                         className={'inputForm'}
-                         titleBtn={'Add todolist'}
-                         label={'Create TODO'}/>
-            <div className={'todoLists'}>
-                {
-                    todoLists.map(tl => <Todolist key={tl.id}
-                                                  todolistID={tl.id}
-                                                  title={tl.title}
-                                                  tasks={tasks[tl.id]}
-                                                  filter={tl.filter}/>
-                    )
-                }
-            </div>
+            <ButtonAppBar />
+                <Container maxWidth='xl' fixed>
+                    <AddItemForm addItem={addTodolist}
+                                 className={'inputForm'}
+                                 titleBtn={'Add todolist'}
+                                 label={'Create TODO'}/>
+
+                    <Grid container spacing={2}>
+                        {
+                            todoLists.map(tl => <Grid item key={tl.id}>
+                                                    <Paper elevation={3}>
+                                                        <Todolist todolistID={tl.id}
+                                                                  title={tl.title}
+                                                                  tasks={tasks[tl.id]}
+                                                                  filter={tl.filter}/>
+                                                    </Paper>
+                                                </Grid>
+                            )
+                        }
+                    </Grid>
+                </Container>
         </div>
     );
 }

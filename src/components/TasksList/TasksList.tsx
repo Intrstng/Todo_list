@@ -8,8 +8,8 @@ import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/tasksReduce
 import { useDispatch } from 'react-redux';
 import { changeFilterAC } from '../state/todoListsReducer';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Checkbox from '@mui/material/Checkbox';
-import { IconButton } from '@material-ui/core';
+// import Checkbox from '@mui/material/Checkbox';
+// import { IconButton } from '@material-ui/core';
 
 type TasksListType = {
     todolistID: string
@@ -106,8 +106,8 @@ export const TasksList: FC<TasksListType> = (props) => {
 
     return (
       <div className={S.taskList}>
-          {tasksCounter}
           {listItems}
+          {tasksCounter}
           {
             props.tasks.length !== 0 &&
             <div className={S.controls}>

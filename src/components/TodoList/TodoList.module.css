@@ -3,11 +3,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 340px;
-    border: 1px solid #000;
-    border-radius: 15px;
+    width: 320px;
+    /*border: 1px solid #000;*/
+    /*border-radius: 15px;*/
     padding: 15px;
-    background-color: beige;
+    /*background-color: beige;*/
 }
 
 .todolist__titleContent {
@@ -28,12 +28,9 @@
     opacity: 0.6;
 }
 
-.taskForm {
-    margin-bottom: 30px;
-}
-
 .tasksShowToggle {
     width: 100%;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -53,7 +50,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+}
+
+.counterWrapper span {
+    color: #2e7d32;
+    font-weight: bold;
 }
 
 .counter {

@@ -1,10 +1,10 @@
-.itemForm {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-    justify-content: space-between;
-}
+/*.itemForm {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    flex-wrap: nowrap;*/
+/*    width: 100%;*/
+/*    justify-content: space-between;*/
+/*}*/
 
 .inputField {
 }

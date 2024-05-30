@@ -1,11 +1,9 @@
 import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useState } from 'react';
 import { Input } from '../Input';
-import S from './AddItemForm.module.css';
 import { Button } from '../Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import SendIcon from '@mui/icons-material/Send';
-import IconButton from '@mui/material/IconButton';
-import AddBox from '@mui/icons-material/AddBox';
+import { Grid } from '@material-ui/core';
 
 export type AddItemFormPropsType = {
     addItem: (value: string) => void
@@ -62,33 +60,36 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
                 minHeight: '40px',
                 fontSize: '12px',
             }
+            console.log(inputTitle, 'inputTitle')
   return (
-        <div className={props.className + ' ' + S.itemForm}>
-            <Input value={inputTitle}
-                   error={!!error}
-                   label={error ? error : props.label}
-                   onChangeCallback={onChangeInputHandler}
-                   onKeyDownCallback={onKeyDownHandler}
-                   onBlurCallback={onBlurHandler}
-                   // className={inputFullClassName}
-          />
-
+        <Grid container spacing={1} className={props.className}>
+            <Grid item>
+                <Input value={inputTitle}
+                       error={!!error}
+                       label={error ? error : props.label}
+                       onChangeCallback={onChangeInputHandler}
+                       onKeyDownCallback={onKeyDownHandler}
+                       onBlurCallback={onBlurHandler}
+                />
+            </Grid>
           {/*or AddBox*/}
           {/*<IconButton color={'primary'} onClick={addTask}*/}
           {/*            disabled={!inputTitle.trim() || maxTitleLengthError}>*/}
           {/*  <AddBox fontSize={'large'} />*/}
           {/*</IconButton>*/}
-            <Button buttonName={props.titleBtn}
-                    startIcon={<SendIcon />}
-                    variant={!inputTitle.trim() || maxTitleLengthError ? 'outlined' : 'contained'}
-                    onClickCallBack={addTask}
-                    isDisabled={!inputTitle.trim() || maxTitleLengthError}
-                    style={buttonAdditionalStyles}
-            />
-
-
-            {/*{error && <p className={S.errorMessage}*/}
-            {/*             ref={textRef}>{error}</p>}*/}
-        </div>
+            <Grid item>
+                  <Button buttonName={props.titleBtn}
+                          startIcon={<SendIcon />}
+                          variant={!inputTitle.trim() || maxTitleLengthError ? 'outlined' : 'contained'}
+                          onClickCallBack={addTask}
+                          isDisabled={!inputTitle.trim() || maxTitleLengthError}
+                          style={buttonAdditionalStyles}
+                  />
+            </Grid>
+          {/*<Grid item>*/}
+          {/*  {error && <p className={S.errorMessage}*/}
+          {/*               ref={textRef}>{error}</p>}*/}
+          {/*</Grid>*/}
+        </Grid>
     );
 };

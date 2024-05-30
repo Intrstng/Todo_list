@@ -28,9 +28,9 @@
   border-radius: 5px;
 }
 
-/*.App .inputForm input:focus {*/
-/*  background-color: unset;*/
-/*}*/
+.App .inputForm input:focus {
+  background-color: unset;
+}
 
 .App .taskForm input {
   max-width: 175px;

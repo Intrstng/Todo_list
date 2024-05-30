@@ -3,11 +3,20 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { MenuButton } from '../MenuButton/MenuButton';
+import { Theme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-export default function ButtonAppBar() {
+
+type ButtonAppBarProps = {
+  customTheme: Theme
+  changeModeHandler: () => void
+}
+
+export default function ButtonAppBar({customTheme, changeModeHandler}: ButtonAppBarProps) {
 
   const boxStyles = {
       flexGrow: 1,
@@ -36,9 +45,19 @@ export default function ButtonAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant='h6' component='div' sx={typographyStyles}>
-            News
+            TODO
           </Typography>
-          <Button color='inherit'>Login</Button>
+          <MenuButton color='inherit'
+                      customTheme={customTheme}
+                      background={'#0275f8'}>Login</MenuButton>
+          <MenuButton color='inherit'>Logout</MenuButton>
+          <MenuButton color='inherit'
+                      customTheme={customTheme}
+                      background={customTheme.palette.primary.dark}>Faq</MenuButton>
+          {/*Day & night*/}
+          <IconButton sx={{ ml: 1 }} onClick={changeModeHandler} color="inherit">
+            {customTheme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Box>

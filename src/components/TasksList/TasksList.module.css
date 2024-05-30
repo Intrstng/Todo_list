@@ -24,7 +24,7 @@
 
 .errorMessage {
     display: block;
-    margin: 15px auto 20px;
+    margin: 15px auto 0;
     text-align: center;
     font-family: 'Arial';
     font-size: 16px;
@@ -38,6 +38,7 @@
 }
 
 .controls {
+    margin-top: 12px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

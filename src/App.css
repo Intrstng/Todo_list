@@ -33,7 +33,8 @@
 }
 
 .App .taskForm input {
-  max-width: 175px;
+  padding-left: 10px;
+  max-width: 150px;
 }
 
 /*.App > div {*/

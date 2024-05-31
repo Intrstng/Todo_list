@@ -1,10 +1,7 @@
 .taskList {
     margin: 0 auto;
     width: 290px;
-    /*border: 1px solid #000;*/
-    /*border-radius: 15px;*/
     padding: 0  15px 15px;
-    /*background-color: #a4b97d;*/
 }
 
 .taskItem {

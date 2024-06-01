@@ -6,8 +6,8 @@ import {addTaskAC, changeStatusAC, removeTaskAC, tasksReducer, updateTaskAC} fro
 
 test ('reducer taskList should ADD-TASK', () => {
     // data
-    const todolistID_1 = '1001';
-    const todolistID_2 = '1002';
+    const todolistID_1 = v1();
+    const todolistID_2 = v1();
     const tasksState: TasksType = {
         [todolistID_1]: [
             { id: v1(), title: "HTML&CSS", isDone: true },
@@ -44,8 +44,8 @@ test ('reducer taskList should ADD-TASK', () => {
 // ------------------- 'REMOVE-TASK' ------------------- //
 test ('reducer taskList should REMOVE-TASK', () => {
     // data
-    const todolistID_1 = '1001';
-    const todolistID_2 = '1002';
+    const todolistID_1 = v1();
+    const todolistID_2 = v1();
     const tasksState: TasksType = {
         [todolistID_1]: [
             { id: '1', title: "HTML&CSS", isDone: true },
@@ -95,8 +95,8 @@ test ('reducer taskList should REMOVE-TASK', () => {
 // ------------------- 'CHANGE-STATUS' ------------------- //
 test ('reducer taskList should CHANGE-STATUS', () => {
     // data
-    const todolistID_1 = '1001';
-    const todolistID_2 = '1002';
+    const todolistID_1 = v1();
+    const todolistID_2 = v1();
     const tasksState: TasksType = {
         [todolistID_1]: [
             { id: '1', title: "HTML&CSS", isDone: true },
@@ -125,8 +125,8 @@ test ('reducer taskList should CHANGE-STATUS', () => {
 // ------------------- 'UPDATE-TASK' ------------------- //
 test ('reducer taskList should UPDATE-TASK', () => {
     // data
-    const todolistID_1 = '1001';
-    const todolistID_2 = '1002';
+    const todolistID_1 = v1();
+    const todolistID_2 = v1();
     const tasksState: TasksType = {
         [todolistID_1]: [
             { id: '1', title: "HTML&CSS", isDone: true },

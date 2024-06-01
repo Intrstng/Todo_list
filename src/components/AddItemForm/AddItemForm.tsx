@@ -60,7 +60,6 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
                 minHeight: '40px',
                 fontSize: '12px',
             }
-            console.log(inputTitle, 'inputTitle')
   return (
         <Grid container spacing={1} className={props.className}>
             <Grid item>

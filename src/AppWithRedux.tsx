@@ -40,7 +40,7 @@ function App() {
     const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')
 
-    const customTheme: Theme = createTheme({
+    const theme: Theme = createTheme({
         palette: {
             mode: customThemeMode === 'light' ? 'light' : 'dark',
             primary: {
@@ -58,10 +58,10 @@ function App() {
     }
 
     return (
-      <ThemeProvider theme={customTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline /> {/*CssBaseline is used for Day & Night toggling*/}
         <div className='App'>
-            <ButtonAppBar customTheme={customTheme}
+            <ButtonAppBar theme={theme}
                           changeModeHandler={changeModeHandler}
             />
                 <Container maxWidth='xl' fixed>

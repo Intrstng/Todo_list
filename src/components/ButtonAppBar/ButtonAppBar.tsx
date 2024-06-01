@@ -12,11 +12,11 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 
 type ButtonAppBarProps = {
-  customTheme: Theme
+  theme: Theme
   changeModeHandler: () => void
 }
 
-export default function ButtonAppBar({customTheme, changeModeHandler}: ButtonAppBarProps) {
+export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarProps) {
 
   const boxStyles = {
       flexGrow: 1,
@@ -48,15 +48,15 @@ export default function ButtonAppBar({customTheme, changeModeHandler}: ButtonApp
             TODO
           </Typography>
           <MenuButton color='inherit'
-                      customTheme={customTheme}
+                      theme={theme}
                       background={'#0275f8'}>Login</MenuButton>
           <MenuButton color='inherit'>Logout</MenuButton>
           <MenuButton color='inherit'
-                      customTheme={customTheme}
-                      background={customTheme.palette.primary.dark}>Faq</MenuButton>
+                      theme={theme}
+                      background={theme.palette.primary.dark}>Faq</MenuButton>
           {/*Day & night*/}
           <IconButton sx={{ ml: 1 }} onClick={changeModeHandler} color="inherit">
-            {customTheme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Toolbar>
       </AppBar>

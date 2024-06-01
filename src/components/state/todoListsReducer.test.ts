@@ -47,9 +47,9 @@ test ('reducer todoLists should ADD-TODOLIST', () => {
     // expectation
     expect(state.length).toBe(2);
     expect(newState.length).toBe(3);
-    expect(newState[0].id).toBeDefined();
-    expect(newState[0].title).toBe(todolistTitle);
-    expect(newState[0].filter).toBe('all');
+    expect(newState[2].id).toBeDefined(); // index 2 is used because the new todolist adds to the end of todoLists array
+    expect(newState[2].title).toBe(todolistTitle);
+    expect(newState[2].filter).toBe('all');
 })
 
 
@@ -79,7 +79,7 @@ test ('reducer todoLists should REMOVE-TODOLIST', () => {
 
 
 // ------------------- 'UPDATE-TODOLIST' ------------------- //
-test ('reducer todoLists should UPDATE-TODOLIST', () => {
+test ('reducer todoLists should UPDATE-TODOLIST (change todoLists title)', () => {
     // data
     const todolistID_1 = v1();
     const todolistID_2 = v1();

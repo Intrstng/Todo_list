@@ -4,26 +4,36 @@ import {v1} from 'uuid';
 import {TasksType} from '../../AppWithRedux';
 import {addTaskAC, changeStatusAC, removeTaskAC, tasksReducer, updateTaskAC} from './tasksReducer';
 
-test ('reducer taskList should ADD-TASK', () => {
-    // data
-    const todolistID_1 = v1();
-    const todolistID_2 = v1();
-    const tasksState: TasksType = {
+let todolistID_1: string
+let todolistID_2: string
+let tasksState: TasksType
+let newTitle_1: string
+let newTitle_2: string
+let taskID_1: string
+let taskID_2: string
+
+beforeEach(() => {
+    todolistID_1 = v1();
+    todolistID_2 = v1();
+    newTitle_1 = 'New-task-1';
+    newTitle_2 = 'New-task-2';
+    taskID_1 = '1';
+    taskID_2 = '4';
+    tasksState = {
         [todolistID_1]: [
-            { id: v1(), title: "HTML&CSS", isDone: true },
-            { id: v1(), title: "JS", isDone: true },
-            { id: v1(), title: "ReactJS", isDone: false }
+            { id: '1', title: "HTML&CSS", isDone: true },
+            { id: '2', title: "JS", isDone: true },
+            { id: '3', title: "ReactJS", isDone: false }
         ],
         [todolistID_2]: [
-            { id: v1(), title: "Age", isDone: true },
-            { id: v1(), title: "Weight", isDone: true },
-            { id: v1(), title: "Height", isDone: false }
+            { id: '4', title: "Age", isDone: true },
+            { id: '5', title: "Weight", isDone: true },
+            { id: '6', title: "Height", isDone: false }
         ]
     }
+})
 
-    const newTitle_1 = 'New-task-1';
-    const newTitle_2 = 'New-task-2';
-
+test ('reducer taskList should ADD-TASK', () => {
     // action
     const newState_1 = tasksReducer(tasksState, addTaskAC(todolistID_1, newTitle_1));
     const newState_2 = tasksReducer(tasksState, addTaskAC(todolistID_2, newTitle_2));
@@ -43,24 +53,6 @@ test ('reducer taskList should ADD-TASK', () => {
 
 // ------------------- 'REMOVE-TASK' ------------------- //
 test ('reducer taskList should REMOVE-TASK', () => {
-    // data
-    const todolistID_1 = v1();
-    const todolistID_2 = v1();
-    const tasksState: TasksType = {
-        [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
-        ],
-        [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
-        ]
-    }
-    const taskID_1 = '3';
-    const taskID_2 = '4';
-
     // action
     const newState_1 = tasksReducer(tasksState, removeTaskAC(todolistID_1, taskID_1));
     const newState_2 = tasksReducer(tasksState, removeTaskAC(todolistID_2, taskID_2));
@@ -70,8 +62,8 @@ test ('reducer taskList should REMOVE-TASK', () => {
     expect(tasksState[todolistID_2].length).toBe(3);
     expect(newState_1).toEqual({
         [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true }
+            { id: '2', title: "JS", isDone: true },
+            { id: '3', title: "ReactJS", isDone: false }
         ],
             [todolistID_2]: [
             { id: '4', title: "Age", isDone: true },
@@ -94,23 +86,6 @@ test ('reducer taskList should REMOVE-TASK', () => {
 
 // ------------------- 'CHANGE-STATUS' ------------------- //
 test ('reducer taskList should CHANGE-STATUS', () => {
-    // data
-    const todolistID_1 = v1();
-    const todolistID_2 = v1();
-    const tasksState: TasksType = {
-        [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
-        ],
-        [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
-        ]
-    }
-    const taskID_1 = '1';
-    const taskID_2 = '4';
     // action
     const newState_1 = tasksReducer(tasksState, changeStatusAC(todolistID_1, taskID_1, false));
     const newState_2 = tasksReducer(tasksState, changeStatusAC(todolistID_2, taskID_2, false));
@@ -124,25 +99,6 @@ test ('reducer taskList should CHANGE-STATUS', () => {
 
 // ------------------- 'UPDATE-TASK' ------------------- //
 test ('reducer taskList should UPDATE-TASK', () => {
-    // data
-    const todolistID_1 = v1();
-    const todolistID_2 = v1();
-    const tasksState: TasksType = {
-        [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
-        ],
-        [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
-        ]
-    }
-    const taskID_1 = '1';
-    const taskID_2 = '4';
-    const newTitle_1 = "New-Title-1";
-    const newTitle_2 = "New-Title-2";
     // action
     const newState_1 = tasksReducer(tasksState, updateTaskAC(todolistID_1, taskID_1, newTitle_1));
     const newState_2 = tasksReducer(tasksState, updateTaskAC(todolistID_2, taskID_2, newTitle_2));

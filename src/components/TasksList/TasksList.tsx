@@ -5,22 +5,24 @@ import {useAutoAnimate} from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/tasksReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeFilterAC } from '../state/todoListsReducer';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { AppRootState } from '../state/store';
 // import Checkbox from '@mui/material/Checkbox';
 // import { IconButton } from '@material-ui/core';
 
 type TasksListType = {
     todolistID: string
-    tasks: TaskType[]
+    // tasks: TaskType[]
     filter: FilterValuesType
 }
 
 export const TasksList: FC<TasksListType> = (props) => {
     const dispatch = useDispatch();
     const [listRef] = useAutoAnimate<HTMLUListElement>();
-    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(props.tasks.length);
+    const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[props.todolistID]);
+    const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(tasks.length);
 
     const changeFilter = (todolistID: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistID, value));
@@ -35,10 +37,10 @@ export const TasksList: FC<TasksListType> = (props) => {
 
     const filterTasksForTodoList = () => {
         return props.filter === 'active' ?
-            props.tasks.filter(task => !task.isDone) :
+            tasks.filter(task => !task.isDone) :
                 props.filter === 'completed'
-                                  ? props.tasks.filter(task => task.isDone)
-                                  : props.tasks;
+                                  ? tasks.filter(task => task.isDone)
+                                  : tasks;
     }
 
     const tasksForTodoList: TaskType[] = filterTasksForTodoList();
@@ -109,7 +111,7 @@ export const TasksList: FC<TasksListType> = (props) => {
           {listItems}
           {tasksCounter}
           {
-            props.tasks.length !== 0 &&
+            tasks.length !== 0 &&
             <div className={S.controls}>
                 <Button buttonName={'All'}
                         onClickCallBack={onclickSetAllFilter}

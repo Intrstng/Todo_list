@@ -1,28 +1,28 @@
 import React, {FC, useState} from 'react';
-import {FilterValuesType, TaskType} from '../../AppWithRedux';
+import { FilterValuesType, TasksType, TaskType } from '../../AppWithRedux';
 import {TasksList} from '../TasksList/TasksList';
 import {Button} from '../Button';
 import S from './TodoList.module.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import { addTaskAC } from '../state/tasksReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeTodolistAC, updateTodolistAC } from '../state/todoListsReducer';
 import Paper from '@mui/material/Paper';
+import { AppRootState } from '../state/store';
 // import { IconButton } from '@material-ui/core';
 // import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodolistPropsType = {
     todolistID: string
     title: string
-    tasks: TaskType[]
     filter: FilterValuesType
 }
 
 export const Todolist: FC<TodolistPropsType> = (props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
+    const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[props.todolistID]);
     const dispatch = useDispatch();
-
     const onClickRemoveTodolist = () => {
         dispatch(removeTodolistAC(props.todolistID))
     }
@@ -44,7 +44,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         backgroundColor: 'rgba(240,239,239,0.74)'
     }}>
                          <TasksList todolistID={props.todolistID}
-                                    tasks={props.tasks}
+                                    // tasks={props.tasks}
                                     filter={props.filter}
                          />
                       </Paper>
@@ -88,7 +88,7 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                 <div className={S.counterWrapper}>
                     <span>All tasks:</span>
                     <div className={S.counter}>
-                        <span>{props.tasks.length}</span>
+                        <span>{tasks.length}</span>
                     </div>
                 </div>
             </div>

@@ -37,7 +37,7 @@ export type TasksType = {
 function App() {
     const dispatch = useDispatch();
     const todoLists = useSelector<AppRootState, TodolistType[]>( (state) => state.todolists );
-    const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
+    // const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')
 
     const theme: Theme = createTheme({
@@ -76,7 +76,7 @@ function App() {
                                                     <Paper elevation={3}>
                                                         <Todolist todolistID={tl.id}
                                                                   title={tl.title}
-                                                                  tasks={tasks[tl.id]}
+                                                                  // tasks={tasks[tl.id]}
                                                                   filter={tl.filter}/>
                                                     </Paper>
                                                 </Grid>

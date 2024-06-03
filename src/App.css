@@ -1,15 +1,43 @@
 .App {
-  padding: 30px;
-  display: flex;
 }
 
-.App > div {
-  margin-right: 50px;
+.todoLists {
 }
 
-.todolist {
-  border: 1px solid #000;
-  border-radius: 15px;
-  padding: 15px;
-  background-color: beige;
+.App .inputForm {
+  margin-bottom: 45px;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.App .taskForm {
+  margin-bottom: 15px;
+}
+
+.App .inputForm input {
+  background-color: rgba(255, 255, 255, 0.47);
+  border-radius: 5px;
+}
+
+.App .inputForm input:focus {
+  background-color: unset;
+}
+
+.App .taskForm input {
+  padding-left: 10px;
+  max-width: 140px;
+}
+
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
+
+/*.container {*/
+/*  margin: 0 auto;*/
+/*  width: 80%;*/
+/*}*/
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
 }

@@ -1,18 +1,37 @@
-import React, {FC} from 'react';
+import React, { FC, memo } from 'react';
+import { Button as MuiButton } from '@mui/material';
+//import Button from '@mui/material/Button'; // импорт MUI лучше так делать
 
-type ButtonPropsType = {
-    buttonName: string
-    callBack: () => void
+export type StyleObject = {
+    [key: string]: string | number | undefined;
 }
 
-export const Button: FC<ButtonPropsType> = (props) => {
-    const onClickHandler = () => {
-        props.callBack();
-    }
+type ButtonPropsType = {
+    onClickCallBack: () => void
+    className?: string
+    disabled?: boolean
+    variant?: 'text' | 'contained' | 'outlined'
+    color?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
+    size?: 'small' | 'medium' | 'large'
+    startIcon?: React.ReactNode
+    endIcon?: React.ReactNode
+    style?: React.CSSProperties
+    children: React.ReactNode
+}
 
+export const Button: FC<ButtonPropsType> = memo(({   onClickCallBack,
+                                                variant,
+                                                color,
+                                                children,
+                                                ...rest}) => {
+    const onClickHandler = () => onClickCallBack();
     return (
-        <button onClick={onClickHandler}>
-            {props.buttonName}
-        </button>
+        <MuiButton onClick={onClickHandler}
+                   variant={variant}
+                   color={color || 'primary'}
+                   {...rest}
+        >
+            {children}
+        </MuiButton>
     );
-};
+});

@@ -3,13 +3,13 @@ import { addTodolistAC, removeTodolistAC, todoListsReducer } from './todoListsRe
 import {tasksReducer} from './tasksReducer';
 import { v1 } from 'uuid';
 
-
 let todolistID_1: string
 let todolistID_2: string
 let startTasksState: TasksType
 let startTodoListsState: TodolistType[]
 let newTodoListTitle: string
 
+// We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
   todolistID_1 = v1();
   todolistID_2 = v1();

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, memo, useCallback, useState } from 'react';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -12,20 +12,25 @@ export type AddItemFormPropsType = {
     titleBtn: string
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
+
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
+             className,
+             label,
+             titleBtn
+    }) => {
     const [inputTitle, setInputTitle] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
-    const MAX_INPUT_TITLE_LENGTH = 15;
+    const MAX_INPUT_TITLE_LENGTH = 12;
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH;
-
-            const addTask = () => {
+console.log('AddItemForm')
+            const addTask = useCallback(() => {
                 if (inputTitle.trim() !== '' && !maxTitleLengthError) {
-                    props.addItem(inputTitle.trim());
+                    addItem(inputTitle.trim());
                     setInputTitle('');
                     setError(null);
                 }
-            }
+            }, [addItem, inputTitle, maxTitleLengthError, setInputTitle, setError])
 
             const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
                 setInputTitle(event.currentTarget.value);
@@ -61,11 +66,11 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
                 fontSize: '12px',
             }
   return (
-        <Grid container spacing={1} className={props.className}>
+        <Grid container spacing={1} className={className}>
             <Grid item>
                 <Input value={inputTitle}
                        error={!!error}
-                       label={error ? error : props.label}
+                       label={error ? error : label}
                        onChangeCallback={onChangeInputHandler}
                        onKeyDownCallback={onKeyDownHandler}
                        onBlurCallback={onBlurHandler}
@@ -77,13 +82,12 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
           {/*  <AddBox fontSize={'large'} />*/}
           {/*</IconButton>*/}
             <Grid item>
-                  <Button buttonName={props.titleBtn}
-                          startIcon={<SendIcon />}
+                  <Button startIcon={<SendIcon />}
                           variant={!inputTitle.trim() || maxTitleLengthError ? 'outlined' : 'contained'}
                           onClickCallBack={addTask}
-                          isDisabled={!inputTitle.trim() || maxTitleLengthError}
-                          style={buttonAdditionalStyles}
-                  />
+                          disabled={!inputTitle.trim() || maxTitleLengthError}
+                          style={buttonAdditionalStyles}>{titleBtn}
+                  </Button>
             </Grid>
           {/*<Grid item>*/}
           {/*  {error && <p className={S.errorMessage}*/}
@@ -91,4 +95,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
           {/*</Grid>*/}
         </Grid>
     );
-};
+});

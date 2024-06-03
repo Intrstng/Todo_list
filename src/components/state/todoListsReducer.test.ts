@@ -9,6 +9,7 @@ let todolistTitle: string;
 let newFilter_1: FilterValuesType
 let newFilter_2: FilterValuesType
 
+// We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
     todolistID_1 = v1();
     todolistID_2 = v1();

@@ -1,28 +1,32 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { StyleObject } from '../Button';
 
 export type EditableSpanType = {
   oldTitle: string
   style?: StyleObject
-  callBack: (value: string) => void
+  onBlurCallBack: (value: string) => void
   size?: 'small' | 'medium'
   className?: string
 }
 
-export const EditableSpan: FC<EditableSpanType> = (props) => {
+export const EditableSpan: FC<EditableSpanType> = memo((props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
 
   const activateEdit = () => {
-    if (newTitle) {                  // !!!!!!!!!!!!!!! //
+    if (newTitle) { // !!!!!!!!!!!!!!! //
       setEdit(!edit);
-      props.callBack(newTitle);
+      props.onBlurCallBack(newTitle);
     }
   }
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.currentTarget.value);
+  }
+
+  const spanStyle = {
+    overflow: 'hidden'
   }
 
   return (
@@ -36,11 +40,16 @@ export const EditableSpan: FC<EditableSpanType> = (props) => {
              value={newTitle}
              onChange={onChangeHandler}
              onBlur={activateEdit}
-             placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!!! //
+             placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!//
              size={props.size || 'small'}
              autoFocus
              color={'info'}
            />
-         : <span onDoubleClick={activateEdit}>{props.oldTitle}</span>
+         : <div style={props.style}>
+              <span style={spanStyle}
+                    onDoubleClick={activateEdit}>
+                {props.oldTitle}
+              </span>
+           </div>
   );
-};
+});

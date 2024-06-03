@@ -12,6 +12,7 @@ let newTitle_2: string
 let taskID_1: string
 let taskID_2: string
 
+// We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
     todolistID_1 = v1();
     todolistID_2 = v1();

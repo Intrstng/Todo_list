@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './App.css';
 import { Todolist } from './components/TodoList/Todolist';
 import { AddItemForm } from './components/AddItemForm/AddItemForm';
@@ -35,9 +35,9 @@ export type TasksType = {
 
 
 function App() {
-    const dispatch = useDispatch();
     const todoLists = useSelector<AppRootState, TodolistType[]>( (state) => state.todolists );
     // const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
+    const dispatch = useDispatch();
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')
 
     const theme: Theme = createTheme({
@@ -53,9 +53,13 @@ function App() {
         setCustomThemeMode(customThemeMode === 'light' ? 'dark' : 'light');
     }
 
-    function addTodolist(newTitle: string) {
+    const addTodolist = useCallback((newTitle: string) => {
+        // // For useReducer():
+        // const action = removeTodolistAC(id); // !!!!!!!!!!!
+        // dispatchTodolists(action); // we cannot use dispatchTodolists(removeTodolistAC(id)) here
+        // dispatchTasks(action); // we cannot use dispatchTodolists((removeTodolistAC(id)) here
         dispatch(addTodolistAC(newTitle));  // !!!!!!! один dispatch и action
-    }
+    }, [dispatch]) // we can remove dispatch from deps
 
     return (
       <ThemeProvider theme={theme}>

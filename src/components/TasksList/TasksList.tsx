@@ -35,7 +35,7 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
                 filter === 'completed'
                                   ? tasks.filter(task => task.isDone)
                                   : tasks;
-    }, [filter])
+    }, [filter, tasks])
 
     const tasksForTodoList: TaskType[] = filterTasksForTodoList();
 

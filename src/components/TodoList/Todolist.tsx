@@ -23,7 +23,7 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
     const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[props.todolistID]);
     const dispatch = useDispatch();
-console.log("Todolist called")
+
     const onClickRemoveTodolist = useCallback(() => {
         dispatch(removeTodolistAC(props.todolistID))
     }, [dispatch, props.todolistID])

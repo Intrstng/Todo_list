@@ -26,7 +26,6 @@ export const Task: FC<Task> = memo(({ todolistId,
 }) => {
 
   const dispatch = useDispatch();
-console.log('task')
   const onclickRemoveTask = (taskId: string) => dispatch(removeTaskAC(todolistId, taskId))
 
   const finalTaskItemClassList = `${S.taskItem} ${isDone ? S.isDone : ''}`;

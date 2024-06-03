@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../Button';
 import { FilterValuesType, TaskType } from '../../AppWithRedux';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -21,7 +21,6 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>();
     const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[todolistID]);
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(tasks.length);
-    console.log('tasklist')
     const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistID, value));
     }, [dispatch])
@@ -29,15 +28,15 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
     const onclickSetActiveFilter = useCallback(() => changeFilter(todolistID, 'active'), [changeFilter, todolistID]);
     const onclickSetCompletedFilter = useCallback(() => changeFilter(todolistID, 'completed'), [changeFilter, todolistID]);
 
-    const filterTasksForTodoList = useCallback(() => {
-        return filter === 'active' ?
-            tasks.filter(task => !task.isDone) :
-                filter === 'completed'
-                                  ? tasks.filter(task => task.isDone)
-                                  : tasks;
-    }, [filter, tasks])
 
-    const tasksForTodoList: TaskType[] = filterTasksForTodoList();
+    let tasksForTodoList: TaskType[] = tasks;
+    tasksForTodoList = useMemo(() => {
+            return filter === 'active' ?
+                tasksForTodoList.filter(task => !task.isDone) :
+                    filter === 'completed'
+                                      ? tasksForTodoList.filter(task => task.isDone)
+                                      : tasksForTodoList;
+    }, [filter, tasksForTodoList])
 
     useEffect(() => {
         setCurrentTasksQuantity(tasksForTodoList);

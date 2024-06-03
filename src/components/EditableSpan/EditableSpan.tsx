@@ -13,7 +13,6 @@ export type EditableSpanType = {
 export const EditableSpan: FC<EditableSpanType> = memo((props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
-
   const activateEdit = () => {
     if (newTitle) { // !!!!!!!!!!!!!!! //
       setEdit(!edit);

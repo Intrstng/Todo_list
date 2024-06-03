@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, KeyboardEvent, memo, useCallback, useMemo, useState } from 'react';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -23,7 +23,6 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
     const MAX_INPUT_TITLE_LENGTH = 12;
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH;
-console.log('AddItemForm')
             const addTask = useCallback(() => {
                 if (inputTitle.trim() !== '' && !maxTitleLengthError) {
                     addItem(inputTitle.trim());
@@ -58,13 +57,13 @@ console.log('AddItemForm')
 
             // const inputFullClassName = `${S.inputField} ${error ? S.error : ''}`;
 
-            const buttonAdditionalStyles = {
+            const buttonAdditionalStyles = useMemo(() => ({
                 maxWidth: '150px',
                 maxHeight: '40px',
                 minWidth: '100px',
                 minHeight: '40px',
                 fontSize: '12px',
-            }
+            }), []);
   return (
         <Grid container spacing={1} className={className}>
             <Grid item>

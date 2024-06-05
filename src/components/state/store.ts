@@ -1,17 +1,26 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers, createStore, compose} from 'redux';
 import { todoListsReducer, tasksReducer } from './reducers';
+
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
 
 const rootReducer = combineReducers({
     todolists: todoListsReducer,
     tasks: tasksReducer
 });
 
-export type AppRootState = ReturnType<typeof rootReducer>
-
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // createStore deprecated change to -> configureStore
 // import { legacy_createStore as createStore } from 'redux';
-export const store = createStore(rootReducer);
 
+export const store = createStore(rootReducer, undefined, composeEnhancers());
+// Or use:
+// export const store = createStore(rootReducer, composeEnhancers());
+
+export type AppRootState = ReturnType<typeof rootReducer>
 
 
 

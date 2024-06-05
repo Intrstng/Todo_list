@@ -3,14 +3,15 @@ import './App.css';
 import { Todolist } from './components/TodoList/Todolist';
 import { AddItemForm } from './components/AddItemForm/AddItemForm';
 import { Grid } from '@mui/material';
-import { addTodolistAC } from './components/state/todoListsReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './components/state/store';
 import ButtonAppBar from './components/ButtonAppBar/ButtonAppBar';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
-import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { todoListsSelector } from './components/state/selectors';
+import { addTodolistAC } from './components/state/reducers';
 
 
 type CustomThemeMode = 'dark' | 'light'
@@ -34,12 +35,11 @@ export type TasksType = {
 }
 
 
-function App() {
-    const todoLists = useSelector<AppRootState, TodolistType[]>( (state) => state.todolists );
+const App = () => {
+    const todoLists = useSelector<AppRootState, TodolistType[]>(todoListsSelector);
     // const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
     const dispatch = useDispatch();
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')
-
     const theme: Theme = createTheme({
         palette: {
             mode: customThemeMode === 'light' ? 'light' : 'dark',

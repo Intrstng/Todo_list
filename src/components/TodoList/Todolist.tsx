@@ -5,11 +5,11 @@ import { Button } from '../Button';
 import S from './TodoList.module.css';
 import { AddItemForm } from '../AddItemForm/AddItemForm';
 import { EditableSpan } from '../EditableSpan/EditableSpan';
-import { addTaskAC } from '../state/tasksReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeTodolistAC, updateTodolistAC } from '../state/todoListsReducer';
 import Paper from '@mui/material/Paper';
 import { AppRootState } from '../state/store';
+import { addTaskAC, removeTodolistAC, updateTodolistAC } from '../state/reducers';
+import { tasksSelector } from '../state/selectors';
 // import { IconButton } from '@material-ui/core';
 // import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -22,6 +22,7 @@ type TodolistPropsType = {
 export const Todolist: FC<TodolistPropsType> = memo((props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
     const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[props.todolistID]);
+    // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, props.todolistID)); // see tasksSelector.ts
     const dispatch = useDispatch();
 
     const onClickRemoveTodolist = useCallback(() => {

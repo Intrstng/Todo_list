@@ -1,8 +1,6 @@
-
-// ------------------- 'ADD-TASK' ------------------- //
 import {v1} from 'uuid';
-import {TasksType} from '../../AppWithRedux';
-import {addTaskAC, changeStatusAC, removeTaskAC, tasksReducer, updateTaskAC} from './tasksReducer';
+import {TasksType} from '../../../AppWithRedux';
+import { addTaskAC, changeStatusAC, removeTaskAC, updateTaskAC,  tasksReducer } from '../reducers';
 
 let todolistID_1: string
 let todolistID_2: string
@@ -34,6 +32,8 @@ beforeEach(() => {
     }
 })
 
+// ------------------- 'ADD-TASK' ------------------- //
+
 test ('reducer taskList should ADD-TASK', () => {
     // action
     const newState_1 = tasksReducer(tasksState, addTaskAC(todolistID_1, newTitle_1));
@@ -53,6 +53,7 @@ test ('reducer taskList should ADD-TASK', () => {
 })
 
 // ------------------- 'REMOVE-TASK' ------------------- //
+
 test ('reducer taskList should REMOVE-TASK', () => {
     // action
     const newState_1 = tasksReducer(tasksState, removeTaskAC(todolistID_1, taskID_1));
@@ -86,6 +87,7 @@ test ('reducer taskList should REMOVE-TASK', () => {
 })
 
 // ------------------- 'CHANGE-STATUS' ------------------- //
+
 test ('reducer taskList should CHANGE-STATUS', () => {
     // action
     const newState_1 = tasksReducer(tasksState, changeStatusAC(todolistID_1, taskID_1, false));
@@ -99,6 +101,7 @@ test ('reducer taskList should CHANGE-STATUS', () => {
 })
 
 // ------------------- 'UPDATE-TASK' ------------------- //
+
 test ('reducer taskList should UPDATE-TASK', () => {
     // action
     const newState_1 = tasksReducer(tasksState, updateTaskAC(todolistID_1, taskID_1, newTitle_1));

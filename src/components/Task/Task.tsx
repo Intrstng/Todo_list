@@ -4,7 +4,7 @@ import { Button } from '../Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList/TasksList.module.css';
 import { useDispatch } from 'react-redux';
-import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/tasksReducer';
+import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/reducers';
 
 type Task = {
   todolistId: string

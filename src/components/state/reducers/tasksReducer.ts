@@ -1,6 +1,6 @@
-import {TasksType, TaskType} from '../../AppWithRedux';
+import {TasksType, TaskType} from '../../../AppWithRedux';
 import {v1} from 'uuid';
-import {todolistID_1, todolistID_2, AddTodolistAC, RemoveTodolistAC} from './todoListsReducer';
+import {todolistID_1, todolistID_2, AddTodolistAC, RemoveTodolistAC} from '../reducers';
 
 
 const tasksInit: TasksType = {

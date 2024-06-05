@@ -4,7 +4,7 @@ import { FilterValuesType, TaskType } from '../../AppWithRedux';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFilterAC } from '../state/todoListsReducer';
+import { changeFilterAC } from '../state/reducers';
 import { AppRootState } from '../state/store';
 import { Task } from '../Task/Task';
 // import Checkbox from '@mui/material/Checkbox';
@@ -31,11 +31,11 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
 
     let tasksForTodoList: TaskType[] = tasks;
     tasksForTodoList = useMemo(() => {
-            return filter === 'active' ?
-                tasksForTodoList.filter(task => !task.isDone) :
-                    filter === 'completed'
-                                      ? tasksForTodoList.filter(task => task.isDone)
-                                      : tasksForTodoList;
+        return filter === 'active' ?
+            tasksForTodoList.filter(task => !task.isDone) :
+                filter === 'completed'
+                                  ? tasksForTodoList.filter(task => task.isDone)
+                                  : tasksForTodoList;
     }, [filter, tasksForTodoList])
 
     useEffect(() => {

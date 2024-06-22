@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { FilterValuesType, TaskType } from '../../AppWithRedux';
 import { TasksList } from '../TasksList/TasksList';
 import { Button } from '../Button';
 import S from './TodoList.module.css';
@@ -8,8 +7,9 @@ import { EditableSpan } from '../EditableSpan/EditableSpan';
 import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
 import { AppRootState } from '../state/store';
-import { addTaskAC, removeTodolistAC, updateTodolistAC } from '../state/reducers';
+import { addTaskAC, FilterValuesType, removeTodolistAC, updateTodolistAC } from '../state/reducers';
 import { tasksSelector } from '../state/selectors';
+import { TaskType } from '../../api/task-api';
 // import { IconButton } from '@material-ui/core';
 // import DeleteIcon from '@mui/icons-material/Delete';
 

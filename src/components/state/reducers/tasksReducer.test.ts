@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
-import {TasksType} from '../../../AppWithRedux';
-import { addTaskAC, changeStatusAC, removeTaskAC, updateTaskAC,  tasksReducer } from '../reducers';
+import { addTaskAC, changeStatusAC, removeTaskAC, updateTaskAC,  tasksReducer, TasksType } from '../reducers';
+import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
 
 let todolistID_1: string
 let todolistID_2: string
@@ -9,6 +9,7 @@ let newTitle_1: string
 let newTitle_2: string
 let taskID_1: string
 let taskID_2: string
+let date: Date
 
 // We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
@@ -18,16 +19,18 @@ beforeEach(() => {
     newTitle_2 = 'New-task-2';
     taskID_1 = '1';
     taskID_2 = '4';
+    date: new Date();
+
     tasksState = {
         [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
+            { id: '1', title: "HTML&CSS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+            { id: '2', title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+            { id: '3', title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
         ],
         [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
+            { id: '4', title: "Age", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
+            { id: '5', title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
+            { id: '6', title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
         ]
     }
 })
@@ -48,8 +51,8 @@ test ('reducer taskList should ADD-TASK', () => {
     expect(newState_2[todolistID_2][0].id).toBeDefined();
     expect(newState_1[todolistID_1][0].title).toBe(newTitle_1);
     expect(newState_2[todolistID_2][0].title).toBe(newTitle_2);
-    expect(newState_1[todolistID_1][0].isDone).toBe(false);
-    expect(newState_2[todolistID_2][0].isDone).toBe(false);
+    expect(newState_1[todolistID_1][0].status).toBe(TaskStatuses.New);
+    expect(newState_2[todolistID_2][0].status).toBe(TaskStatuses.New);
 })
 
 // ------------------- 'REMOVE-TASK' ------------------- //
@@ -64,24 +67,24 @@ test ('reducer taskList should REMOVE-TASK', () => {
     expect(tasksState[todolistID_2].length).toBe(3);
     expect(newState_1).toEqual({
         [todolistID_1]: [
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
+            { id: '2', title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+            { id: '3', title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
         ],
             [todolistID_2]: [
-            { id: '4', title: "Age", isDone: true },
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
+                { id: '4', title: "Age", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
+                { id: '5', title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
+                { id: '6', title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
         ]
     })
     expect(newState_2).toEqual({
         [todolistID_1]: [
-            { id: '1', title: "HTML&CSS", isDone: true },
-            { id: '2', title: "JS", isDone: true },
-            { id: '3', title: "ReactJS", isDone: false }
+            { id: '1', title: "HTML&CSS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+            { id: '2', title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+            { id: '3', title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
         ],
         [todolistID_2]: [
-            { id: '5', title: "Weight", isDone: true },
-            { id: '6', title: "Height", isDone: false }
+            { id: '5', title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
+            { id: '6', title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
         ]
     })
 })
@@ -90,14 +93,14 @@ test ('reducer taskList should REMOVE-TASK', () => {
 
 test ('reducer taskList should CHANGE-STATUS', () => {
     // action
-    const newState_1 = tasksReducer(tasksState, changeStatusAC(todolistID_1, taskID_1, false));
-    const newState_2 = tasksReducer(tasksState, changeStatusAC(todolistID_2, taskID_2, false));
+    const newState_1 = tasksReducer(tasksState, changeStatusAC(todolistID_1, taskID_1, TaskStatuses.Completed));
+    const newState_2 = tasksReducer(tasksState, changeStatusAC(todolistID_2, taskID_2, TaskStatuses.New));
 
     // expectation
-    expect(tasksState[todolistID_1].find(t => t.id === taskID_1)?.isDone).toBe(true);
-    expect(newState_1[todolistID_1].find(t => t.id === taskID_1)?.isDone).toBe(false);
-    expect(tasksState[todolistID_2].find(t => t.id === taskID_2)?.isDone).toBe(true);
-    expect(newState_2[todolistID_2].find(t => t.id === taskID_2)?.isDone).toBe(false);
+    expect(tasksState[todolistID_1].find(t => t.id === taskID_1)?.status).toBe(TaskStatuses.New);
+    expect(newState_1[todolistID_1].find(t => t.id === taskID_1)?.status).toBe(TaskStatuses.Completed);
+    expect(tasksState[todolistID_2].find(t => t.id === taskID_2)?.status).toBe(TaskStatuses.Completed);
+    expect(newState_2[todolistID_2].find(t => t.id === taskID_2)?.status).toBe(TaskStatuses.New);
 })
 
 // ------------------- 'UPDATE-TASK' ------------------- //

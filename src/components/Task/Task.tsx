@@ -5,12 +5,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList/TasksList.module.css';
 import { useDispatch } from 'react-redux';
 import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/reducers';
+import { TaskStatuses } from '../../api/task-api';
 
 type Task = {
   todolistId: string
   taskId: string
   title: string
-  isDone: boolean
+  status: TaskStatuses
   // onclickRemoveTask: (taskId: string) => void
   // updateTaskHandler: (taskId: string, value: string) => void
   // onChangeStatus: (taskId: string, checked: boolean) => void
@@ -20,7 +21,7 @@ type Task = {
 export const Task: FC<Task> = memo(({ todolistId,
                                  taskId,
                                  title,
-                                 isDone,
+                                 status,
                                  // updateTaskHandler,
                                  // onChangeStatus,
 }) => {
@@ -28,7 +29,7 @@ export const Task: FC<Task> = memo(({ todolistId,
   const dispatch = useDispatch();
   const onclickRemoveTask = (taskId: string) => dispatch(removeTaskAC(todolistId, taskId))
 
-  const finalTaskItemClassList = `${S.taskItem} ${isDone ? S.isDone : ''}`;
+  const finalTaskItemClassList = `${S.taskItem} ${status === TaskStatuses.Completed ? S.completed : ''}`;
 
   const onBlurHandler = useCallback((value: string) => {
     // updateTaskHandler(taskId, value);
@@ -37,7 +38,9 @@ export const Task: FC<Task> = memo(({ todolistId,
 
   const onChangeInputStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     // onChangeStatus(taskId, e.currentTarget.checked)
-    dispatch(changeStatusAC(todolistId, taskId, e.currentTarget.checked));
+    const newStatusValueFlag = e.currentTarget.checked;
+    const statusValue = newStatusValueFlag ? TaskStatuses.Completed : TaskStatuses.New;
+    dispatch(changeStatusAC(todolistId, taskId, statusValue));
   }
   const onclickBtnRemoveTaskHandler = () => {
     onclickRemoveTask(taskId)
@@ -65,7 +68,7 @@ export const Task: FC<Task> = memo(({ todolistId,
     <li className={finalTaskItemClassList}>
       <input id={taskId}
              type={'checkbox'}
-             checked={isDone}
+             checked={!!status}
              onChange={onChangeInputStatusHandler}/>
 
       <label htmlFor={taskId}>
@@ -75,9 +78,9 @@ export const Task: FC<Task> = memo(({ todolistId,
         />
       </label>
 
-      <Button variant={isDone ? 'contained' : 'outlined'}
+      <Button variant={status === TaskStatuses.Completed ? 'contained' : 'outlined'}
               color={'error'}
-              disabled={!isDone}
+              disabled={!status}
               endIcon={<DeleteIcon/>}
               style={deleteTaskBtnStyle}
               onClickCallBack={onclickBtnRemoveTaskHandler}>Delete

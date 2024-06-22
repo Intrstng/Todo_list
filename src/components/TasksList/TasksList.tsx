@@ -1,22 +1,22 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../Button';
-import { FilterValuesType, TaskType } from '../../AppWithRedux';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFilterAC } from '../state/reducers';
+import { changeFilterAC, FilterValuesType } from '../state/reducers';
 import { AppRootState } from '../state/store';
 import { Task } from '../Task/Task';
+import { TaskStatuses, TaskType } from '../../api/task-api';
 // import Checkbox from '@mui/material/Checkbox';
 // import { IconButton } from '@material-ui/core';
 
-type TasksListType = {
+type TasksListPropsType = {
     todolistID: string
     // tasks: TaskType[]
     filter: FilterValuesType
 }
 
-export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
+export const TasksList: FC<TasksListPropsType> = memo(({todolistID, filter}) => {
     const dispatch = useDispatch();
     const [listRef] = useAutoAnimate<HTMLUListElement>();
     const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[todolistID]);
@@ -32,9 +32,9 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
     let tasksForTodoList: TaskType[] = tasks;
     tasksForTodoList = useMemo(() => {
         return filter === 'active' ?
-            tasksForTodoList.filter(task => !task.isDone) :
+            tasksForTodoList.filter(task => task.status === TaskStatuses.New) :
                 filter === 'completed'
-                                  ? tasksForTodoList.filter(task => task.isDone)
+                                  ? tasksForTodoList.filter(task => task.status === TaskStatuses.Completed)
                                   : tasksForTodoList;
     }, [filter, tasksForTodoList])
 
@@ -99,7 +99,7 @@ export const TasksList: FC<TasksListType> = memo(({todolistID, filter}) => {
                                                     todolistId={todolistID}
                                                     taskId={task.id}
                                                     title={task.title}
-                                                    isDone={task.isDone}
+                                                    status={task.status}
                                                     // onclickRemoveTask={onclickRemoveTask}
                                                     // updateTaskHandler={updateTaskHandler}
                                                     // onChangeStatus={onChangeStatusHandler}

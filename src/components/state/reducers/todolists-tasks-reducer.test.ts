@@ -1,11 +1,11 @@
-import {TasksType, TodolistType} from '../../../AppWithRedux';
-import { tasksReducer, addTodolistAC, removeTodolistAC, todoListsReducer } from '../reducers';
+import { tasksReducer, addTodolistAC, removeTodolistAC, todoListsReducer, TasksType, TodolistDomainType } from '../reducers';
 import { v1 } from 'uuid';
+import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
 
 let todolistID_1: string
 let todolistID_2: string
 let startTasksState: TasksType
-let startTodoListsState: TodolistType[]
+let startTodoListsState: TodolistDomainType[]
 let newTodoListTitle: string
 
 // We can use tests without beforeEach() because we work with PURE functions
@@ -14,19 +14,19 @@ beforeEach(() => {
   todolistID_2 = v1();
   startTasksState = {
     [todolistID_1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "ReactJS", isDone: false }
+        { id: v1(), title: "HTML&CSS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()},
+        { id: v1(), title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()},
+        { id: v1(), title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()}
     ],
     [todolistID_2]: [
-      { id: v1(), title: "Age", isDone: true },
-      { id: v1(), title: "Weight", isDone: true },
-      { id: v1(), title: "Height", isDone: false }
+        { id: v1(), title: "Age", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()},
+        { id: v1(), title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()},
+        { id: v1(), title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()}
     ]
   };
   startTodoListsState = [
-    {id: todolistID_1, title: 'What to do', filter: 'all'},
-    {id: todolistID_2, title: 'What to ask', filter: 'all'}
+      {id: todolistID_1, title: 'Main tasks', filter: 'all', addedDate: new Date(), order: 0},
+      {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', addedDate: new Date(), order: 0}
   ];
   newTodoListTitle = 'New TODO`s title'
 })

@@ -11,32 +11,13 @@ import Paper from '@mui/material/Paper';
 import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { todoListsSelector } from './components/state/selectors';
-import { addTodolistAC } from './components/state/reducers';
+import { addTodolistAC, TodolistDomainType } from './components/state/reducers';
 
 
 type CustomThemeMode = 'dark' | 'light'
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-
-export type TasksType = {
-    [key: string]: TaskType[]
-}
-
-
 const App = () => {
-    const todoLists = useSelector<AppRootState, TodolistType[]>(todoListsSelector);
+    const todoLists = useSelector<AppRootState, TodolistDomainType[]>(todoListsSelector);
     // const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
     const dispatch = useDispatch();
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')

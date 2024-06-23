@@ -1,24 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { TasksList } from '../TasksList/TasksList';
-import { Button } from '../Button';
+import { TasksList } from './TasksList/TasksList';
+import { Button } from '../../../components/Button';
 import S from './TodoList.module.css';
-import { AddItemForm } from '../AddItemForm/AddItemForm';
-import { EditableSpan } from '../EditableSpan/EditableSpan';
+import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
+import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
 import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
-import { AppRootState, AppThunkDispatch } from '../state/store';
-import {
-    addTaskAC, addTaskTC, changeTodoListTitleTC,
-    fetchTasksTC,
-    fetchTodoListsTC,
-    FilterValuesType,
-    removeTodolistAC, removeTodoListTC,
-    updateTodolistAC
-} from '../state/reducers';
-import { tasksSelector } from '../state/selectors';
-import { TaskType } from '../../api/task-api';
-// import { IconButton } from '@material-ui/core';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import { AppRootState, AppThunkDispatch } from '../../../app/store';
+import { addTaskTC, changeTodoListTitleTC, fetchTasksTC, FilterValuesType, removeTodoListTC } from '../reducers';
+import { TaskType } from '../../../api/task-api';
 
 type TodolistPropsType = {
     todolistID: string
@@ -39,7 +29,6 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
     // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, props.todolistID)); // see tasksSelector.ts
 
     const onClickRemoveTodolist = useCallback(() => {
-        // dispatch(removeTodolistAC(props.todolistID))
         dispatch(removeTodoListTC(props.todolistID))
     }, [dispatch, props.todolistID])
 
@@ -52,13 +41,11 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
     }, [setTaskListCollapsed])
 
     const addTask = useCallback((title: string) => {
-        // dispatch(addTaskAC(props.todolistID, title));
         dispatch(addTaskTC(props.todolistID, title))
         unCollapseTasksList();
     }, [dispatch, unCollapseTasksList, props.todolistID])
 
     const updateTodolistHandler = useCallback((newTitle: string) => {
-        // dispatch(updateTodolistAC(props.todolistID, newTitle));
         dispatch(changeTodoListTitleTC(props.todolistID, newTitle));
     }, [dispatch, props.todolistID])
 
@@ -66,7 +53,6 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
         backgroundColor: 'rgba(240,239,239,0.74)'
     }}>
                          <TasksList todolistID={props.todolistID}
-                                    // tasks={props.tasks}
                                     filter={props.filter}
                          />
                       </Paper>

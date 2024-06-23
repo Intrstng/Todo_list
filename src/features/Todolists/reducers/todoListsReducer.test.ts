@@ -5,7 +5,7 @@ import {
     removeTodolistAC, setTodoListsAC, TodolistDomainType,
     todoListsReducer,
     updateTodolistAC
-} from '../reducers';
+} from './index';
 import {v1} from 'uuid';
 
 
@@ -46,6 +46,7 @@ test ('reducer todoLists should CHANGE FILTER', () => {
 
 
 // ------------------- 'ADD-TODOLIST' ------------------- //
+
 test ('reducer todoLists should ADD-TODOLIST', () => {
     // action
     const newTodoList = {
@@ -67,6 +68,7 @@ test ('reducer todoLists should ADD-TODOLIST', () => {
 
 
 // ------------------- 'REMOVE-TODOLIST' ------------------- //
+
 test ('reducer todoLists should REMOVE-TODOLIST', () => {
     // action
     const newState_1 = todoListsReducer(state, removeTodolistAC(todolistID_1));
@@ -83,6 +85,7 @@ test ('reducer todoLists should REMOVE-TODOLIST', () => {
 
 
 // ------------------- 'UPDATE-TODOLIST' ------------------- //
+
 test ('reducer todoLists should UPDATE-TODOLIST (change todoLists title)', () => {
     // action
     const newState_1 = todoListsReducer(state, updateTodolistAC(todolistID_1, todolistTitle));
@@ -97,6 +100,7 @@ test ('reducer todoLists should UPDATE-TODOLIST (change todoLists title)', () =>
 })
 
 // ------------------- 'SET-TODOLISTS' ------------------- //
+
 test ('reducer todoLists should SET-TODOLISTS to the state (action creator for REST API request)', () => {
     // action
     const newState = todoListsReducer([], setTodoListsAC(state));

@@ -1,5 +1,5 @@
 import { combineReducers, createStore, compose, applyMiddleware, AnyAction } from 'redux';
-import { todoListsReducer, tasksReducer } from './reducers';
+import { todoListsReducer, tasksReducer } from '../features/Todolists/reducers';
 import { thunk } from 'redux-thunk';
 import  {ThunkDispatch} from 'redux-thunk'
 import { useDispatch } from 'react-redux';
@@ -34,7 +34,5 @@ Object.defineProperty(window, 'store', {
     value: store,
     writable: true,
 });
-
-
 // // @ts-ignore
 // window.store = store;

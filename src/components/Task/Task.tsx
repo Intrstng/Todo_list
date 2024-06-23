@@ -4,8 +4,12 @@ import { Button } from '../Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList/TasksList.module.css';
 import { useDispatch } from 'react-redux';
-import { changeStatusAC, removeTaskAC, updateTaskAC } from '../state/reducers';
+import {
+  removeTaskTC,
+  updateTaskTC
+} from '../state/reducers';
 import { TaskStatuses } from '../../api/task-api';
+import { AppThunkDispatch } from '../state/store';
 
 type Task = {
   todolistId: string
@@ -26,24 +30,29 @@ export const Task: FC<Task> = memo(({ todolistId,
                                  // onChangeStatus,
 }) => {
 
-  const dispatch = useDispatch();
-  const onclickRemoveTask = (taskId: string) => dispatch(removeTaskAC(todolistId, taskId))
+  const dispatch: AppThunkDispatch = useDispatch();
+  // const onclickRemoveTask = (taskId: string) => dispatch(removeTaskAC(todolistId, taskId))
 
   const finalTaskItemClassList = `${S.taskItem} ${status === TaskStatuses.Completed ? S.completed : ''}`;
 
-  const onBlurHandler = useCallback((value: string) => {
+  const onBlurHandler = useCallback((title: string) => {
     // updateTaskHandler(taskId, value);
-    dispatch(updateTaskAC(todolistId, taskId, value));
+    // dispatch(updateTaskAC(todolistId, taskId, title));
+    // dispatch(changeTaskTitleTC(todolistId, taskId, title));
+    dispatch(updateTaskTC(todolistId, taskId, {title}));
   }, [dispatch, todolistId, taskId])
 
   const onChangeInputStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     // onChangeStatus(taskId, e.currentTarget.checked)
     const newStatusValueFlag = e.currentTarget.checked;
-    const statusValue = newStatusValueFlag ? TaskStatuses.Completed : TaskStatuses.New;
-    dispatch(changeStatusAC(todolistId, taskId, statusValue));
+    const statusValue: TaskStatuses = newStatusValueFlag ? TaskStatuses.Completed : TaskStatuses.New;
+    // dispatch(changeStatusAC(todolistId, taskId, statusValue));
+    // dispatch(changeTaskStatusTC(todolistId, taskId, statusValue));
+    dispatch(updateTaskTC(todolistId, taskId, {status: statusValue}));
   }
   const onclickBtnRemoveTaskHandler = () => {
-    onclickRemoveTask(taskId)
+    // onclickRemoveTask(taskId);
+    dispatch(removeTaskTC(todolistId, taskId))
   }
 
   const inputFieldStyle = useMemo(() => ({

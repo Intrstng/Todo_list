@@ -7,7 +7,7 @@ import {
     TasksType,
     updateTaskAC,
     UpdateTaskDomainModelType
-} from '../reducers';
+} from './index';
 import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
 
 let todolistID_1: string

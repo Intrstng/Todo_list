@@ -1,34 +1,27 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import { Todolist } from './components/TodoList/Todolist';
-import { AddItemForm } from './components/AddItemForm/AddItemForm';
+import { AddItemForm } from '../components/AddItemForm/AddItemForm';
 import { Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootState, AppThunkDispatch } from './components/state/store';
-import ButtonAppBar from './components/ButtonAppBar/ButtonAppBar';
+import { useDispatch } from 'react-redux';
+import { AppThunkDispatch } from './store';
+import ButtonAppBar from '../components/ButtonAppBar/ButtonAppBar';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
 import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { todoListsSelector } from './components/state/selectors';
-import {
-    addTodolistAC, addTodoListTC, fetchTodoListsTC,
-    TodolistDomainType
-} from './components/state/reducers';
+import { addTodoListTC, fetchTodoListsTC } from '../features/Todolists/reducers';
+import { Todolists } from '../features/Todolists/Todolists';
 
 
 type CustomThemeMode = 'dark' | 'light'
 
 const App = () => {
-    const todoLists = useSelector<AppRootState, TodolistDomainType[]>(todoListsSelector);
-    // const tasks = useSelector<AppRootState, TasksType>( (state) => state.tasks);
+    const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light');
     const dispatch: AppThunkDispatch = useDispatch();
+
     useEffect(() => {
         dispatch(fetchTodoListsTC());
     }, [])
 
-
-    const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light')
     const theme: Theme = createTheme({
         palette: {
             mode: customThemeMode === 'light' ? 'light' : 'dark',
@@ -47,9 +40,7 @@ const App = () => {
         // const action = removeTodolistAC(id); // !!!!!!!!!!!
         // dispatchTodolists(action); // we cannot use dispatchTodolists(removeTodolistAC(id)) here
         // dispatchTasks(action); // we cannot use dispatchTodolists((removeTodolistAC(id)) here
-
         //dispatch(addTodolistAC(newTitle));  // !!!!!!! один dispatch и action
-
         dispatch(addTodoListTC(newTitle));
     }, [dispatch]) // we can remove dispatch from deps
 
@@ -64,20 +55,9 @@ const App = () => {
                     <AddItemForm addItem={addTodolist}
                                  className={'inputForm'}
                                  titleBtn={'Add todolist'}
-                                 label={'Create TODO'}/>
-
+                                 label={'Create TODO'} />
                     <Grid container spacing={2}>
-                        {
-                            todoLists.map(tl => <Grid item key={tl.id}>
-                                                    <Paper elevation={3}>
-                                                        <Todolist todolistID={tl.id}
-                                                                  title={tl.title}
-                                                                  // tasks={tasks[tl.id]}
-                                                                  filter={tl.filter}/>
-                                                    </Paper>
-                                                </Grid>
-                            )
-                        }
+                        <Todolists />
                     </Grid>
                 </Container>
         </div>

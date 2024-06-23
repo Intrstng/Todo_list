@@ -6,7 +6,7 @@ import {
     TasksType,
     TodolistDomainType,
     setTodoListsAC
-} from '../reducers';
+} from './index';
 import { v1 } from 'uuid';
 import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
 
@@ -40,6 +40,7 @@ beforeEach(() => {
 })
 
 // ------------------- 'ADD-NEW-TASKS-LIST' ------------------- //
+
 test('reducer taskList should ADD-NEW-TASKS-LIST (new empty array for tasks should be added when new todolist is added)', () => {
     const newTodoList = {
         id: todolistID_1,
@@ -60,6 +61,7 @@ test('reducer taskList should ADD-NEW-TASKS-LIST (new empty array for tasks shou
 
 
 // ------------------- 'DELETE-TASKS-LIST' ------------------- //
+
 test('reducer taskList should DELETE-TASKS-LIST (delete array of tasks with ID of deleted todoList)', () => {
     const action = removeTodolistAC(todolistID_2);
     const endState = tasksReducer(startTasksState, action)
@@ -69,6 +71,7 @@ test('reducer taskList should DELETE-TASKS-LIST (delete array of tasks with ID o
 });
 
 // ---------- 'ADD-TASKS-LIST WHEN TODOLISTS-ADDED' ---------- //
+
 test('reducer taskList should ADD-TASKS-LIST WHEN TODOLISTS-ADDED (when todolists loaded from Rest API)', () => {
     let state = [
         {id: todolistID_1, title: 'Main tasks', filter: 'all', addedDate: new Date(), order: 0},

@@ -18,12 +18,14 @@
     "@types/react-dom": "^18.0.7",
     "@types/react-redux": "^7.1.33",
     "@types/uuid": "^9.0.7",
+    "axios": "^1.7.2",
     "gh-pages": "^6.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
     "typescript": "^4.8.4",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
@@ -34,12 +36,15 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "storybook": "storybook dev -p 9009",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:storybook/recommended"
     ]
   },
   "browserslist": {
@@ -55,6 +60,25 @@
     ]
   },
   "devDependencies": {
-    "@formkit/auto-animate": "^0.8.1"
+    "@chromatic-com/storybook": "1.5.0",
+    "@formkit/auto-animate": "^0.8.1",
+    "@storybook/addon-essentials": "^8.1.10",
+    "@storybook/addon-interactions": "^8.1.10",
+    "@storybook/addon-links": "^8.1.10",
+    "@storybook/addon-onboarding": "^8.1.10",
+    "@storybook/blocks": "^8.1.10",
+    "@storybook/preset-create-react-app": "^8.1.10",
+    "@storybook/react": "^8.1.10",
+    "@storybook/react-webpack5": "^8.1.10",
+    "@storybook/test": "^8.1.10",
+    "eslint-plugin-storybook": "^0.8.0",
+    "prop-types": "15.8.1",
+    "storybook": "^8.1.10",
+    "webpack": "5.92.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   }
 }

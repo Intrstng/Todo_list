@@ -4,7 +4,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFilterAC, FilterValuesType } from '../../reducers';
-import { AppRootState } from '../../../../app/store';
+import { AppRootState, useAppDispatch, useAppSelector } from '../../../../app/store';
 import { Task } from './Task/Task';
 import { TaskStatuses, TaskType } from '../../../../api/task-api';
 
@@ -14,10 +14,11 @@ type TasksListPropsType = {
 }
 
 export const TasksList: FC<TasksListPropsType> = memo(({todolistID, filter}) => {
-    const dispatch = useDispatch();
-    const [listRef] = useAutoAnimate<HTMLUListElement>();
-    const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[todolistID]);
+    const dispatch = useAppDispatch();
+    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[todolistID]);
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(tasks.length);
+    const [listRef] = useAutoAnimate<HTMLUListElement>();
+
     const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistID, value));
     }, [dispatch])

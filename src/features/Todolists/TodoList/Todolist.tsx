@@ -4,9 +4,8 @@ import { Button } from '../../../components/Button';
 import S from './TodoList.module.css';
 import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
-import { useDispatch, useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
-import { AppRootState, AppThunkDispatch } from '../../../app/store';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { addTaskTC, changeTodoListTitleTC, fetchTasksTC, FilterValuesType, removeTodoListTC } from '../reducers';
 import { TaskType } from '../../../api/task-api';
 
@@ -18,15 +17,14 @@ type TodolistPropsType = {
 
 export const Todolist: FC<TodolistPropsType> = memo((props) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
-
-    const dispatch: AppThunkDispatch = useDispatch();
+    const dispatch = useAppDispatch();
+    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[props.todolistID]);
+    // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, props.todolistID)); // see tasksSelector.ts
 
     useEffect(() => {
       dispatch(fetchTasksTC(props.todolistID));
     }, [props.todolistID])
 
-    const tasks = useSelector<AppRootState, TaskType[]>( (state) => state.tasks[props.todolistID]);
-    // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, props.todolistID)); // see tasksSelector.ts
 
     const onClickRemoveTodolist = useCallback(() => {
         dispatch(removeTodoListTC(props.todolistID))

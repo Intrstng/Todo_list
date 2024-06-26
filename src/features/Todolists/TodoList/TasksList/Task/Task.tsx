@@ -3,13 +3,9 @@ import { EditableSpan } from '../../../../../components/EditableSpan/EditableSpa
 import { Button } from '../../../../../components/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList.module.css';
-import { useDispatch } from 'react-redux';
-import {
-  removeTaskTC,
-  updateTaskTC
-} from '../../../reducers';
+import { removeTaskTC, updateTaskTC } from '../../../reducers';
 import { TaskStatuses } from '../../../../../api/task-api';
-import { AppThunkDispatch } from '../../../../../app/store';
+import { useAppDispatch } from '../../../../../app/store';
 
 type Task = {
   todolistId: string
@@ -24,8 +20,7 @@ export const Task: FC<Task> = memo(({ todolistId,
                                  title,
                                  status,
 }) => {
-
-  const dispatch: AppThunkDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const finalTaskItemClassList = `${S.taskItem} ${status === TaskStatuses.Completed ? S.completed : ''}`;
 
   const onBlurHandler = useCallback((title: string) => {

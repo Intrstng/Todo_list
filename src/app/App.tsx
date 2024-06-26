@@ -3,20 +3,20 @@ import './App.css';
 import { AddItemForm } from '../components/AddItemForm/AddItemForm';
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { AppThunkDispatch } from './store';
 import ButtonAppBar from '../components/ButtonAppBar/ButtonAppBar';
 import Container from '@mui/material/Container';
 import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { addTodoListTC, fetchTodoListsTC } from '../features/Todolists/reducers';
 import { Todolists } from '../features/Todolists/Todolists';
+import { AppDispatch } from './store';
 
 
 type CustomThemeMode = 'dark' | 'light'
 
 const App = () => {
     const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light');
-    const dispatch: AppThunkDispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchTodoListsTC());

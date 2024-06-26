@@ -1,6 +1,6 @@
 import { AddTodolistAC, ADD_TODOLIST, RemoveTodolistAC, SetTodoListsAC, REMOVE_TODOLIST, SET_TODOLISTS } from './index';
 import { taskApi, TaskPriorities, TaskStatuses, TaskType, UpdateTaskType } from '../../../api/task-api';
-import { AppRootState, AppThunkDispatch } from '../../../app/store';
+import { AppRootState, AppDispatch, AppThunk } from '../../../app/store';
 
 const ADD_TASK ='ADD-TASK';
 const REMOVE_TASK = 'REMOVE-TASK';
@@ -108,32 +108,32 @@ export const setTasksAC = (todolistID: string, tasks: TaskType[]) => ({
 }) as const
 
 // THUNK CREATORS
-export const fetchTasksTC = (todolistID: string) => (dispatch: AppThunkDispatch) => {
-    taskApi.getAllTasks(todolistID)
-        .then(response => {
-            dispatch(setTasksAC(todolistID, response.data.items));
-        });
+// export const fetchTasksTC = (todolistID: string): AppThunk => (dispatch) => {
+//     taskApi.getAllTasks(todolistID)
+//         .then(response => {
+//             dispatch(setTasksAC(todolistID, response.data.items));
+//         });
+// };
+export const fetchTasksTC = (todolistID: string): AppThunk => async (dispatch) => {
+    const response = await taskApi.getAllTasks(todolistID);
+    dispatch(setTasksAC(todolistID, response.data.items));
 };
 
-export const removeTaskTC = (todolistID: string, taskID: string) => (dispatch: AppThunkDispatch) => {
-    taskApi.deleteTask(todolistID, taskID)
-        .then(response => {
-            dispatch(removeTaskAC(todolistID, taskID));
-        });
+export const removeTaskTC = (todolistID: string, taskID: string): AppThunk => async (dispatch) => {
+    const response = await taskApi.deleteTask(todolistID, taskID);
+    dispatch(removeTaskAC(todolistID, taskID));
 };
 
-export const addTaskTC = (todolistID: string, title: string) => (dispatch: AppThunkDispatch) => {
+export const addTaskTC = (todolistID: string, title: string): AppThunk => async (dispatch) => {
     const newTaskData = {
         title
-    }
-    taskApi.createTask(todolistID, newTaskData)
-        .then(response => {
-           dispatch(addTaskAC(response.data.data.item))
-        });
+    };
+    const response = await taskApi.createTask(todolistID, newTaskData);
+    dispatch(addTaskAC(response.data.data.item));
 };
 
-export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTaskDomainModelType) =>
-    (dispatch: AppThunkDispatch, getState: () => AppRootState) => {
+export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTaskDomainModelType): AppThunk =>
+    async (dispatch, getState: () => AppRootState) => {
         const state = getState();
         const currentTask = state.tasks[todolistID].find(t => t.id === taskID);
         if (!currentTask) {
@@ -147,11 +147,9 @@ export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTa
             startDate: currentTask.startDate,
             deadline: currentTask.deadline,
             ...model,
-        }
-        taskApi.updateTask(todolistID, taskID, newTaskModel)
-            .then(response => {
-                dispatch(updateTaskAC(todolistID, taskID, response.data.data.item))
-            });
+        };
+        const response = await taskApi.updateTask(todolistID, taskID, newTaskModel);
+        dispatch(updateTaskAC(todolistID, taskID, response.data.data.item));
 };
 
 // TYPES
@@ -168,7 +166,7 @@ export type UpdateTaskDomainModelType = {
     deadline?: Date
 }
 
-type TasksReducer = AddTaskAC
+export type TasksReducer = AddTaskAC
     | RemoveTask
     | UpdateTaskAC
     | AddTodolistAC

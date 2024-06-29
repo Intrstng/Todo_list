@@ -9,32 +9,36 @@ import {
 } from './index';
 import { v1 } from 'uuid';
 import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
+import { Status } from '../../../app/reducers/appReducer';
 
 let todolistID_1: string
 let todolistID_2: string
 let startTasksState: TasksType
 let startTodoListsState: TodolistDomainType[]
 let newTodoListTitle: string
+let entityStatus: Status
 
 // We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
   todolistID_1 = v1();
   todolistID_2 = v1();
+  entityStatus = 'idle';
+
   startTasksState = {
     [todolistID_1]: [
-        { id: v1(), title: "HTML&CSS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()},
-        { id: v1(), title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()},
-        { id: v1(), title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date()}
+        { id: v1(), title: "HTML&CSS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date(), entityStatus},
+        { id: v1(), title: "JS", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date(), entityStatus},
+        { id: v1(), title: "ReactJS", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_1, order: 0, addedDate: new Date(), entityStatus}
     ],
     [todolistID_2]: [
-        { id: v1(), title: "Age", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()},
-        { id: v1(), title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()},
-        { id: v1(), title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date()}
+        { id: v1(), title: "Age", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date(), entityStatus},
+        { id: v1(), title: "Weight", status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date(), entityStatus},
+        { id: v1(), title: "Height", status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: new Date(), deadline: new Date(), todoListId: todolistID_2, order: 0, addedDate: new Date(), entityStatus}
     ]
   };
   startTodoListsState = [
-      {id: todolistID_1, title: 'Main tasks', filter: 'all', entityStatus: 'idle', addedDate: new Date(), order: 0},
-      {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', entityStatus: 'idle', addedDate: new Date(), order: 0}
+      {id: todolistID_1, title: 'Main tasks', filter: 'all', entityStatus, addedDate: new Date(), order: 0},
+      {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', entityStatus, addedDate: new Date(), order: 0}
   ];
   newTodoListTitle = 'New TODO`s title'
 })

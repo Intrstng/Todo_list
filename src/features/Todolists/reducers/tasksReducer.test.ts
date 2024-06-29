@@ -8,7 +8,8 @@ import {
     updateTaskAC,
     UpdateTaskDomainModelType
 } from './index';
-import { TaskPriorities, TaskStatuses } from '../../../api/task-api';
+import { TaskDomainType, TaskPriorities, TaskStatuses } from '../../../api/task-api';
+import { Status } from '../../../app/reducers/appReducer';
 
 let todolistID_1: string
 let todolistID_2: string
@@ -18,6 +19,7 @@ let newTitle_2: string
 let taskID_1: string
 let taskID_2: string
 let date: Date
+let entityStatus: Status
 
 // We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
@@ -28,17 +30,18 @@ beforeEach(() => {
     taskID_1 = '1';
     taskID_2 = '4';
     date: new Date();
+    entityStatus = 'idle';
 
     tasksState = {
         [todolistID_1]: [
-            { id: '1', title: 'HTML&CSS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
+            { id: '1', title: 'HTML&CSS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus}
         ],
         [todolistID_2]: [
-            { id: '4', title: 'Age', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
-            { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
-            { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
+            { id: '4', title: 'Age', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus},
+            { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus},
+            { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus}
         ]
     }
 })
@@ -75,24 +78,24 @@ test ('reducer taskList should REMOVE-TASK', () => {
     expect(tasksState[todolistID_2].length).toBe(3);
     expect(newState_1).toEqual({
         [todolistID_1]: [
-            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
+            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus}
         ],
             [todolistID_2]: [
-                { id: '4', title: 'Age', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
-                { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
-                { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
+                { id: '4', title: 'Age', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus},
+                { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus},
+                { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus}
         ]
     })
     expect(newState_2).toEqual({
         [todolistID_1]: [
-            { id: '1', title: 'HTML&CSS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date}
+            { id: '1', title: 'HTML&CSS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+            { id: '2', title: 'JS', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+            { id: '3', title: 'ReactJS', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus}
         ],
         [todolistID_2]: [
-            { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date},
-            { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date}
+            { id: '5', title: 'Weight', status: TaskStatuses.Completed, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus},
+            { id: '6', title: 'Height', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_2, order: 0, addedDate: date, entityStatus}
         ]
     })
 })
@@ -141,14 +144,14 @@ test ('reducer taskList should UPDATE-TASK title', () => {
 
 test ('reducer taskList should SET-TASKS (FROM REST API)', () => {
     // action
-    const newTasks_1 = [
-        { id: '1', title: 'newTask', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-        { id: '2', title: 'newTask_2', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+    const newTasks_1: TaskDomainType[] = [
+        { id: '1', title: 'newTask', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+        { id: '2', title: 'newTask_2', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
     ];
-    const newTasks_2 = [
-        { id: '1', title: 'newTask', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-        { id: '2', title: 'newTask_2', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
-        { id: '3', title: 'newTask_3', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date},
+    const newTasks_2: TaskDomainType[] = [
+        { id: '1', title: 'newTask', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+        { id: '2', title: 'newTask_2', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
+        { id: '3', title: 'newTask_3', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
     ];
 
     const newState_1 = tasksReducer(tasksState, setTasksAC(todolistID_1, newTasks_1));

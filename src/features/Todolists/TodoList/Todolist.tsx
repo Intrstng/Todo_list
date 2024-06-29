@@ -10,7 +10,6 @@ import {
     addTaskTC,
     changeTodoListTitleTC,
     fetchTasksTC,
-    FilterValuesType,
     removeTodoListTC,
     TodolistDomainType
 } from '../reducers';
@@ -82,8 +81,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist}) => {
                     <EditableSpan oldTitle={todolist.title}
                                   style={inputFieldStyle}
                                   onBlurCallBack={updateTodolistHandler}
-                                  disabled={todolist.entityStatus === 'loading'}
-                    />
+                                  disabled={todolist.entityStatus === 'loading'}/>
                 </h2>
                 <Button variant={'outlined'}
                         color={'error'}
@@ -105,7 +103,8 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist}) => {
             <div className={S.tasksShowToggle}>
                 <Button variant={isTaskListCollapsed ? 'outlined' : 'contained'}
                         color={isTaskListCollapsed ? 'warning' : 'success'}
-                        onClickCallBack={onClickTasksListCollapseToggle}>{toggleShowTasksListBtnName}
+                        onClickCallBack={onClickTasksListCollapseToggle}
+                        disabled={todolist.entityStatus === 'loading'}>{toggleShowTasksListBtnName}
                 </Button>
                 <div className={S.counterWrapper}>
                     <span>All tasks:</span>

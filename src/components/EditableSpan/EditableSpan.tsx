@@ -36,7 +36,7 @@ export const EditableSpan: FC<EditableSpanType> = memo(({ oldTitle,
   }
 
   return (
-    edit ? <TextField
+      !disabled && edit ? <TextField
              id='standard-search'
              type='search'
              variant='standard'

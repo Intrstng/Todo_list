@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeFilterAC, FilterValuesType, TodolistDomainType } from '../../reducers';
 import { AppRootState, useAppDispatch, useAppSelector } from '../../../../app/store';
 import { Task } from './Task/Task';
-import { TaskStatuses, TaskType } from '../../../../api/task-api';
+import { TaskDomainType, TaskStatuses, TaskType } from '../../../../api/task-api';
 
 type TasksListPropsType = {
     todolist: TodolistDomainType
@@ -14,7 +14,7 @@ type TasksListPropsType = {
 
 export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
     const dispatch = useAppDispatch();
-    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[todolist.id]);
+    const tasks = useAppSelector<TaskDomainType[]>( (state) => state.tasks[todolist.id]);
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(tasks.length);
     const [listRef] = useAutoAnimate<HTMLUListElement>();
 
@@ -25,7 +25,7 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
     const onclickSetActiveFilter = useCallback(() => changeFilter(todolist.id, 'active'), [changeFilter, todolist.id]);
     const onclickSetCompletedFilter = useCallback(() => changeFilter(todolist.id, 'completed'), [changeFilter, todolist.id]);
 
-    let tasksForTodoList: TaskType[] = tasks;
+    let tasksForTodoList: TaskDomainType[] = tasks;
     tasksForTodoList = useMemo(() => {
         return todolist.filter === 'active' ?
             tasksForTodoList.filter(task => task.status === TaskStatuses.New) :
@@ -50,10 +50,8 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
                                           tasksForTodoList.map(task => {
                                               return (
                                                         <Task key={task.id}
-                                                            todolist={todolist}
-                                                            taskId={task.id}
-                                                            title={task.title}
-                                                            status={task.status}
+                                                              todolist={todolist}
+                                                              task={task}
                                                         />
                                               )
                                           })
@@ -76,15 +74,21 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
             <div className={S.controls}>
                 <Button onClickCallBack={onclickSetAllFilter}
                         variant={todolist.filter === 'all' ? 'contained' : 'outlined'}
-                        size={'medium'}>All
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >All
                 </Button>
                 <Button onClickCallBack={onclickSetActiveFilter}
                         variant={todolist.filter === 'active' ? 'contained' : 'outlined'}
-                        size={'medium'}>Active
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >Active
                 </Button>
                 <Button onClickCallBack={onclickSetCompletedFilter}
                         variant={todolist.filter === 'completed' ? 'contained' : 'outlined'}
-                        size={'medium'}>Completed
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >Completed
                 </Button>
             </div>
           }

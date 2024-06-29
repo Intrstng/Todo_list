@@ -6,29 +6,33 @@ import { AddItemForm } from '../../../components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../../../components/EditableSpan/EditableSpan';
 import Paper from '@mui/material/Paper';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import { addTaskTC, changeTodoListTitleTC, fetchTasksTC, FilterValuesType, removeTodoListTC } from '../reducers';
+import {
+    addTaskTC,
+    changeTodoListTitleTC,
+    fetchTasksTC,
+    removeTodoListTC,
+    TodolistDomainType
+} from '../reducers';
 import { TaskType } from '../../../api/task-api';
 
 type TodolistPropsType = {
-    todolistID: string
-    title: string
-    filter: FilterValuesType
+    todolist: TodolistDomainType
 }
 
-export const Todolist: FC<TodolistPropsType> = memo((props) => {
+export const Todolist: FC<TodolistPropsType> = memo(({todolist}) => {
     const [isTaskListCollapsed, setTaskListCollapsed] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[props.todolistID]);
-    // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, props.todolistID)); // see tasksSelector.ts
+    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[todolist.id]);
+    // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, todolist.id)); // see tasksSelector.ts
 
     useEffect(() => {
-      dispatch(fetchTasksTC(props.todolistID));
-    }, [props.todolistID])
+      dispatch(fetchTasksTC(todolist.id));
+    }, [todolist.id])
 
 
     const onClickRemoveTodolist = useCallback(() => {
-        dispatch(removeTodoListTC(props.todolistID))
-    }, [dispatch, props.todolistID])
+        dispatch(removeTodoListTC(todolist.id))
+    }, [dispatch, todolist.id])
 
     const onClickTasksListCollapseToggle = useCallback(() => {
         setTaskListCollapsed(!isTaskListCollapsed);
@@ -39,20 +43,17 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
     }, [setTaskListCollapsed])
 
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskTC(props.todolistID, title))
+        dispatch(addTaskTC(todolist.id, title))
         unCollapseTasksList();
-    }, [dispatch, unCollapseTasksList, props.todolistID])
+    }, [dispatch, unCollapseTasksList, todolist.id])
 
     const updateTodolistHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodoListTitleTC(props.todolistID, newTitle));
-    }, [dispatch, props.todolistID])
+        dispatch(changeTodoListTitleTC(todolist.id, newTitle));
+    }, [dispatch, todolist.id])
 
-    const tasksList = <Paper elevation={4} sx={{
-        backgroundColor: 'rgba(240,239,239,0.74)'
-    }}>
-                         <TasksList todolistID={props.todolistID}
-                                    filter={props.filter}
-                         />
+    const tasksList = <Paper elevation={4}
+                             sx={{ backgroundColor: 'rgba(240,239,239,0.74)'}}>
+                         <TasksList todolist={todolist}/>
                       </Paper>
 
     const inputFieldStyle = useMemo(() => ({
@@ -77,12 +78,14 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
         <div className={S.todolist}>
             <div className={S.todolist__titleContent}>
                 <h2 className={S.todolist__title}>
-                    <EditableSpan oldTitle={props.title}
+                    <EditableSpan oldTitle={todolist.title}
                                   style={inputFieldStyle}
-                                  onBlurCallBack={updateTodolistHandler}/>
+                                  onBlurCallBack={updateTodolistHandler}
+                                  disabled={todolist.entityStatus === 'loading'}/>
                 </h2>
                 <Button variant={'outlined'}
                         color={'error'}
+                        disabled={todolist.entityStatus === 'loading'}
                         onClickCallBack={onClickRemoveTodolist}
                         style={buttonAdditionalStyles}>x
                 </Button>
@@ -95,11 +98,13 @@ export const Todolist: FC<TodolistPropsType> = memo((props) => {
                          addItem={addTask}
                          titleBtn={'Add task'}
                          label={'Create task'}
+                         disabled={todolist.entityStatus === 'loading'}
             />
             <div className={S.tasksShowToggle}>
                 <Button variant={isTaskListCollapsed ? 'outlined' : 'contained'}
                         color={isTaskListCollapsed ? 'warning' : 'success'}
-                        onClickCallBack={onClickTasksListCollapseToggle}>{toggleShowTasksListBtnName}
+                        onClickCallBack={onClickTasksListCollapseToggle}
+                        disabled={todolist.entityStatus === 'loading'}>{toggleShowTasksListBtnName}
                 </Button>
                 <div className={S.counterWrapper}>
                     <span>All tasks:</span>

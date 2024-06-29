@@ -3,38 +3,36 @@ import { Button } from '../../../../components/Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import S from './TasksList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFilterAC, FilterValuesType } from '../../reducers';
+import { changeFilterAC, FilterValuesType, TodolistDomainType } from '../../reducers';
 import { AppRootState, useAppDispatch, useAppSelector } from '../../../../app/store';
 import { Task } from './Task/Task';
-import { TaskStatuses, TaskType } from '../../../../api/task-api';
+import { TaskDomainType, TaskStatuses, TaskType } from '../../../../api/task-api';
 
 type TasksListPropsType = {
-    todolistID: string
-    filter: FilterValuesType
+    todolist: TodolistDomainType
 }
 
-export const TasksList: FC<TasksListPropsType> = memo(({todolistID, filter}) => {
+export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
     const dispatch = useAppDispatch();
-    const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[todolistID]);
+    const tasks = useAppSelector<TaskDomainType[]>( (state) => state.tasks[todolist.id]);
     const [currentTasksQuantityToShow, setCurrentTasksQuantityToShow] = useState<number>(tasks.length);
     const [listRef] = useAutoAnimate<HTMLUListElement>();
 
     const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todolistID, value));
     }, [dispatch])
-    const onclickSetAllFilter = useCallback(() => changeFilter(todolistID, 'all'), [changeFilter, todolistID]);
-    const onclickSetActiveFilter = useCallback(() => changeFilter(todolistID, 'active'), [changeFilter, todolistID]);
-    const onclickSetCompletedFilter = useCallback(() => changeFilter(todolistID, 'completed'), [changeFilter, todolistID]);
+    const onclickSetAllFilter = useCallback(() => changeFilter(todolist.id, 'all'), [changeFilter, todolist.id]);
+    const onclickSetActiveFilter = useCallback(() => changeFilter(todolist.id, 'active'), [changeFilter, todolist.id]);
+    const onclickSetCompletedFilter = useCallback(() => changeFilter(todolist.id, 'completed'), [changeFilter, todolist.id]);
 
-
-    let tasksForTodoList: TaskType[] = tasks;
+    let tasksForTodoList: TaskDomainType[] = tasks;
     tasksForTodoList = useMemo(() => {
-        return filter === 'active' ?
+        return todolist.filter === 'active' ?
             tasksForTodoList.filter(task => task.status === TaskStatuses.New) :
-                filter === 'completed'
+                todolist.filter === 'completed'
                                   ? tasksForTodoList.filter(task => task.status === TaskStatuses.Completed)
                                   : tasksForTodoList;
-    }, [filter, tasksForTodoList])
+    }, [todolist.filter, tasksForTodoList])
 
     useEffect(() => {
         setCurrentTasksQuantity(tasksForTodoList);
@@ -52,10 +50,8 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolistID, filter}) => 
                                           tasksForTodoList.map(task => {
                                               return (
                                                         <Task key={task.id}
-                                                            todolistId={todolistID}
-                                                            taskId={task.id}
-                                                            title={task.title}
-                                                            status={task.status}
+                                                              todolist={todolist}
+                                                              task={task}
                                                         />
                                               )
                                           })
@@ -77,16 +73,22 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolistID, filter}) => 
             tasks.length !== 0 &&
             <div className={S.controls}>
                 <Button onClickCallBack={onclickSetAllFilter}
-                        variant={filter === 'all' ? 'contained' : 'outlined'}
-                        size={'medium'}>All
+                        variant={todolist.filter === 'all' ? 'contained' : 'outlined'}
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >All
                 </Button>
                 <Button onClickCallBack={onclickSetActiveFilter}
-                        variant={filter === 'active' ? 'contained' : 'outlined'}
-                        size={'medium'}>Active
+                        variant={todolist.filter === 'active' ? 'contained' : 'outlined'}
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >Active
                 </Button>
                 <Button onClickCallBack={onclickSetCompletedFilter}
-                        variant={filter === 'completed' ? 'contained' : 'outlined'}
-                        size={'medium'}>Completed
+                        variant={todolist.filter === 'completed' ? 'contained' : 'outlined'}
+                        size={'medium'}
+                disabled={todolist.entityStatus === 'loading'}
+                >Completed
                 </Button>
             </div>
           }

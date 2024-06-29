@@ -3,37 +3,32 @@ import { EditableSpan } from '../../../../../components/EditableSpan/EditableSpa
 import { Button } from '../../../../../components/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList.module.css';
-import { removeTaskTC, updateTaskTC } from '../../../reducers';
-import { TaskStatuses } from '../../../../../api/task-api';
-import { useAppDispatch } from '../../../../../app/store';
+import { removeTaskTC, TodolistDomainType, updateTaskTC } from '../../../reducers';
+import { TaskDomainType, TaskStatuses } from '../../../../../api/task-api';
+import { useAppDispatch, useAppSelector } from '../../../../../app/store';
+
 
 type Task = {
-  todolistId: string
-  taskId: string
-  title: string
-  status: TaskStatuses
+  todolist: TodolistDomainType
+  task: TaskDomainType
 }
 
 
-export const Task: FC<Task> = memo(({ todolistId,
-                                 taskId,
-                                 title,
-                                 status,
-}) => {
+export const Task: FC<Task> = memo(({ todolist, task }) => {
   const dispatch = useAppDispatch();
-  const finalTaskItemClassList = `${S.taskItem} ${status === TaskStatuses.Completed ? S.completed : ''}`;
+  const finalTaskItemClassList = `${S.taskItem} ${task.status === TaskStatuses.Completed ? S.completed : ''}`;
 
   const onBlurHandler = useCallback((title: string) => {
-    dispatch(updateTaskTC(todolistId, taskId, {title}));
-  }, [dispatch, todolistId, taskId])
+    dispatch(updateTaskTC(todolist.id, task.id, {title}));
+  }, [dispatch, todolist.id, task.id])
 
   const onChangeInputStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const newStatusValueFlag = e.currentTarget.checked;
     const statusValue: TaskStatuses = newStatusValueFlag ? TaskStatuses.Completed : TaskStatuses.New;
-    dispatch(updateTaskTC(todolistId, taskId, {status: statusValue}));
+    dispatch(updateTaskTC(todolist.id, task.id, {status: statusValue}));
   }
   const onclickBtnRemoveTaskHandler = () => {
-    dispatch(removeTaskTC(todolistId, taskId))
+    dispatch(removeTaskTC(todolist.id, task.id))
   }
 
   const inputFieldStyle = useMemo(() => ({
@@ -53,24 +48,29 @@ export const Task: FC<Task> = memo(({ todolistId,
     minWidth: '94px',
     minHeight: '40px',
   }), []);
+  // Or just `task.entityStatus === 'loading'` (then change in props todolist to todolistID)
+  const isLoading = todolist.entityStatus === 'loading' || task.entityStatus === 'loading';
 
   return (
     <li className={finalTaskItemClassList}>
-      <input id={taskId}
+      <input id={task.id}
              type={'checkbox'}
-             checked={!!status}
-             onChange={onChangeInputStatusHandler}/>
+             checked={!!task.status}
+             onChange={onChangeInputStatusHandler}
+             disabled={isLoading}
+      />
 
-      <label htmlFor={taskId}>
-        <EditableSpan oldTitle={title}
+      <label htmlFor={task.id}>
+        <EditableSpan oldTitle={task.title}
                       onBlurCallBack={onBlurHandler}
                       style={inputFieldStyle}
+                      disabled={isLoading}
         />
       </label>
 
-      <Button variant={status === TaskStatuses.Completed ? 'contained' : 'outlined'}
+      <Button variant={task.status === TaskStatuses.Completed ? 'contained' : 'outlined'}
               color={'error'}
-              disabled={!status}
+              disabled={isLoading || !task.status}
               endIcon={<DeleteIcon/>}
               style={deleteTaskBtnStyle}
               onClickCallBack={onclickBtnRemoveTaskHandler}>Delete

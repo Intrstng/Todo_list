@@ -12,6 +12,7 @@ type InputPropsType = {
   style?: StyleObject
   size?: 'small' | 'medium'
   error: boolean
+  disabled: boolean
 }
 
 export const Input: FC<InputPropsType> = (props) => {
@@ -31,6 +32,7 @@ export const Input: FC<InputPropsType> = (props) => {
       style={props.style}
       size={props.size || 'small'}
       error={props.error}
+      disabled={props.disabled}
     />
   );
 };

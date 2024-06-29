@@ -12,9 +12,7 @@ export const Todolists = memo(() => {
         <>
             { todoLists.map(tl => <Grid item key={tl.id}>
                     <Paper elevation={3}>
-                        <Todolist todolistID={tl.id}
-                                  title={tl.title}
-                                  filter={tl.filter} />
+                        <Todolist todolist={tl}/>
                     </Paper>
                 </Grid>
             ) }

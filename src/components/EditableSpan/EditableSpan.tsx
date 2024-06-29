@@ -8,15 +8,22 @@ export type EditableSpanType = {
   onBlurCallBack: (value: string) => void
   size?: 'small' | 'medium'
   className?: string
+  disabled?: boolean
 }
 
-export const EditableSpan: FC<EditableSpanType> = memo((props) => {
+export const EditableSpan: FC<EditableSpanType> = memo(({ oldTitle,
+                                                                    style,
+                                                                    onBlurCallBack,
+                                                                    size,
+                                                                    className,
+                                                                    disabled = false,
+}) => {
   const [edit, setEdit] = useState<boolean>(false);
-  const [newTitle, setNewTitle] = useState<string>(props.oldTitle);
+  const [newTitle, setNewTitle] = useState<string>(oldTitle);
   const activateEdit = () => {
     if (newTitle) { // !!!!!!!!!!!!!!! //
       setEdit(!edit);
-      props.onBlurCallBack(newTitle);
+      onBlurCallBack(newTitle);
     }
   }
 
@@ -34,20 +41,21 @@ export const EditableSpan: FC<EditableSpanType> = memo((props) => {
              type='search'
              variant='standard'
              error={!newTitle.length}
-             className={props.className}
-             style={props.style}
+             className={className}
+             style={style}
              value={newTitle}
              onChange={onChangeHandler}
              onBlur={activateEdit}
              placeholder={!newTitle ? 'Enter title...' : ''}  // !!!!!!!!!//
-             size={props.size || 'small'}
+             size={size || 'small'}
              autoFocus
              color={'info'}
+             disabled={disabled}
            />
-         : <div style={props.style}>
+         : <div style={style}>
               <span style={spanStyle}
                     onDoubleClick={activateEdit}>
-                {props.oldTitle}
+                {oldTitle}
               </span>
            </div>
   );

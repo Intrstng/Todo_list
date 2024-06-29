@@ -33,8 +33,8 @@ beforeEach(() => {
     ]
   };
   startTodoListsState = [
-      {id: todolistID_1, title: 'Main tasks', filter: 'all', addedDate: new Date(), order: 0},
-      {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', addedDate: new Date(), order: 0}
+      {id: todolistID_1, title: 'Main tasks', filter: 'all', entityStatus: 'idle', addedDate: new Date(), order: 0},
+      {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', entityStatus: 'idle', addedDate: new Date(), order: 0}
   ];
   newTodoListTitle = 'New TODO`s title'
 })

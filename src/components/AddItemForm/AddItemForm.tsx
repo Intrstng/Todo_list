@@ -4,29 +4,37 @@ import { Button } from '../Button';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import SendIcon from '@mui/icons-material/Send';
 import { Grid } from '@material-ui/core';
+import { useAppSelector } from '../../app/store';
+import { statusSelector } from '../../app/selectors/appSelectors';
+import { Status } from '../../app/reducers/appReducer';
 
 export type AddItemFormPropsType = {
     addItem: (value: string) => void
     className?: string
     label?: string
     titleBtn: string
+    disabled?: boolean
 }
 
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
              className,
              label,
-             titleBtn
+             titleBtn,
+             disabled = false
     }) => {
     const [inputTitle, setInputTitle] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
-    const MAX_INPUT_TITLE_LENGTH = 12;
+
+                                                                                                    const appStatus = useAppSelector<Status>(statusSelector);
+
+    const MAX_INPUT_TITLE_LENGTH = 120; // const MAX_INPUT_TITLE_LENGTH = 12
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH;
             const addTask = useCallback(() => {
                 if (inputTitle.trim() !== '' && !maxTitleLengthError) {
                     addItem(inputTitle.trim());
-                    setInputTitle('');
+                                                                                                appStatus !== 'failed' && setInputTitle('');
                     setError(null);
                 }
             }, [addItem, inputTitle, maxTitleLengthError, setInputTitle, setError])
@@ -69,6 +77,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
             <Grid item>
                 <Input value={inputTitle}
                        error={!!error}
+                       disabled={disabled}
                        label={error ? error : label}
                        onChangeCallback={onChangeInputHandler}
                        onKeyDownCallback={onKeyDownHandler}
@@ -84,7 +93,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
                   <Button startIcon={<SendIcon />}
                           variant={!inputTitle.trim() || maxTitleLengthError ? 'outlined' : 'contained'}
                           onClickCallBack={addTask}
-                          disabled={!inputTitle.trim() || maxTitleLengthError}
+                          disabled={disabled || !inputTitle.trim() || maxTitleLengthError}
                           style={buttonAdditionalStyles}>{titleBtn}
                   </Button>
             </Grid>

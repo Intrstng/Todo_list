@@ -1,20 +1,24 @@
 import {
     addTodolistAC,
-    changeFilterAC,
+    changeFilterAC, changeTodoListsEntityStatusAC,
     FilterValuesType,
     removeTodolistAC, setTodoListsAC, TodolistDomainType,
     todoListsReducer,
     updateTodolistAC
 } from './index';
 import {v1} from 'uuid';
+import { Status } from '../../../app/reducers/appReducer';
 
 
 let todolistID_1: string;
 let todolistID_2: string;
 let state: TodolistDomainType[];
 let todolistTitle: string;
+let entityStatus: Status
 let newFilter_1: FilterValuesType
 let newFilter_2: FilterValuesType
+let entityStatus_1: Status
+let entityStatus_2: Status
 
 // We can use tests without beforeEach() because we work with PURE functions
 beforeEach(() => {
@@ -23,9 +27,12 @@ beforeEach(() => {
     todolistTitle = 'New todolist`s name';
     newFilter_1 = 'active';
     newFilter_2 = 'completed';
+    entityStatus = 'idle';
+    entityStatus_1 = 'loading';
+    entityStatus_2 = 'succeeded';
     state = [
-        {id: todolistID_1, title: 'Main tasks', filter: 'all', addedDate: new Date(), order: 0},
-        {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', addedDate: new Date(), order: 0}
+        {id: todolistID_1, title: 'Main tasks', filter: 'all', entityStatus: entityStatus, addedDate: new Date(), order: 0},
+        {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', entityStatus: entityStatus, addedDate: new Date(), order: 0}
     ]
 })
 
@@ -111,4 +118,19 @@ test ('reducer todoLists should SET-TODOLISTS to the state (action creator for R
     expect(newState[0].filter).toBe('all');
     expect(newState[1].filter).toBe('all');
     // expect(newState).toEqual(state);
+})
+
+// ------------------- 'CHANGE-TODOLIST-ENTITY-STATUS' ------------------- //
+
+test ('reducer todoLists should CHANGE-TODOLIST-ENTITY-STATUS', () => {
+    // action
+    const newState_1 = todoListsReducer(state, changeTodoListsEntityStatusAC(todolistID_1, entityStatus_1));
+    const newState_2 = todoListsReducer(state, changeTodoListsEntityStatusAC(todolistID_2, entityStatus_2));
+
+    // expectation
+    expect(state[0].entityStatus).toBe(entityStatus);
+    expect(state[1].entityStatus).toBe(entityStatus);
+
+    expect(newState_1[0].entityStatus).toBe(entityStatus_1);
+    expect(newState_2[1].entityStatus).toBe(entityStatus_2);
 })

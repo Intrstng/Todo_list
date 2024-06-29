@@ -3,19 +3,19 @@ import { EditableSpan } from '../../../../../components/EditableSpan/EditableSpa
 import { Button } from '../../../../../components/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import S from '../TasksList.module.css';
-import { removeTaskTC, updateTaskTC } from '../../../reducers';
+import { removeTaskTC, TodolistDomainType, updateTaskTC } from '../../../reducers';
 import { TaskStatuses } from '../../../../../api/task-api';
 import { useAppDispatch } from '../../../../../app/store';
 
 type Task = {
-  todolistId: string
+  todolist: TodolistDomainType
   taskId: string
   title: string
   status: TaskStatuses
 }
 
 
-export const Task: FC<Task> = memo(({ todolistId,
+export const Task: FC<Task> = memo(({ todolist,
                                  taskId,
                                  title,
                                  status,
@@ -24,16 +24,16 @@ export const Task: FC<Task> = memo(({ todolistId,
   const finalTaskItemClassList = `${S.taskItem} ${status === TaskStatuses.Completed ? S.completed : ''}`;
 
   const onBlurHandler = useCallback((title: string) => {
-    dispatch(updateTaskTC(todolistId, taskId, {title}));
-  }, [dispatch, todolistId, taskId])
+    dispatch(updateTaskTC(todolist.id, taskId, {title}));
+  }, [dispatch, todolist.id, taskId])
 
   const onChangeInputStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const newStatusValueFlag = e.currentTarget.checked;
     const statusValue: TaskStatuses = newStatusValueFlag ? TaskStatuses.Completed : TaskStatuses.New;
-    dispatch(updateTaskTC(todolistId, taskId, {status: statusValue}));
+    dispatch(updateTaskTC(todolist.id, taskId, {status: statusValue}));
   }
   const onclickBtnRemoveTaskHandler = () => {
-    dispatch(removeTaskTC(todolistId, taskId))
+    dispatch(removeTaskTC(todolist.id, taskId))
   }
 
   const inputFieldStyle = useMemo(() => ({
@@ -65,6 +65,7 @@ export const Task: FC<Task> = memo(({ todolistId,
         <EditableSpan oldTitle={title}
                       onBlurCallBack={onBlurHandler}
                       style={inputFieldStyle}
+                      disabled={todolist.entityStatus === 'loading'}
         />
       </label>
 

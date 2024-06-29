@@ -20,7 +20,7 @@ export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarPro
 
   const boxStyles = {
       flexGrow: 1,
-      marginBottom: '40px'
+      // marginBottom: '40px'
   }
 
   const iconStyles = {

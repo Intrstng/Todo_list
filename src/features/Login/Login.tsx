@@ -9,36 +9,20 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik';
 import S from './Login.module.css';
+import { loginTC } from './reducers/loginReducer';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { authIsLoggedInSelector } from './selectors/authSelector';
+import { Navigate } from 'react-router-dom';
 
-// const validate = (values) => {
-//     const errors = {};
-//
-//     if (!values.password) {
-//         errors.password = 'Required';
-//     } else if (values.password.length < 8) {
-//         errors.password = 'Must be 8 characters or more';
-//     }
-//
-//     if (!values.email) {
-//         errors.email = 'Required';
-//     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-//         errors.email = 'Invalid email address';
-//     }
-//
-//     return errors;
-// };
-
-type FormikErrors = {
-    email?: string | null
-    password?: string | null
-}
 
 export const Login = () => {
+    const isLoggedIn = useAppSelector<boolean>(authIsLoggedInSelector);
+    const dispatch = useAppDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
-            rememberMe: false,
+            rememberMe: false
         },
         validate: (values) => {
             const errors: FormikErrors = {};
@@ -55,9 +39,16 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            dispatch(loginTC(values));
+                                                  formik.resetForm(); // в then dispatch( )loadingTC) если success
         },
     });
+
+    if (isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
+    // Добавить эти редиректы нужно непосредственно перед return, то есть после всех хуков, которые используются внутри компонент, иначе будет нарушено правило работы с хуками, говорящее, что нельзя использовать хуки внутри компоненты в условной логике.
+
     return (
         <Grid container justifyContent={'center'}>
             <Grid item justifyContent={'center'}>
@@ -75,19 +66,25 @@ export const Login = () => {
                             <TextField label='Email'
                                        type='email'
                                        margin='normal'
-                                       {...formik.getFieldProps('email')}/>
+                                       {...formik.getFieldProps('email')}
+                                       onBlur={formik.handleBlur}
+                            />
                         {/*    initialValues: {  // the values are taken from here*/}
                         {/*    email: '',*/}
                         {/*    password: '',*/}
                         {/*    rememberMe: false,*/}
                         {/*},*/}
-                            {formik.errors.email ? <div className={S.error}>{formik.errors.email}</div> : null}
+                            {formik.touched.email && formik.errors.email ? <div className={S.error}>{formik.errors.email}</div>
+                                                                         : null}
                             <TextField type='password'
                                        label='Password'
                                        margin='normal'
-                                       {...formik.getFieldProps('password')}/>
-                            {formik.errors.password ? <div className={S.error}>{formik.errors.password}</div> : null}
-                            <FormControlLabel label={'rememberMe'}
+                                       {...formik.getFieldProps('password')}
+                                       onBlur={formik.handleBlur}
+                            />
+                            {formik.touched.password && formik.errors.password ? <div className={S.error}>{formik.errors.password}</div>
+                                                                                : null}
+                            <FormControlLabel label={'Remember me'}
                                               checked={formik.values.rememberMe}
                                               control={<Checkbox name={'rememberMe'}/>}
                                               {...formik.getFieldProps('rememberMe')}/>
@@ -103,4 +100,11 @@ export const Login = () => {
             </Grid>
         </Grid>
     )
+}
+
+// TYPES
+type FormikErrors = {
+    email?: string
+    password?: string
+    rememberMe?: boolean
 }

@@ -19,7 +19,8 @@ beforeEach(() => {
 
     appState = {
         status: status,
-        error: error
+        error: error,
+        isInitialized: false
     }
 })
 

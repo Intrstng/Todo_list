@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC, useCallback, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,7 +10,10 @@ import { MenuButton } from '../MenuButton/MenuButton';
 import { Theme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-
+import { logOutAC, logOutTC } from '../../features/Login/reducers/loginReducer';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { authIsLoggedInSelector } from '../../features/Login/selectors/authSelector';
+import { Navigate } from 'react-router-dom';
 
 type ButtonAppBarProps = {
   theme: Theme
@@ -17,6 +21,8 @@ type ButtonAppBarProps = {
 }
 
 export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarProps) {
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector<boolean>(authIsLoggedInSelector);
 
   const boxStyles = {
       flexGrow: 1,
@@ -29,6 +35,14 @@ export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarPro
 
   const typographyStyles = {
     flexGrow: 1
+  }
+
+  // const logOutHandler = useCallback(() => {
+  //   dispatch(logOutTC());
+  // }, [])
+
+  const logOutHandler = () => {
+    dispatch(logOutTC());
   }
 
   return (
@@ -47,10 +61,12 @@ export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarPro
           <Typography variant='h6' component='div' sx={typographyStyles}>
             TODO
           </Typography>
-          <MenuButton color='inherit'
-                      theme={theme}
-                      background={'#0275f8'}>Login</MenuButton>
-          <MenuButton color='inherit'>Logout</MenuButton>
+          {/*{!isLoggedIn && <MenuButton color='inherit'*/}
+          {/*            theme={theme}*/}
+          {/*            background={'#0275f8'}>Login</MenuButton>}*/}
+          {/*Or use:*/}
+          {/*<LogInMUIButton isLoggedIn={isLoggedIn} theme={theme}/>*/}
+          <MenuButton color='inherit' onClick={logOutHandler} disabled={!isLoggedIn}>Logout</MenuButton>
           <MenuButton color='inherit'
                       theme={theme}
                       background={theme.palette.primary.dark}>Faq</MenuButton>
@@ -62,4 +78,29 @@ export default function ButtonAppBar({theme, changeModeHandler}: ButtonAppBarPro
       </AppBar>
     </Box>
   );
+}
+
+const LogInMUIButton: FC<LogInMUIButtonProps> = ({ isLoggedIn, theme}) => {
+  const [navigateToLogin, setNavigateToLogin] = useState(false);
+  const handleLoginClick = () => setNavigateToLogin(true);
+  return (
+      <>
+        {navigateToLogin && <Navigate to='/login' />}
+        {!isLoggedIn && (
+            <MenuButton
+                color="inherit"
+                theme={theme}
+                background='#0275f8'
+                onClick={handleLoginClick}
+            >
+              Login
+            </MenuButton>
+        )}
+      </>
+  );
+};
+
+type LogInMUIButtonProps = {
+  isLoggedIn: boolean
+  theme: Theme
 }

@@ -3,6 +3,7 @@ import { tasksReducer, TasksReducer, todoListsReducer, TodoListsReducer } from '
 import { thunk, ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AppReducer, appReducer } from './reducers/appReducer';
+import { AuthReducer, authReducer } from '../features/Login/reducers/loginReducer';
 // import thunkMiddleware from 'redux-thunk';
 
 declare global {
@@ -14,7 +15,8 @@ declare global {
 const rootReducer = combineReducers({
     todolists: todoListsReducer,
     tasks: tasksReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -26,6 +28,7 @@ export type AppRootState = ReturnType<typeof rootReducer>
 type AppActionsType = TasksReducer
     | TodoListsReducer
     | AppReducer
+    | AuthReducer
 export type AppDispatch = ThunkDispatch<AppRootState, unknown, AppActionsType>;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootState, unknown, AppActionsType>
 

@@ -115,9 +115,14 @@ export const changeTodoListsEntityStatusAC = (todolistID: string, entityStatus: 
 
 export const fetchTodoListsTC = (): AppThunk => async (dispatch) => {
     dispatch(setAppStatusAC('loading'));
-    const response = await todolistApi.getTodolists();
-    dispatch(setTodoListsAC(response.data));
-    dispatch(setAppStatusAC('succeeded'));
+    todolistApi.getTodolists()
+        .then((response) => {
+            dispatch(setTodoListsAC(response.data));
+            dispatch(setAppStatusAC('succeeded'));
+        })
+        .catch((error) => {
+            handleServerNetworkError(dispatch, error);
+        })
 };
 
 export const removeTodoListTC = (todolistID: string): AppThunk => async (dispatch) => {

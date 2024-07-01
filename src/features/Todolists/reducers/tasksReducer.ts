@@ -135,9 +135,14 @@ export const setTasksAC = (todolistID: string, tasks: TaskType[]) => ({
 // };
 export const fetchTasksTC = (todolistID: string): AppThunk => async (dispatch) => {
     dispatch(setAppStatusAC('loading'));
-    const response = await taskApi.getAllTasks(todolistID);
-    dispatch(setTasksAC(todolistID, response.data.items));
-    dispatch(setAppStatusAC('succeeded'));
+    taskApi.getAllTasks(todolistID)
+        .then((response) => {
+            dispatch(setTasksAC(todolistID, response.data.items));
+            dispatch(setAppStatusAC('succeeded'));
+        })
+        .catch((error) => {
+            handleServerNetworkError(dispatch, error);
+        })
 };
 
 export const removeTaskTC = (todolistID: string, taskID: string): AppThunk => async (dispatch) => {
@@ -235,7 +240,7 @@ export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTa
             .catch((error) => {
                 handleServerNetworkError(dispatch, error);
             })
-};
+    };
 
 
 export const changeTasksEntityStatusAC = (todolistID: string, taskID: string, entityStatus: Status) => ({

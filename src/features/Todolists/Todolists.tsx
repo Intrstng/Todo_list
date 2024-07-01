@@ -1,15 +1,27 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { Todolist } from './TodoList/Todolist';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { addTodoListTC, TodolistDomainType } from './reducers';
+import { addTodoListTC, fetchTodoListsTC, TodolistDomainType } from './reducers';
 import { todoListsSelector } from './selectors';
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm';
+import { authIsLoggedInSelector } from '../Login/selectors/authSelector';
+import { Navigate } from 'react-router-dom';
+import { initializeAppTC, Status } from '../../app/reducers/appReducer';
+import { statusSelector } from '../../app/selectors/appSelectors';
 
 export const Todolists = memo(() => {
-    const todoLists = useAppSelector<TodolistDomainType[]>(todoListsSelector);
     const dispatch = useAppDispatch();
+    const todoLists = useAppSelector<TodolistDomainType[]>(todoListsSelector);
+    const isLoggedIn = useAppSelector<boolean>(authIsLoggedInSelector);
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
+        dispatch(fetchTodoListsTC());
+    }, [])
 
     const addTodolist = useCallback((newTitle: string) => {
         // // For useReducer():
@@ -19,6 +31,11 @@ export const Todolists = memo(() => {
         //dispatch(addTodolistAC(newTitle));  // !!!!!!! один dispatch и action
         dispatch(addTodoListTC(newTitle));
     }, [dispatch]) // we can remove dispatch from deps
+
+    if (!isLoggedIn) { // Conditional after ALL hooks
+        return <Navigate to={'/login'} />
+    }
+    // Добавить эти редиректы нужно непосредственно перед return, то есть после всех хуков, которые используются внутри компонент, иначе будет нарушено правило работы с хуками, говорящее, что нельзя использовать хуки внутри компоненты в условной логике.
 
     return (
         <>

@@ -1,30 +1,37 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { AddItemForm } from '../components/AddItemForm/AddItemForm';
 import { Grid } from '@mui/material';
-import { useDispatch } from 'react-redux';
 import ButtonAppBar from '../components/ButtonAppBar/ButtonAppBar';
 import Container from '@mui/material/Container';
 import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { addTodoListTC, fetchTodoListsTC } from '../features/Todolists/reducers';
-import { Todolists } from '../features/Todolists/Todolists';
 import { useAppDispatch, useAppSelector } from './store';
 import LinearProgress from '@mui/material/LinearProgress';
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnackBar';
-import { statusSelector } from './selectors/appSelectors';
-import { Status } from './reducers/appReducer';
-import {Outlet} from "react-router-dom";
+import { isInitializedSelector, statusSelector } from './selectors/appSelectors';
+import { initializeAppTC, Status } from './reducers/appReducer';
+import { Outlet } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 
 type CustomThemeMode = 'dark' | 'light'
 
 const App = () => {
-    const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light');
     const dispatch = useAppDispatch();
+    const [customThemeMode, setCustomThemeMode] = useState<CustomThemeMode>('light');
     const appStatus = useAppSelector<Status>(statusSelector);
+    const isInitialized = useAppSelector<boolean>(isInitializedSelector);
+
     useEffect(() => {
-        dispatch(fetchTodoListsTC());
+            dispatch(initializeAppTC());
     }, [])
+
+    if (!isInitialized) {
+        return (
+            <div className='loaderContainer'>
+                <CircularProgress color='secondary' />
+            </div>
+            )
+    }
 
     const theme: Theme = createTheme({
         palette: {

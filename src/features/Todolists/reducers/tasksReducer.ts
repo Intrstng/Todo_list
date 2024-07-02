@@ -160,6 +160,7 @@ export const removeTaskTC = (todolistID: string, taskID: string): AppThunk => as
         })
         .catch((error) => {
             handleServerNetworkError(dispatch, error);
+            dispatch(changeTasksEntityStatusAC(todolistID, taskID, 'idle')); // Avoid deleting task without network
         })
 };
 
@@ -208,6 +209,7 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
         })
         .catch((error) => {
             handleServerNetworkError(dispatch, error);
+            dispatch(changeTodoListsEntityStatusAC(todolistID, 'idle')); // Avoid adding task without network
         })
 };
 

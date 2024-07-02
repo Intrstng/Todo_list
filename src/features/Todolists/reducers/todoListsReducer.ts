@@ -140,6 +140,7 @@ export const removeTodoListTC = (todolistID: string): AppThunk => async (dispatc
         })
         .catch((error) => {
             handleServerNetworkError(dispatch, error);
+            dispatch(changeTodoListsEntityStatusAC(todolistID, 'idle')); // Avoid deleting TODO without network
         })
 };
 

@@ -72,26 +72,23 @@ type SetAppStatusAC = ReturnType<typeof setAppStatusAC>
 type SetAppErrorAC = ReturnType<typeof setAppErrorAC>
 type SetAppInitializedAC = ReturnType<typeof setAppInitializedAC>
 
-
-
 // THUNKS
 export const initializeAppTC = (): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC('loading'));
     authApi.me()
         .then((response) => {
             if (response.data.resultCode === 0) { // Success
                 dispatch(setIsLoggedInAC(true));
                 dispatch(setAppInitializedAC(true));
-                // dispatch(setAppStatusAC('succeeded'));
-                // dispatch(changeTodoListsEntityStatusAC(todolistID, 'succeeded'));
+                dispatch(setAppStatusAC('succeeded'));
             } else {
                 dispatch(setIsLoggedInAC(false));
-
-            //     handleServerAppError(dispatch, response.data);
+                handleServerAppError(dispatch, response.data);
             }
             dispatch(setAppInitializedAC(true));
         })
-        // .catch((error) => {
-        //     handleServerNetworkError(dispatch, error);
-        // })
+        .catch((error) => {
+            handleServerNetworkError(dispatch, error);
+        })
 }
 

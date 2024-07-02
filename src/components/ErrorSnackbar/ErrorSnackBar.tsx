@@ -6,7 +6,7 @@ import { errorSelector } from '../../app/selectors/appSelectors';
 import { setAppErrorAC } from '../../app/reducers/appReducer';
 
 
-export function ErrorSnackbar() {
+export const ErrorSnackbar = () => {
     const error = useAppSelector<string | null>(errorSelector);
     const dispatch = useAppDispatch();
 

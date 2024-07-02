@@ -27,14 +27,14 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem,
     const [error, setError] = useState<string | null>(null);
     const [textRef] = useAutoAnimate<HTMLParagraphElement>();
 
-                                                                                                    const appStatus = useAppSelector<Status>(statusSelector);
+    const appStatus = useAppSelector<Status>(statusSelector);
 
     const MAX_INPUT_TITLE_LENGTH = 120; // const MAX_INPUT_TITLE_LENGTH = 12
     const maxTitleLengthError = inputTitle.length > MAX_INPUT_TITLE_LENGTH;
             const addTask = useCallback(() => {
                 if (inputTitle.trim() !== '' && !maxTitleLengthError) {
                     addItem(inputTitle.trim());
-                                                                                                appStatus !== 'failed' && setInputTitle('');
+                    appStatus !== 'failed' && setInputTitle('');
                     setError(null);
                 }
             }, [addItem, inputTitle, maxTitleLengthError, setInputTitle, setError])

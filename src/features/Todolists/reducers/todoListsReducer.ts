@@ -6,6 +6,7 @@ import { statusSelector } from '../../../app/selectors/appSelectors';
 import { taskApi } from '../../../api/task-api';
 import { addTaskAC, updateTaskAC } from './tasksReducer';
 import { handleServerAppError, handleServerNetworkError } from '../../../utils/errorUtils';
+import { AxiosError } from 'axios';
 
 
 export const todolistID_1 = v1();
@@ -120,7 +121,7 @@ export const fetchTodoListsTC = (): AppThunk => async (dispatch) => {
             dispatch(setTodoListsAC(response.data));
             dispatch(setAppStatusAC('succeeded'));
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
         })
 };
@@ -130,7 +131,7 @@ export const removeTodoListTC = (todolistID: string): AppThunk => async (dispatc
     dispatch(changeTodoListsEntityStatusAC(todolistID, 'loading'));
     todolistApi.deleteTodolist(todolistID)
         .then((response) => {
-            if (response.data.resultCode === 0) { // Success
+            if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                 dispatch(removeTodolistAC(todolistID));
                 dispatch(setAppStatusAC('succeeded'));
                 dispatch(changeTodoListsEntityStatusAC(todolistID, 'succeeded'));
@@ -138,7 +139,7 @@ export const removeTodoListTC = (todolistID: string): AppThunk => async (dispatc
                 handleServerAppError(dispatch, response.data);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
             dispatch(changeTodoListsEntityStatusAC(todolistID, 'idle')); // Avoid deleting TODO without network
         })
@@ -161,14 +162,14 @@ export const addTodoListTC = (title: string): AppThunk => async (dispatch) => {
     dispatch(setAppStatusAC('loading'));
     todolistApi.createTodolist(newTodoListData)
         .then((response) => {
-            if (response.data.resultCode === 0) { // Success
+            if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                 dispatch(addTodolistAC(response.data.data.item));
                 dispatch(setAppStatusAC('succeeded'));
             } else {
                 handleServerAppError<{item: TodolistType}>(dispatch, response.data);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
         })
 };
@@ -180,14 +181,14 @@ export const changeTodoListTitleTC = (todolistID: string, title: string): AppThu
     dispatch(setAppStatusAC('loading'));
     todolistApi.updateTodolistTitle(todolistID, newTodoListData)
         .then((response) => {
-            if (response.data.resultCode === 0) { // Success
+            if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                 dispatch(updateTodolistAC(todolistID, title));
                 dispatch(setAppStatusAC('succeeded'));
             } else {
                 handleServerAppError(dispatch, response.data);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
         })
 };
@@ -214,10 +215,29 @@ export type TodoListsReducer = ChangeFilterAC
     | SetTodoListsAC
     | ChangeTodoListsEntityStatusAC
 
-
 type ChangeFilterAC = ReturnType<typeof changeFilterAC>
 export type AddTodolistAC = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistAC = ReturnType<typeof removeTodolistAC>
 type UpdateTodolistAC = ReturnType<typeof updateTodolistAC>
 export type SetTodoListsAC = ReturnType<typeof setTodoListsAC>
 type ChangeTodoListsEntityStatusAC = ReturnType<typeof changeTodoListsEntityStatusAC>
+
+export type ErrorType = { // 400 Error
+    statusCode: number
+    messages: [
+        ErrorMessageItem,
+        string
+    ]
+    error: string
+}
+
+type ErrorMessageItem = {
+    message: string
+    field: string
+}
+
+export enum RESULT_CODE {
+    SUCCEDED = 0,
+    INVALID = 1,
+    INVALID_CAPTCHA_REQUIRED = 10
+}

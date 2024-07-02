@@ -4,13 +4,14 @@ import {
     RemoveTodolistAC,
     SetTodoListsAC,
     REMOVE_TODOLIST,
-    SET_TODOLISTS, changeTodoListsEntityStatusAC,
+    SET_TODOLISTS, changeTodoListsEntityStatusAC, ErrorType, RESULT_CODE,
 } from './index';
 import { taskApi, TaskDomainType, TaskPriorities, TaskStatuses, TaskType, UpdateTaskType } from '../../../api/task-api';
 import { AppRootState, AppThunk } from '../../../app/store';
 import { setAppErrorAC, setAppStatusAC, Status } from '../../../app/reducers/appReducer';
 import { handleServerAppError, handleServerNetworkError } from '../../../utils/errorUtils';
 import { ResponseType } from '../../../api/todolist-api';
+import { AxiosError } from 'axios';
 
 const ADD_TASK = 'TASK/ADD-TASK';
 const REMOVE_TASK = 'TASK/REMOVE-TASK';
@@ -141,7 +142,7 @@ export const fetchTasksTC = (todolistID: string): AppThunk => async (dispatch) =
             dispatch(setTasksAC(todolistID, response.data.items));
             dispatch(setAppStatusAC('succeeded'));
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
         })
 };
@@ -151,7 +152,7 @@ export const removeTaskTC = (todolistID: string, taskID: string): AppThunk => as
     dispatch(changeTasksEntityStatusAC(todolistID, taskID, 'loading'));
     taskApi.deleteTask(todolistID, taskID)
         .then((response) => {
-            if (response.data.resultCode === 0) { // Success
+            if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                 dispatch(removeTaskAC(todolistID, taskID));
                 dispatch(setAppStatusAC('succeeded'));
                 dispatch(changeTasksEntityStatusAC(todolistID, taskID, 'succeeded'));
@@ -159,7 +160,7 @@ export const removeTaskTC = (todolistID: string, taskID: string): AppThunk => as
                 handleServerAppError(dispatch, response.data);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
             dispatch(changeTasksEntityStatusAC(todolistID, taskID, 'idle')); // Avoid deleting task without network
         })
@@ -200,7 +201,7 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
     dispatch(changeTodoListsEntityStatusAC(todolistID, 'loading'));
     taskApi.createTask(todolistID, newTaskData)
         .then((response) => {
-            if (response.data.resultCode === 0) { // Success
+            if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                 dispatch(addTaskAC(response.data.data.item));
                 dispatch(setAppStatusAC('succeeded'));
                 dispatch(changeTodoListsEntityStatusAC(todolistID, 'succeeded'));
@@ -208,7 +209,7 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
                 handleServerAppError<{item: TaskType}>(dispatch, response.data);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError<ErrorType>) => {
             handleServerNetworkError(dispatch, error);
             dispatch(changeTodoListsEntityStatusAC(todolistID, 'idle')); // Avoid adding task without network
         })
@@ -233,14 +234,14 @@ export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTa
         };
         taskApi.updateTask(todolistID, taskID, newTaskModel)
             .then((response) => {
-                if (response.data.resultCode === 0) { // Success
+                if (response.data.resultCode === RESULT_CODE.SUCCEDED) { // Success
                     dispatch(updateTaskAC(todolistID, taskID, response.data.data.item));
                     dispatch(setAppStatusAC('succeeded'));
                 } else {
                     handleServerAppError<{item: TaskType}>(dispatch, response.data);
                 }
             })
-            .catch((error) => {
+            .catch((error: AxiosError<ErrorType>) => {
                 handleServerNetworkError(dispatch, error);
             })
     };

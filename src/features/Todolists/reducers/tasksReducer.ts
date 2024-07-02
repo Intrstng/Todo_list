@@ -10,6 +10,7 @@ import { taskApi, TaskDomainType, TaskPriorities, TaskStatuses, TaskType, Update
 import { AppRootState, AppThunk } from '../../../app/store';
 import { setAppErrorAC, setAppStatusAC, Status } from '../../../app/reducers/appReducer';
 import { handleServerAppError, handleServerNetworkError } from '../../../utils/errorUtils';
+import { ResponseType } from '../../../api/todolist-api';
 
 const ADD_TASK = 'TASK/ADD-TASK';
 const REMOVE_TASK = 'TASK/REMOVE-TASK';
@@ -204,7 +205,7 @@ export const addTaskTC = (todolistID: string, title: string): AppThunk => async 
                 dispatch(setAppStatusAC('succeeded'));
                 dispatch(changeTodoListsEntityStatusAC(todolistID, 'succeeded'));
             } else {
-                handleServerAppError(dispatch, response.data);
+                handleServerAppError<{item: TaskType}>(dispatch, response.data);
             }
         })
         .catch((error) => {
@@ -236,7 +237,7 @@ export const updateTaskTC = (todolistID: string, taskID: string, model: UpdateTa
                     dispatch(updateTaskAC(todolistID, taskID, response.data.data.item));
                     dispatch(setAppStatusAC('succeeded'));
                 } else {
-                    handleServerAppError(dispatch, response.data);
+                    handleServerAppError<{item: TaskType}>(dispatch, response.data);
                 }
             })
             .catch((error) => {

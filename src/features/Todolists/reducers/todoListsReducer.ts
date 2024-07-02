@@ -165,7 +165,7 @@ export const addTodoListTC = (title: string): AppThunk => async (dispatch) => {
                 dispatch(addTodolistAC(response.data.data.item));
                 dispatch(setAppStatusAC('succeeded'));
             } else {
-                handleServerAppError(dispatch, response.data);
+                handleServerAppError<{item: TodolistType}>(dispatch, response.data);
             }
         })
         .catch((error) => {

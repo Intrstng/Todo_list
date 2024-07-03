@@ -2,8 +2,7 @@ import { setAppErrorAC, setAppStatusAC } from '../app/reducers/appReducer';
 import { AppDispatch } from '../app/store';
 import { ResponseType } from '../api/todolist-api';
 
-
-export const handleServerAppError = <D>(dispatch: AppDispatch, data: ResponseType<D>) => {
+export const handleServerAppError = <D = {}>(dispatch: AppDispatch, data: ResponseType<D>) => {
     if (data.messages.length) {
         dispatch(setAppErrorAC(data.messages[0]));
     } else {

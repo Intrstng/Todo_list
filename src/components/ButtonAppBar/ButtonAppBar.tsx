@@ -10,7 +10,7 @@ import { MenuButton } from '../MenuButton/MenuButton';
 import { Theme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { logOutAC, logOutTC } from '../../features/Login/reducers/loginReducer';
+import { logOutTC } from '../../features/Login/reducers/loginReducer';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { authIsLoggedInSelector } from '../../features/Login/selectors/authSelector';
 import { Navigate } from 'react-router-dom';

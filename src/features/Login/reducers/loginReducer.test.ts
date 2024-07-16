@@ -17,7 +17,7 @@ beforeEach(() => {
 
 test ('authReducer should SET_IS_LOGGED_IN', () => {
     // action
-    const newState_1 = authReducer(loginState, setIsLoggedInAC(newIsLoggedIn));
+    const newState_1 = authReducer(loginState, setIsLoggedInAC({isLoggedIn: newIsLoggedIn}));
     // expectation
     expect(loginState.isLoggedIn).toBe(isLoggedIn);
     expect(newState_1.isLoggedIn).toBe(newIsLoggedIn);

@@ -53,7 +53,7 @@ test('reducer taskList should ADD-NEW-TASKS-LIST (new empty array for tasks shou
         addedDate: new Date(),
         order: 0,
     };
-    const action = addTodolistAC(newTodoList);
+    const action = addTodolistAC({ newTodolistData: newTodoList });
     const endTasksState = tasksReducer(startTasksState, action);
     const endTodoListsState = todoListsReducer(startTodoListsState, action);
     const keys = Object.keys(endTasksState);
@@ -67,7 +67,7 @@ test('reducer taskList should ADD-NEW-TASKS-LIST (new empty array for tasks shou
 // ------------------- 'DELETE-TASKS-LIST' ------------------- //
 
 test('reducer taskList should DELETE-TASKS-LIST (delete array of tasks with ID of deleted todoList)', () => {
-    const action = removeTodolistAC(todolistID_2);
+    const action = removeTodolistAC({ todolistID: todolistID_2 });
     const endState = tasksReducer(startTasksState, action)
     const keys = Object.keys(endState);
     expect(keys.length).toBe(1);
@@ -82,7 +82,7 @@ test('reducer taskList should ADD-TASKS-LIST WHEN TODOLISTS-ADDED (when todolist
         {id: todolistID_2, title: 'Prepare to the exam', filter: 'active', addedDate: new Date(), order: 0}
     ]
 
-    const action = setTodoListsAC(state);
+    const action = setTodoListsAC({ todolists: state });
     const endState = tasksReducer({}, action);
 
     const keys = Object.keys(endState);

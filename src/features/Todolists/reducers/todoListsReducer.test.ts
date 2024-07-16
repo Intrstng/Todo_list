@@ -40,8 +40,8 @@ beforeEach(() => {
 
 test ('reducer todoLists should CHANGE FILTER', () => {
     // action
-    const newState_1 = todoListsReducer(state, changeFilterAC(todolistID_1, newFilter_1));
-    const newState_2 = todoListsReducer(state, changeFilterAC(todolistID_2, newFilter_2));
+    const newState_1 = todoListsReducer(state, changeFilterAC({todolistID: todolistID_1, value: newFilter_1}));
+    const newState_2 = todoListsReducer(state, changeFilterAC({todolistID: todolistID_2, value: newFilter_2}));
 
     // expectation
     expect(state.filter(tl => tl.id === todolistID_1)[0].filter).toBe('all');
@@ -63,7 +63,7 @@ test ('reducer todoLists should ADD-TODOLIST', () => {
         addedDate: new Date(),
         order: 0,
     };
-    const newState = todoListsReducer(state, addTodolistAC(newTodoList));
+    const newState = todoListsReducer(state, addTodolistAC({ newTodolistData: newTodoList}));
 
     // expectation
     expect(state.length).toBe(2);
@@ -78,8 +78,8 @@ test ('reducer todoLists should ADD-TODOLIST', () => {
 
 test ('reducer todoLists should REMOVE-TODOLIST', () => {
     // action
-    const newState_1 = todoListsReducer(state, removeTodolistAC(todolistID_1));
-    const newState_2 = todoListsReducer(state, removeTodolistAC(todolistID_2));
+    const newState_1 = todoListsReducer(state, removeTodolistAC({ todolistID: todolistID_1}));
+    const newState_2 = todoListsReducer(state, removeTodolistAC({ todolistID: todolistID_2}));
 
     // expectation
     expect(state.length).toBe(2);
@@ -95,8 +95,8 @@ test ('reducer todoLists should REMOVE-TODOLIST', () => {
 
 test ('reducer todoLists should UPDATE-TODOLIST (change todoLists title)', () => {
     // action
-    const newState_1 = todoListsReducer(state, updateTodolistAC(todolistID_1, todolistTitle));
-    const newState_2 = todoListsReducer(state, updateTodolistAC(todolistID_2, todolistTitle));
+    const newState_1 = todoListsReducer(state, updateTodolistAC({ todolistID: todolistID_1, newTitle: todolistTitle }));
+    const newState_2 = todoListsReducer(state, updateTodolistAC({ todolistID: todolistID_2, newTitle: todolistTitle }));
 
     // expectation
     expect(state[0].title).toBe('Main tasks');
@@ -110,7 +110,7 @@ test ('reducer todoLists should UPDATE-TODOLIST (change todoLists title)', () =>
 
 test ('reducer todoLists should SET-TODOLISTS to the state (action creator for REST API request)', () => {
     // action
-    const newState = todoListsReducer([], setTodoListsAC(state));
+    const newState = todoListsReducer([], setTodoListsAC({ todolists: state }));
 
     // expectation
     expect(newState.length).toBe(2);
@@ -124,8 +124,8 @@ test ('reducer todoLists should SET-TODOLISTS to the state (action creator for R
 
 test ('reducer todoLists should CHANGE-TODOLIST-ENTITY-STATUS', () => {
     // action
-    const newState_1 = todoListsReducer(state, changeTodoListsEntityStatusAC(todolistID_1, entityStatus_1));
-    const newState_2 = todoListsReducer(state, changeTodoListsEntityStatusAC(todolistID_2, entityStatus_2));
+    const newState_1 = todoListsReducer(state, changeTodoListsEntityStatusAC({ todolistID: todolistID_1, entityStatus: entityStatus_1 }));
+    const newState_2 = todoListsReducer(state, changeTodoListsEntityStatusAC({ todolistID: todolistID_2, entityStatus: entityStatus_2 }));
 
     // expectation
     expect(state[0].entityStatus).toBe(entityStatus);

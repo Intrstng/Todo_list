@@ -19,7 +19,7 @@ export const TasksList: FC<TasksListPropsType> = memo(({todolist}) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>();
 
     const changeFilter = useCallback((todolistID: string, value: FilterValuesType) => {
-        dispatch(changeFilterAC(todolistID, value));
+        dispatch(changeFilterAC({ todolistID, value }));
     }, [dispatch])
     const onclickSetAllFilter = useCallback(() => changeFilter(todolist.id, 'all'), [changeFilter, todolist.id]);
     const onclickSetActiveFilter = useCallback(() => changeFilter(todolist.id, 'active'), [changeFilter, todolist.id]);

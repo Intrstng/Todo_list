@@ -50,8 +50,8 @@ beforeEach(() => {
 
 test ('reducer taskList should ADD-TASK', () => {
     // action
-    const newState_1 = tasksReducer(tasksState, addTaskAC(tasksState[todolistID_1][0]));
-    const newState_2 = tasksReducer(tasksState, addTaskAC(tasksState[todolistID_2][0]));
+    const newState_1 = tasksReducer(tasksState, addTaskAC({ newTaskData: tasksState[todolistID_1][0] }));
+    const newState_2 = tasksReducer(tasksState, addTaskAC( { newTaskData: tasksState[todolistID_2][0] }));
 
     // expectation
     expect(tasksState[todolistID_1].length).toBe(3);
@@ -70,8 +70,8 @@ test ('reducer taskList should ADD-TASK', () => {
 
 test ('reducer taskList should REMOVE-TASK', () => {
     // action
-    const newState_1 = tasksReducer(tasksState, removeTaskAC(todolistID_1, taskID_1));
-    const newState_2 = tasksReducer(tasksState, removeTaskAC(todolistID_2, taskID_2));
+    const newState_1 = tasksReducer(tasksState, removeTaskAC( { todolistID: todolistID_1, taskID: taskID_1 }));
+    const newState_2 = tasksReducer(tasksState, removeTaskAC( { todolistID: todolistID_2, taskID: taskID_2 }));
 
     // expectation
     expect(tasksState[todolistID_1].length).toBe(3);
@@ -110,8 +110,8 @@ test ('reducer taskList should UPDATE-TASK status', () => {
     const newTaskModel_2: UpdateTaskDomainModelType = {
         status: TaskStatuses.New,
     }
-    const newState_1 = tasksReducer(tasksState, updateTaskAC(todolistID_1, taskID_1, newTaskModel_1));
-    const newState_2 = tasksReducer(tasksState, updateTaskAC(todolistID_2, taskID_2, newTaskModel_2));
+    const newState_1 = tasksReducer(tasksState, updateTaskAC( { todolistID: todolistID_1, taskID: taskID_1, model: newTaskModel_1 }));
+    const newState_2 = tasksReducer(tasksState, updateTaskAC( { todolistID: todolistID_2, taskID: taskID_2, model: newTaskModel_2 }));
 
     // expectation
     expect(tasksState[todolistID_1].find(t => t.id === taskID_1)?.status).toBe(TaskStatuses.New);
@@ -130,8 +130,8 @@ test ('reducer taskList should UPDATE-TASK title', () => {
     const newTaskModel_2: UpdateTaskDomainModelType = {
         title: newTitle_2,
     }
-    const newState_1 = tasksReducer(tasksState, updateTaskAC(todolistID_1, taskID_1, newTaskModel_1));
-    const newState_2 = tasksReducer(tasksState, updateTaskAC(todolistID_2, taskID_2, newTaskModel_2));
+    const newState_1 = tasksReducer(tasksState, updateTaskAC( { todolistID: todolistID_1, taskID: taskID_1, model: newTaskModel_1 }));
+    const newState_2 = tasksReducer(tasksState, updateTaskAC( { todolistID: todolistID_2, taskID: taskID_2, model: newTaskModel_2 }));
     // expectation
     expect(tasksState[todolistID_1].find(t => t.id === taskID_1)?.title).toBe('HTML&CSS');
     expect(newState_1[todolistID_1].find(t => t.id === taskID_1)?.title).toBe(newTitle_1);
@@ -154,8 +154,8 @@ test ('reducer taskList should SET-TASKS (FROM REST API)', () => {
         { id: '3', title: 'newTask_3', status: TaskStatuses.New, description:'', priority: TaskPriorities.Low, startDate: date, deadline: date, todoListId: todolistID_1, order: 0, addedDate: date, entityStatus},
     ];
 
-    const newState_1 = tasksReducer(tasksState, setTasksAC(todolistID_1, newTasks_1));
-    const newState_2 = tasksReducer(tasksState, setTasksAC(todolistID_2, newTasks_2));
+    const newState_1 = tasksReducer(tasksState, setTasksAC( {todolistID: todolistID_1, tasks: newTasks_1 }));
+    const newState_2 = tasksReducer(tasksState, setTasksAC( {todolistID: todolistID_2, tasks: newTasks_2 }));
 
     // expectation
     expect(tasksState[todolistID_1].length).toBe(3);

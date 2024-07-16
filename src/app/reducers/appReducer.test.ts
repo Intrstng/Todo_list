@@ -35,8 +35,8 @@ beforeEach(() => {
 
 test ('appReducer should SET_STATUS', () => {
     // action
-    const newState_1 = appReducer(appState, setAppStatusAC(newStatus_1));
-    const newState_2 = appReducer(appState, setAppStatusAC(newStatus_2));
+    const newState_1 = appReducer(appState, setAppStatusAC({status: newStatus_1}));
+    const newState_2 = appReducer(appState, setAppStatusAC({status: newStatus_2}));
     // expectation
     expect(appState.status).toBe(status);
     expect(newState_1.status).toBe(newStatus_1);
@@ -48,8 +48,8 @@ test ('appReducer should SET_STATUS', () => {
 
 test ('appReducer should SET_ERROR', () => {
     // action
-    const newState_1 = appReducer(appState, setAppErrorAC(newError_1));
-    const newState_2 = appReducer(appState, setAppErrorAC(newError_2));
+    const newState_1 = appReducer(appState, setAppErrorAC({error: newError_1}));
+    const newState_2 = appReducer(appState, setAppErrorAC({error: newError_2}));
     // expectation
     expect(appState.error).toBe(error);
     expect(newState_1.error).toBe(newError_1);
@@ -60,8 +60,8 @@ test ('appReducer should SET_ERROR', () => {
 
 test ('appReducer should SET_INITIALIZED (change isInitialized property)', () => {
     // action
-    const newState_1 = appReducer(appState, setAppInitializedAC(newIsInitialized_1));
-    const newState_2 = appReducer(appState, setAppInitializedAC(newIsInitialized_2));
+    const newState_1 = appReducer(appState, setAppInitializedAC({isInitialized: newIsInitialized_1}));
+    const newState_2 = appReducer(appState, setAppInitializedAC({isInitialized: newIsInitialized_2}));
     // expectation
     expect(newState_1.isInitialized).toBe(newIsInitialized_1);
     expect(newState_2.isInitialized).toBe(newIsInitialized_2);

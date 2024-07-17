@@ -51,3 +51,12 @@ Object.defineProperty(window, 'store', {
 });
 // // @ts-ignore
 // window.store = store;
+
+
+
+// export type AppStateType = ReturnType<typeof store.getState>
+// export type AppDispatch=typeof store.dispatch
+// export const useAppDispatch:()=>AppDispatch=useDispatch
+// export type AppThunkDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>
+// export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, AnyAction>
+// export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector

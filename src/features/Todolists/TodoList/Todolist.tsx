@@ -25,9 +25,9 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist}) => {
     const tasks = useAppSelector<TaskType[]>( (state) => state.tasks[todolist.id]);
     // const tasks = useSelector<AppRootState, TaskType[]>( state => tasksSelector(state, todolist.id)); // see tasksSelector.ts
 
-    useEffect(() => {
-      dispatch(fetchTasksTC(todolist.id));
-    }, [todolist.id])
+                                                                                    // useEffect(() => { // moved to fetchTodoListsTC
+                                                                                    //   dispatch(fetchTasksTC(todolist.id));
+                                                                                    // }, [todolist.id])
 
 
     const onClickRemoveTodolist = useCallback(() => {

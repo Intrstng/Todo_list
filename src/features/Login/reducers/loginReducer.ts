@@ -3,13 +3,7 @@ import { authApi, LoginParamsType } from '../../../api/auth-api';
 import { setAppStatusAC } from '../../../app/reducers/appReducer';
 import { handleServerAppError, handleServerNetworkError } from '../../../utils/errorUtils';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-// const SET_IS_LOGGED_IN = 'AUTH/SET-IS-LOGGED-IN';
-// const LOG_OUT = 'AUTH/LOG-OUT';
-
-// const loginInitialState: LoginInitialState = {
-//     isLoggedIn: false,
-// }
+import { clearTodosDataAC } from '../../Todolists/reducers';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -25,30 +19,6 @@ const authSlice = createSlice({
 
 export const {setIsLoggedInAC} = authSlice.actions;
 export const authReducer =  authSlice.reducer;
-
-
-
-
-
-// export const authReducer = (state:  LoginInitialState = loginInitialState, action: AuthReducer):  LoginInitialState => {
-//     switch (action.type) {
-//         case SET_IS_LOGGED_IN: {
-//             const {isLoggedIn} = action.payload;
-//             return {...state, isLoggedIn}
-//         }
-//         default: return state;
-//     }
-// }
-
-// ACTION CREATORS
-// export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
-//     type: SET_IS_LOGGED_IN,
-//     payload: {
-//         isLoggedIn
-//     }
-// }) as const
-
-// export const logOutAC = () => ({ type: LOG_OUT }) as const
 
 // THUNKS
 export const loginTC = (params: LoginParamsType): AppThunk => (dispatch) => {
@@ -74,6 +44,7 @@ export const logOutTC = (): AppThunk => (dispatch) => {
             if (response.data.resultCode === 0) { // Success
                 dispatch(setIsLoggedInAC({isLoggedIn: false})); // logout (kill cookie)
                 dispatch(setAppStatusAC({status: 'succeeded'}));
+                dispatch(clearTodosDataAC());
             } else {
                 handleServerAppError(dispatch, response.data);
             }

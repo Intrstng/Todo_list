@@ -1,72 +1,72 @@
 .todolist {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 320px;
-    padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 320px;
+  padding: 15px;
 }
 
 .todolist__titleContent {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: flex-start;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
 }
 
 .todolist__title {
-    color: #3f4471;
-    cursor: pointer;
-    transition: 0.25s opacity ease;
+  color: #3f4471;
+  cursor: pointer;
+  transition: 0.25s opacity ease;
 }
 
 .todolist__title:hover {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 .tasksShowToggle {
-    width: 100%;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .error {
-    border: red 1px solid;
+  border: red 1px solid;
 }
 
 .errorMessage {
-    color: red;
-    margin: 0;
+  color: red;
+  margin: 0;
 }
 
 .counterWrapper {
-    margin-right: 10px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
 }
 
 .counterWrapper span {
-    color: #2e7d32;
-    font-weight: bold;
+  color: #2e7d32;
+  font-weight: bold;
 }
 
 .counter {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    border: 1px solid #2e7d32;
-    border-radius: 50%;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #2e7d32;
+  border-radius: 50%;
 }
 
 .counter > span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #2e7d32;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #2e7d32;
 }

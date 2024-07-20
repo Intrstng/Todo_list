@@ -1,3 +1,3 @@
-import { AppRootState } from '../../../app/store';
+import { AppRootState } from 'app/store';
 
-export const authIsLoggedInSelector = ((state: AppRootState):  boolean => state.auth.isLoggedIn);
+export const authIsLoggedInSelector = (state: AppRootState): boolean => state.auth.isLoggedIn;

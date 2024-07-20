@@ -10,10 +10,10 @@
 }
 
 .error {
-    border: red 1px solid;
+  border: red 1px solid;
 }
 
 .errorMessage {
-    color: red;
-    margin: 0;
+  color: red;
+  margin: 0;
 }

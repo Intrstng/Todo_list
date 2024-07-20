@@ -1,4 +1,5 @@
-import { TasksType } from '../reducers';
-import { AppRootState } from '../../../app/store';
+import { TasksType } from '../slices';
+import { AppRootState } from 'app/store';
+import { TaskDomainType } from 'api/task-api'
 
-export const tasksSelector = ((state: AppRootState): TasksType => state.tasks);
+export const tasksSelector = (state: AppRootState): TasksType => state.tasks.tasks;

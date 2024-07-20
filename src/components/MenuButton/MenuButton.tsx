@@ -1,15 +1,14 @@
-import { styled, Theme } from '@mui/material/styles'
-import Button from '@mui/material/Button'
-
+import { styled, Theme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
 // Reusable component (styled)
 
 type MenuButtonProps = {
-  theme?: Theme
-  background?: string
-}
+  theme?: Theme;
+  background?: string;
+};
 
-export const MenuButton = styled(Button)<MenuButtonProps>(({theme, background}) => ({
+export const MenuButton = styled(Button)<MenuButtonProps>(({ theme, background }) => ({
   minWidth: '110px',
   fontWeight: 'bold',
   boxShadow: `0 0 0 2px ${theme && theme.palette.primary.dark},
@@ -19,5 +18,5 @@ export const MenuButton = styled(Button)<MenuButtonProps>(({theme, background}) 
   margin: '0 10px',
   padding: '8px 24px',
   color: theme && theme.palette.primary.contrastText,
-  background: background || theme && theme.palette.primary.light,
-}))
+  background: background || (theme && theme.palette.primary.light),
+}));
